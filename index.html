@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional portfolio of Abhay Anand - Data Science and Machine Learning specialist with expertise in AI, ML, and software development.">
+    <title>Abhay Anand | Data Science & Machine Learning Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #1e293b;
+            --text-color: #334155;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+        }
+
+        /* Header styles */
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="rgba(255,255,255,0.05)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+            background-color: var(--gray-100);
+        }
+
+        /* Section styles */
+        section {
+            padding: 5rem 0;
+        }
+
+        section:nth-child(even) {
+            background-color: var(--white);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+            color: var(--secondary-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 3rem;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        /* Experience and Projects */
+        .experience-item, .project-item {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--gray-200);
+        }
+
+        .experience-item:hover, .project-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .experience-item h3, .project-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-item p, .project-item p {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .experience-item ul, .project-item ul {
+            list-style-position: inside;
+            margin-left: 1rem;
+        }
+
+        .experience-item li, .project-item li {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .skill-category h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .skill-item {
+            background: var(--gray-100);
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Contact form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Contact info in header */
+        .contact-info {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .contact-info a {
+            color: var(--white);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 3rem 0;
+            }
+
+            .experience-item, .project-item {
+                padding: 1.5rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Education section */
+        .education-item {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .education-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .education-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .education-item p {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Abhay Anand</h1>
+            <p>Data Science & Machine Learning Specialist</p>
+            <div class="contact-info">
+                <p>945-213-2645 | a7anand@ucsd.edu</p>
+                <p>
+                    <a href="https://linkedin.com/in/abhayanand100" target="_blank">LinkedIn</a> |
+                    <a href="https://github.com/abhayananducsd" target="_blank">GitHub</a>
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section id="about">
+            <div class="container">
+                <h2>About Me</h2>
+                <p>I am a Data Science and Machine Learning specialist with a strong foundation in both theoretical and practical applications of AI. Currently pursuing my Master's in Data Science at UC San Diego, I combine academic excellence with hands-on experience in developing innovative solutions using cutting-edge technologies.</p>
+            </div>
+        </section>
+
+        <section id="experience">
+            <div class="container">
+                <h2>Experience</h2>
+                <div class="experience-item">
+                    <h3>Software/Data Engineering Intern</h3>
+                    <p>Ivanti • San Jose, CA • June 2024 - August 2024</p>
+                    <ul>
+                        <li>Developed GenAI-driven automation tester for Neurons AI, integrating C#, JSON, and Excel compatibility with optional SQL-based validation for reliability</li>
+                        <li>Built NLP-based Dynamic Expression Generator using Azure GPT-4 and prompt engineering techniques (RAG, ReACT) to convert simple text to proprietary expressions</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <h3>Instructional Assistant</h3>
+                    <p>Cognitive and Data Science Department, UC San Diego • San Diego, CA • March 2024 - Present</p>
+                    <ul>
+                        <li>Tutored 900+ students in Python and data science, under prof Bradley Voytek and Shannon Ellis, leading discussions, grading, and office hours</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <h3>VP of Finance</h3>
+                    <p>CSForEach Club • San Diego, CA • September 2022 - June 2024</p>
+                    <ul>
+                        <li>Managed finances, engaged with sponsors, and maintained a sustainable budget to support low-cost club activities promoting data science, computer science, and AI projects at local K-12 schools</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <h3>Software Engineering Intern</h3>
+                    <p>HCL Tech • Remote • June 2023 - September 2023</p>
+                    <ul>
+                        <li>Analyzed security and anomaly datasets with the product engineering department. Performed exploratory data analysis (EDA) and data visualization to uncover key patterns</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2>Projects</h2>
+                <div class="project-item">
+                    <h3>EMG Drone</h3>
+                    <p>Signal Processing, Unsupervised Learning Classifiers, Neural Networks • March 2024 - Present</p>
+                    <ul>
+                        <li>Leading the software implementation for real-time gesture recognition, for EMG Data</li>
+                        <li>Applying unsupervised classifiers to process muscle and motion signals for accurate gesture control</li>
+                    </ul>
+                </div>
+                <div class="project-item">
+                    <h3>Reinforcement Learning for Autonomous Navigation</h3>
+                    <p>PPO, Actor-Critic, CARLA • January 2025 - March 2025</p>
+                    <ul>
+                        <li>Developed an RL-based autonomous navigation model through Lidar data on CARLA. Trained via Proximal Policy Optimization and Actor-Critic models through a continuous action space for precise steering and throttle control</li>
+                        <li>Designed custom reward function and policy to enhance stability, minimize collisions, and improve lane adherence in factory like environments</li>
+                    </ul>
+                </div>
+                <div class="project-item">
+                    <h3>Comparative Analysis of Machine Learning Models</h3>
+                    <p>ANN, XGBoost, SMOTE • October 2024 - January 2025</p>
+                    <ul>
+                        <li>Evaluated XGBoost, Random Forest, SVM, and ANN across multiple different datasets to test model performance</li>
+                        <li>Built ML pipelines with one-hot/label encoding and feature scaling. Used SMOTE to handle class imbalance</li>
+                        <li>Optimized hyperparameters and performance over nine trials with different train-test splits for robust comparisons</li>
+                    </ul>
+                </div>
+                <div class="project-item">
+                    <h3>NLP Analysis: BERT vs. SVM</h3>
+                    <p>Sentiment Analysis, TensorFlow, Deep Learning • August 2022 - January 2023</p>
+                    <ul>
+                        <li>Researched and compared the accuracy and efficiency of BERT and SVM algorithms for sentiment analysis on online product reviews</li>
+                        <li>Implemented in Python using Tensorflow; authored a 5,000-word research paper documenting findings</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <div class="container">
+                <h2>Education</h2>
+                <div class="education-item">
+                    <h3>University of California, San Diego</h3>
+                    <p>Masters in Data Science • August 2025 - June 2026</p>
+                </div>
+                <div class="education-item">
+                    <h3>University of California, San Diego</h3>
+                    <p>B.S. in Machine Learning (Cognitive Science Specialization), Minor in Computer Science • August 2022 - August 2025</p>
+                    <p>Relevant Coursework: Data Structures and OO Design, Supervised Machine Learning Algorithms, Artificial Intelligence Algorithms, Neural Networks and Deep Learning, Signal Processing</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="container">
+                <h2>Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Languages</h3>
+                        <div class="skill-item">Java</div>
+                        <div class="skill-item">Python</div>
+                        <div class="skill-item">C#</div>
+                        <div class="skill-item">SQL</div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Developer Tools</h3>
+                        <div class="skill-item">Git</div>
+                        <div class="skill-item">Carla</div>
+                        <div class="skill-item">TensorFlow</div>
+                        <div class="skill-item">Azure</div>
+                        <div class="skill-item">JSON</div>
+                        <div class="skill-item">Tableau</div>
+                        <div class="skill-item">MS Office</div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Libraries</h3>
+                        <div class="skill-item">Pandas</div>
+                        <div class="skill-item">Numpy</div>
+                        <div class="skill-item">Seaborn</div>
+                        <div class="skill-item">Matplotlib</div>
+                        <div class="skill-item">Scikit-learn</div>
+                        <div class="skill-item">TensorFlow</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2>Contact</h2>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Abhay Anand. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 
