@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* Reset and base styles */
         :root {
@@ -428,19 +429,74 @@
                 left: -45px !important;
             }
         }
+
+        /* Social Media Buttons */
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .social-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--white);
+            color: var(--secondary-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .social-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .social-button.linkedin {
+            background-color: #0077b5;
+            color: white;
+        }
+
+        .social-button.github {
+            background-color: #333;
+            color: white;
+        }
+
+        .social-button.linkedin:hover {
+            background-color: #006396;
+        }
+
+        .social-button.github:hover {
+            background-color: #24292e;
+        }
+
+        .social-button i {
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <h1>Abhay Anand</h1>
-            <p>Data Science & Machine Learning Specialist</p>
+            <p>Data Science & Machine Learning Student</p>
             <div class="contact-info">
-                <p>945-213-2645 | a7anand@ucsd.edu</p>
-                <p>
-                    <a href="https://linkedin.com/in/abhayanand100" target="_blank">LinkedIn</a> |
-                    <a href="https://github.com/abhayananducsd" target="_blank">GitHub</a>
-                </p>
+                <p>a7anand@ucsd.edu</p>
+                <div class="social-buttons">
+                    <a href="https://linkedin.com/in/abhayanand100" target="_blank" class="social-button linkedin">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/abhayananducsd" target="_blank" class="social-button github">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -465,83 +521,9 @@
             </div>
         </section>
 
-        <section id="experience">
-            <div class="container">
-                <h2>Experience</h2>
-                <div class="experience-item">
-                    <h3>Software/Data Engineering Intern</h3>
-                    <p>Ivanti • San Jose, CA • June 2024 - August 2024</p>
-                    <ul>
-                        <li>Developed GenAI-driven automation tester for Neurons AI, integrating C#, JSON, and Excel compatibility with optional SQL-based validation for reliability</li>
-                        <li>Built NLP-based Dynamic Expression Generator using Azure GPT-4 and prompt engineering techniques (RAG, ReACT) to convert simple text to proprietary expressions</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>Instructional Assistant</h3>
-                    <p>Cognitive and Data Science Department, UC San Diego • San Diego, CA • March 2024 - Present</p>
-                    <ul>
-                        <li>Tutored 900+ students in Python and data science, under prof Bradley Voytek and Shannon Ellis, leading discussions, grading, and office hours</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>VP of Finance</h3>
-                    <p>CSForEach Club • San Diego, CA • September 2022 - June 2024</p>
-                    <ul>
-                        <li>Managed finances, engaged with sponsors, and maintained a sustainable budget to support low-cost club activities promoting data science, computer science, and AI projects at local K-12 schools</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>Software Engineering Intern</h3>
-                    <p>HCL Tech • Remote • June 2023 - September 2023</p>
-                    <ul>
-                        <li>Analyzed security and anomaly datasets with the product engineering department. Performed exploratory data analysis (EDA) and data visualization to uncover key patterns</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects">
-            <div class="container">
-                <h2>Projects</h2>
-                <div class="project-item">
-                    <h3>EMG Drone</h3>
-                    <p>Signal Processing, Unsupervised Learning Classifiers, Neural Networks • March 2024 - Present</p>
-                    <ul>
-                        <li>Leading the software implementation for real-time gesture recognition, for EMG Data</li>
-                        <li>Applying unsupervised classifiers to process muscle and motion signals for accurate gesture control</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>Reinforcement Learning for Autonomous Navigation</h3>
-                    <p>PPO, Actor-Critic, CARLA • January 2025 - March 2025</p>
-                    <ul>
-                        <li>Developed an RL-based autonomous navigation model through Lidar data on CARLA. Trained via Proximal Policy Optimization and Actor-Critic models through a continuous action space for precise steering and throttle control</li>
-                        <li>Designed custom reward function and policy to enhance stability, minimize collisions, and improve lane adherence in factory like environments</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>Comparative Analysis of Machine Learning Models</h3>
-                    <p>ANN, XGBoost, SMOTE • October 2024 - January 2025</p>
-                    <ul>
-                        <li>Evaluated XGBoost, Random Forest, SVM, and ANN across multiple different datasets to test model performance</li>
-                        <li>Built ML pipelines with one-hot/label encoding and feature scaling. Used SMOTE to handle class imbalance</li>
-                        <li>Optimized hyperparameters and performance over nine trials with different train-test splits for robust comparisons</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>NLP Analysis: BERT vs. SVM</h3>
-                    <p>Sentiment Analysis, TensorFlow, Deep Learning • August 2022 - January 2023</p>
-                    <ul>
-                        <li>Researched and compared the accuracy and efficiency of BERT and SVM algorithms for sentiment analysis on online product reviews</li>
-                        <li>Implemented in Python using Tensorflow; authored a 5,000-word research paper documenting findings</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
         <section id="education">
             <div class="container">
-                <h2 class="timeline-header">What I Have Studied So Far</h2>
+                <h2 class="timeline-header">📚 Education</h2>
                 <div class="education-timeline">
                     <div class="education-item">
                         <h3>Master's in Data Science</h3>
@@ -551,7 +533,7 @@
                     </div>
                     
                     <div class="education-item">
-                        <h3>B.S. in Cognitive Science (Machine Learning Specialization) with Minor in Computer Science</h3>
+                        <h3>B.S. in Cognitive Science</h3>
                         <div class="school">University of California, San Diego</div>
                         <div class="date">August 2022 - August 2025</div>
                         <div class="details">Machine Learning Specialization with Minor in Computer Science</div>
@@ -564,35 +546,143 @@
             </div>
         </section>
 
+        <section id="experience">
+            <div class="container">
+                <h2>Experience</h2>
+                <div class="experience-item">
+                    <h3>Software/Data Engineering Intern</h3>
+                    <p>Ivanti • San Jose • June 2024 - August 2024</p>
+                    <ul>
+                        <li>Developed GenAI-driven automation tester for Neurons AI (C#, JSON, Excel, SQL)</li>
+                        <li>Built an NLP-based Dynamic Expression Generator using Azure GPT-4, RAG, and ReACT</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <h3>Instructional Assistant</h3>
+                    <p>Cognitive and Data Science Dept, UCSD • San Diego • March 2024 - Present</p>
+                    <ul>
+                        <li>Tutored 900+ students in Python and data science under Prof. Voytek and Prof. Ellis</li>
+                        <li>Led discussions, grading, and held office hours</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <h3>VP of Finance</h3>
+                    <p>CSForEach Club, UCSD • San Diego • September 2022 - June 2024</p>
+                    <ul>
+                        <li>Managed club budget and sponsor relationships</li>
+                        <li>Supported K–12 outreach in CS, data science, and AI</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <h3>Software Engineering Intern</h3>
+                    <p>HCLTech • Remote • June 2023 - September 2023</p>
+                    <ul>
+                        <li>Worked with product engineering team analyzing security and anomaly datasets</li>
+                        <li>Performed EDA and data visualization to extract insights</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2>Projects</h2>
+                <div class="project-item">
+                    <h3>Comparative Analysis of Modern Object Detection Algorithms</h3>
+                    <p>Computer Vision, Deep Learning • March 2025</p>
+                    <ul>
+                        <li>Compared RCNN, YOLO-World, and GroundingDINO for object detection on a curated dataset</li>
+                        <li>Evaluated bounding box accuracy using Intersection over Union (IoU), precision, recall, and F1 score</li>
+                        <li>Constructed a Robustness Evaluation Dataset to assess model generalization with complex scenes, small/occluded objects, symbolic text, and abstract prompts</li>
+                        <li>YOLO-World showed strong recall but was highly sensitive to confidence thresholds and prompt phrasing, while GroundingDINO achieved the highest IoU and F1 across conditions, excelling in open-vocabulary tasks</li>
+                    </ul>
+                </div>
+                <div class="project-item">
+                    <h3>sEMG Gesture-Controlled Toy Car</h3>
+                    <p>Signal Processing, Machine Learning • March 2024 - Present</p>
+                    <ul>
+                        <li>Developed a wearable system using surface electromyography (sEMG) to control a toy car with hand gestures—no remotes or screen interfaces required</li>
+                        <li>Recorded muscle activity via a Mindrove sEMG sensor and processed signals in real time through a five-stage pipeline: acquisition, filtering, feature extraction, classification, and command mapping</li>
+                        <li>Used a 4-channel 500 Hz signal, applied a 4th-order Butterworth bandpass filter (10–200 Hz), and a notch filter at 60 Hz to clean noise and preserve critical signal features</li>
+                        <li>Extracted time/frequency domain features (e.g., MAV, FFT) and classified gestures using K-Nearest Neighbors (KNN), achieving ~98% accuracy on three gestures (rest, clench, Spiderman)</li>
+                    </ul>
+                </div>
+                <div class="project-item">
+                    <h3>AutoBots: RL-Based Autonomous Driving</h3>
+                    <p>Reinforcement Learning, CARLA, DonkeySim • January - March 2025</p>
+                    <ul>
+                        <li>Trained self-driving agents using Reinforcement Learning (RL) on two platforms: CARLA (urban navigation) and DonkeySim (track-based circuits)</li>
+                        <li>Used LiDAR as the primary sensor for robust, light-invariant spatial perception; processed point cloud into 18D state vectors combining sector-wise distances and waypoint metadata</li>
+                        <li>Implemented Proximal Policy Optimization (PPO) and Actor-Critic methods for continuous action control (steering, throttle, brake), using custom neural networks for actor-critic separation</li>
+                        <li>Designed and iteratively refined reward functions to optimize navigation performance, emphasizing collision avoidance, lane following, waypoint tracking, and speed regulation</li>
+                        <li>Results evaluated on metrics like cumulative reward, episode length, distance traveled, and collision rate</li>
+                        <li>Explored implications for industrial logistics, real-world deployment, and ethical considerations such as safety, bias, transparency, and sim-to-real transfer</li>
+                    </ul>
+                </div>
+                <div class="project-item">
+                    <h3>Comparative ML Model Analysis</h3>
+                    <p>Machine Learning • October 2024 - January 2025</p>
+                    <ul>
+                        <li>Compared ANN, XGBoost, SVM, and Random Forest on multiple datasets</li>
+                        <li>Used SMOTE, encoding, and hyperparameter tuning for evaluation</li>
+                    </ul>
+                </div>
+                <div class="project-item">
+                    <h3>NLP Sentiment Analysis: BERT vs. SVM</h3>
+                    <p>Natural Language Processing • August 2022 - January 2023</p>
+                    <ul>
+                        <li>Implemented sentiment classifiers in TensorFlow</li>
+                        <li>Authored a 5,000-word paper comparing model performance</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         <section id="skills">
             <div class="container">
-                <h2>Technical Skills</h2>
+                <h2>🛠 Technical Skills</h2>
                 <div class="skills-grid">
                     <div class="skill-category">
-                        <h3>Languages</h3>
-                        <div class="skill-item">Java</div>
+                        <h3>Programming & Languages</h3>
                         <div class="skill-item">Python</div>
+                        <div class="skill-item">Java</div>
                         <div class="skill-item">C#</div>
                         <div class="skill-item">SQL</div>
+                        <div class="skill-item">JavaScript (basic)</div>
+                        <div class="skill-item">HTML/CSS (basic)</div>
                     </div>
                     <div class="skill-category">
-                        <h3>Developer Tools</h3>
-                        <div class="skill-item">Git</div>
-                        <div class="skill-item">Carla</div>
-                        <div class="skill-item">TensorFlow</div>
-                        <div class="skill-item">Azure</div>
-                        <div class="skill-item">JSON</div>
-                        <div class="skill-item">Tableau</div>
-                        <div class="skill-item">MS Office</div>
-                    </div>
-                    <div class="skill-category">
-                        <h3>Libraries</h3>
+                        <h3>Libraries & Frameworks</h3>
+                        <div class="skill-item">NumPy</div>
                         <div class="skill-item">Pandas</div>
-                        <div class="skill-item">Numpy</div>
-                        <div class="skill-item">Seaborn</div>
-                        <div class="skill-item">Matplotlib</div>
-                        <div class="skill-item">Scikit-learn</div>
+                        <div class="skill-item">scikit-learn</div>
                         <div class="skill-item">TensorFlow</div>
+                        <div class="skill-item">Keras</div>
+                        <div class="skill-item">Matplotlib</div>
+                        <div class="skill-item">Seaborn</div>
+                        <div class="skill-item">OpenCV</div>
+                        <div class="skill-item">XGBoost</div>
+                        <div class="skill-item">PyTorch (basic)</div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Tools & Platforms</h3>
+                        <div class="skill-item">Git</div>
+                        <div class="skill-item">VS Code</div>
+                        <div class="skill-item">Azure</div>
+                        <div class="skill-item">CARLA</div>
+                        <div class="skill-item">DonkeySim</div>
+                        <div class="skill-item">Tableau</div>
+                        <div class="skill-item">Jupyter</div>
+                        <div class="skill-item">MS Office</div>
+                        <div class="skill-item">JSON</div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Core Competencies</h3>
+                        <div class="skill-item">Machine Learning</div>
+                        <div class="skill-item">Signal & Image Processing</div>
+                        <div class="skill-item">Data Engineering</div>
+                        <div class="skill-item">Prompt Engineering</div>
+                        <div class="skill-item">Object Detection</div>
                     </div>
                 </div>
             </div>
