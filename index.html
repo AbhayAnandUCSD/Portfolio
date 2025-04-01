@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* Reset and base styles */
-        :root {
+        /* Theme variables */
+        :root[data-theme="light"] {
             --primary-color: #2563eb;
             --primary-dark: #1d4ed8;
             --secondary-color: #1e293b;
@@ -21,11 +21,58 @@
             --gray-100: #f1f5f9;
             --gray-200: #e2e8f0;
             --gray-300: #cbd5e1;
+            --card-bg: var(--white);
+            --header-gradient-start: var(--secondary-color);
+            --header-gradient-end: var(--primary-color);
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
         }
 
+        :root[data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --primary-dark: #3b82f6;
+            --secondary-color: #1e293b;
+            --text-color: #e2e8f0;
+            --light-bg: #0f172a;
+            --white: #1e293b;
+            --gray-100: #1e293b;
+            --gray-200: #334155;
+            --gray-300: #475569;
+            --card-bg: #1e293b;
+            --header-gradient-start: #020617;
+            --header-gradient-end: #1e293b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
@@ -41,7 +88,7 @@
 
         /* Header styles */
         header {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
             color: var(--white);
             padding: 4rem 0;
             text-align: center;
@@ -69,7 +116,7 @@
 
         /* Navigation */
         nav {
-            background-color: var(--white);
+            background-color: var(--card-bg);
             padding: 1rem 0;
             position: sticky;
             top: 0;
@@ -151,7 +198,7 @@
         .experience-item, .project-item {
             margin-bottom: 2rem;
             padding: 2rem;
-            background: var(--white);
+            background: var(--card-bg);
             border-radius: 12px;
             box-shadow: var(--shadow-md);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -192,7 +239,7 @@
         }
 
         .skill-category {
-            background: var(--white);
+            background: var(--card-bg);
             padding: 2rem;
             border-radius: 12px;
             box-shadow: var(--shadow-md);
@@ -212,11 +259,12 @@
             margin-bottom: 0.75rem;
             font-weight: 500;
             transition: all 0.3s ease;
+            color: var(--text-color);
         }
 
         .skill-item:hover {
             background: var(--primary-color);
-            color: var(--white);
+            color: #ffffff;
             transform: translateY(-2px);
         }
 
@@ -224,7 +272,7 @@
         .contact-form {
             max-width: 600px;
             margin: 0 auto;
-            background: var(--white);
+            background: var(--card-bg);
             padding: 2rem;
             border-radius: 12px;
             box-shadow: var(--shadow-md);
@@ -248,12 +296,13 @@
             border-radius: 6px;
             font-size: 1rem;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--card-bg);
+            color: var(--text-color);
         }
 
         input:focus, textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         button {
@@ -361,7 +410,7 @@
             position: relative;
             margin-bottom: 3rem;
             width: 45%;
-            background: var(--secondary-color);
+            background: var(--card-bg);
             padding: 2rem;
             border-radius: 12px;
             color: var(--white);
@@ -477,6 +526,17 @@
 
         .social-button i {
             font-size: 1.2rem;
+        }
+
+        /* Dark mode specific adjustments */
+        [data-theme="dark"] .experience-item,
+        [data-theme="dark"] .project-item,
+        [data-theme="dark"] .skill-category {
+            border: 1px solid var(--gray-300);
+        }
+
+        [data-theme="dark"] .education-item {
+            background: var(--card-bg);
         }
     </style>
 </head>
@@ -715,5 +775,34 @@
             <p>&copy; 2024 Abhay Anand. All rights reserved.</p>
         </div>
     </footer>
+
+    <button class="theme-toggle" aria-label="Toggle theme">
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+    </script>
 </body>
 </html> 
