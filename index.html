@@ -92,11 +92,21 @@
         /* Header styles */
         header {
             background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
-            color: var(--white);
             padding: 4rem 0;
             text-align: center;
             position: relative;
             overflow: hidden;
+        }
+
+        header h1 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
         }
 
         header::before {
@@ -550,12 +560,21 @@
             color: white;
         }
 
+        .social-button.gmail {
+            background-color: #EA4335;
+            color: white;
+        }
+
         .social-button.linkedin:hover {
             background-color: #006396;
         }
 
         .social-button.github:hover {
             background-color: #24292e;
+        }
+
+        .social-button.gmail:hover {
+            background-color: #d33426;
         }
 
         .social-button i {
@@ -630,18 +649,19 @@
         <div class="container">
             <h1>Abhay Anand</h1>
             <p>Data Science & Machine Learning Student</p>
-            <div class="contact-info">
-                <p>a7anand@ucsd.edu</p>
-                <div class="social-buttons">
-                    <a href="https://linkedin.com/in/abhayanand100" target="_blank" class="social-button linkedin">
-                        <i class="fab fa-linkedin"></i>
-                        <span>LinkedIn</span>
-                    </a>
-                    <a href="https://github.com/abhayananducsd" target="_blank" class="social-button github">
-                        <i class="fab fa-github"></i>
-                        <span>GitHub</span>
-                    </a>
-                </div>
+            <div class="social-buttons">
+                <a href="mailto:a7anand@ucsd.edu" class="social-button gmail">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </a>
+                <a href="https://linkedin.com/in/abhayanand100" target="_blank" class="social-button linkedin">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/abhayananducsd" target="_blank" class="social-button github">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
             </div>
         </div>
     </header>
