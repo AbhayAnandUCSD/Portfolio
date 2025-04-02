@@ -89,96 +89,64 @@
             background-color: var(--light-bg);
         }
 
-        /* Updated Header Styles */
-        .header {
-            position: fixed;
+        /* Header styles */
+        header {
+            background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            background: transparent;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="rgba(255,255,255,0.05)"/></svg>');
+            opacity: 0.1;
         }
 
-        .logo-box {
-            border: 2px solid var(--text-color);
-            padding: 0.5rem;
-            font-weight: bold;
-            font-size: 1.2rem;
-            text-decoration: none;
-            color: var(--text-color);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 1rem;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
             position: relative;
-            padding-bottom: 0.25rem;
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #00ff9d;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+        /* Navigation */
+        nav {
+            background-color: var(--card-bg);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
         }
 
-        .nav-links a:hover::after {
-            transform: scaleX(1);
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
         }
 
-        .contact-button {
-            border: 2px solid var(--text-color);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+        nav a {
+            color: var(--secondary-color);
             text-decoration: none;
-            color: var(--text-color);
             font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
             transition: all 0.3s ease;
         }
 
-        .contact-button:hover {
-            background: var(--text-color);
-            color: var(--card-bg);
-        }
-
-        /* Hide the menu toggle by default */
-        .menu-toggle {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-            .nav-links {
-                display: none;
-            }
-            .nav-links.active {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--card-bg);
-                padding: 1rem;
-            }
+        nav a:hover {
+            color: var(--primary-color);
+            background-color: var(--gray-100);
         }
 
         /* Section styles */
@@ -627,20 +595,37 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <a href="#" class="logo-box">AA</a>
-        <nav class="nav-links">
-            <a href="#projects">Projects</a>
-            <a href="#extras">Extras</a>
-            <a href="#media">Media</a>
-        </nav>
-        <a href="#contact" class="contact-button">Contact Me</a>
-        <button class="menu-toggle" aria-label="Toggle navigation menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+    <header>
+        <div class="container">
+            <h1>Abhay Anand</h1>
+            <p>Data Science & Machine Learning Student</p>
+            <div class="contact-info">
+                <p>a7anand@ucsd.edu</p>
+                <div class="social-buttons">
+                    <a href="https://linkedin.com/in/abhayanand100" target="_blank" class="social-button linkedin">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/abhayananducsd" target="_blank" class="social-button github">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <main>
         <section id="about">
