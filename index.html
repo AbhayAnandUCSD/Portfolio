@@ -497,6 +497,22 @@
             color: var(--text-primary);
         }
 
+        /* Mobile styles for education timeline */
+        @media (max-width: 768px) {
+            .education-timeline::before {
+                left: 30px;
+            }
+            
+            .education-item {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+            }
+            
+            .education-item::before {
+                left: -45px !important;
+            }
+        }
+
         /* Social Media Buttons */
         .social-buttons {
             display: flex;
