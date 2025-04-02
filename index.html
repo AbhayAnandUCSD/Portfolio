@@ -642,6 +642,64 @@
             color: var(--primary-color);
             background-color: var(--gray-200);
         }
+
+        /* Profile Image styles */
+        .profile-image-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            margin: auto;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 8px;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .profile-image-container {
+                width: 150px;
+                height: 150px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -682,7 +740,10 @@
         <section id="about">
             <div class="container">
                 <h2>About Me</h2>
-                <p>I am a Data Science and Machine Learning specialist with a strong foundation in both theoretical and practical applications of AI. Currently pursuing my Master's in Data Science at UC San Diego, I combine academic excellence with hands-on experience in developing innovative solutions using cutting-edge technologies.</p>
+                <div class="profile-image-container">
+                    <img src="profile.jpg" alt="Abhay Anand" class="profile-image">
+                </div>
+                <p>I am an aspiring data scientist who enjoys connecting the dots: be it ideas from different disciplines, people from different teams, or applications from different industries. I have strong technical skills and an academic background in computers, statistics, and machine learning. Currently pursuing my Master's in Data Science at UC San Diego, I combine academic excellence with hands-on experience in developing innovative solutions using cutting-edge technologies.</p>
             </div>
         </section>
 
@@ -875,6 +936,11 @@
         </section>
     </main>
 
+    <!-- Modal for expanded image -->
+    <div class="modal" id="imageModal">
+        <img src="profile.jpg" alt="Abhay Anand" class="modal-content">
+    </div>
+
     <footer>
         <div class="container">
             <p>&copy; 2024 Abhay Anand. All rights reserved.</p>
@@ -908,6 +974,18 @@
         function updateThemeIcon(theme) {
             themeIcon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
         }
+
+        // Image modal functionality
+        const profileImage = document.querySelector('.profile-image-container');
+        const modal = document.getElementById('imageModal');
+
+        profileImage.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+
+        modal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
     </script>
 </body>
 </html> 
