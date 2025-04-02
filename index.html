@@ -32,16 +32,19 @@
         :root[data-theme="dark"] {
             --primary-color: #60a5fa;
             --primary-dark: #3b82f6;
-            --secondary-color: #1e293b;
-            --text-color: #e2e8f0;
+            --secondary-color: #e2e8f0;
+            --text-color: #f1f5f9;
             --light-bg: #0f172a;
             --white: #1e293b;
             --gray-100: #1e293b;
             --gray-200: #334155;
-            --gray-300: #475569;
+            --gray-300: #94a3b8;
             --card-bg: #1e293b;
             --header-gradient-start: #020617;
             --header-gradient-end: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
@@ -528,15 +531,66 @@
             font-size: 1.2rem;
         }
 
-        /* Dark mode specific adjustments */
+        /* Update dark mode specific styles */
         [data-theme="dark"] .experience-item,
         [data-theme="dark"] .project-item,
-        [data-theme="dark"] .skill-category {
+        [data-theme="dark"] .skill-category,
+        [data-theme="dark"] .education-item {
             border: 1px solid var(--gray-300);
+            color: var(--text-primary);
         }
 
-        [data-theme="dark"] .education-item {
-            background: var(--card-bg);
+        [data-theme="dark"] .experience-item h3,
+        [data-theme="dark"] .project-item h3,
+        [data-theme="dark"] .skill-category h3,
+        [data-theme="dark"] .education-item h3 {
+            color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .experience-item p,
+        [data-theme="dark"] .project-item p,
+        [data-theme="dark"] .education-item .school {
+            color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .experience-item li,
+        [data-theme="dark"] .project-item li {
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .skill-item {
+            color: var(--text-primary);
+            background: var(--gray-200);
+        }
+
+        [data-theme="dark"] .skill-item:hover {
+            background: var(--primary-color);
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] h2 {
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] label {
+            color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .education-item .coursework {
+            color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .timeline-header {
+            color: var(--text-tertiary);
+        }
+
+        [data-theme="dark"] nav a {
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] nav a:hover {
+            color: var(--primary-color);
+            background-color: var(--gray-200);
         }
     </style>
 </head>
