@@ -761,17 +761,47 @@
             overflow: hidden;
             border: 4px solid var(--primary-color);
             box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image-container:hover {
+            transform: scale(1.05);
         }
 
         .profile-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center;
+            object-position: 30% center;
         }
 
         .about-text {
             flex: 1;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .modal.active {
+            display: flex;
         }
 
         @media (max-width: 768px) {
@@ -788,6 +818,11 @@
     </style>
 </head>
 <body>
+    <!-- Add modal div at the start of body -->
+    <div class="modal" id="imageModal">
+        <img src="https://raw.githubusercontent.com/AbhayAnandUCSD/Portfolio/main/profile.JPG" alt="Abhay Anand" class="modal-content">
+    </div>
+
     <header>
         <div class="container">
             <h1>Abhay Anand</h1>
@@ -1106,6 +1141,27 @@
             if (!e.target.closest('nav') && navMenu.classList.contains('active')) {
                 navToggle.classList.remove('active');
                 navMenu.classList.remove('active');
+            }
+        });
+
+        // Image Modal functionality
+        const modal = document.getElementById('imageModal');
+        const profileImageContainer = document.querySelector('.profile-image-container');
+
+        profileImageContainer.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Close modal with escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
             }
         });
     </script>
