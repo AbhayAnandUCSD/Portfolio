@@ -448,6 +448,29 @@
             border-radius: 12px;
             box-shadow: var(--shadow-md);
             border: 1px solid var(--gray-200);
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .education-logo {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--primary-color);
+            background: white;
+            padding: 5px;
+        }
+
+        .education-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .education-content {
+            flex: 1;
         }
 
         .education-item:nth-child(odd) {
@@ -508,25 +531,6 @@
             color: var(--text-color);
         }
 
-        /* Dark mode specific education styles */
-        [data-theme="dark"] .education-item {
-            background: var(--card-bg);
-            border-color: var(--gray-300);
-        }
-
-        [data-theme="dark"] .education-item h3,
-        [data-theme="dark"] .education-item .school,
-        [data-theme="dark"] .education-item .status,
-        [data-theme="dark"] .education-item .details,
-        [data-theme="dark"] .education-item .coursework,
-        [data-theme="dark"] .education-item .coursework strong {
-            color: var(--text-primary);
-        }
-
-        [data-theme="dark"] .timeline-header {
-            color: var(--text-primary);
-        }
-
         /* Mobile styles for education timeline */
         @media (max-width: 768px) {
             .education-timeline::before {
@@ -536,10 +540,17 @@
             .education-item {
                 width: calc(100% - 60px);
                 margin-left: 60px !important;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
             
             .education-item::before {
                 left: -45px !important;
+            }
+
+            .education-logo {
+                margin-bottom: 1rem;
             }
         }
 
@@ -901,20 +912,30 @@
                 <h2 class="timeline-header">📚 Education</h2>
                 <div class="education-timeline">
                     <div class="education-item">
-                        <h3>Master's in Data Science</h3>
-                        <div class="school">University of California, San Diego</div>
-                        <div class="date">August 2025 - June 2027</div>
-                        <div class="status">Incoming</div>
+                        <div class="education-logo">
+                            <img src="https://raw.githubusercontent.com/AbhayAnandUCSD/Portfolio/main/ucsd_logo.png" alt="UCSD Logo">
+                        </div>
+                        <div class="education-content">
+                            <h3>Master's in Data Science</h3>
+                            <div class="school">University of California, San Diego</div>
+                            <div class="date">August 2025 - June 2027</div>
+                            <div class="status">Incoming</div>
+                        </div>
                     </div>
                     
                     <div class="education-item">
-                        <h3>B.S. in Cognitive Science</h3>
-                        <div class="school">University of California, San Diego</div>
-                        <div class="date">August 2022 - August 2025</div>
-                        <div class="details">Machine Learning Specialization with Minor in Computer Science</div>
-                        <div class="coursework">
-                            <strong>Relevant Coursework:</strong><br>
-                            Data Structures and OO Design, Supervised Machine Learning, AI Algorithms, Neural Networks and Deep Learning, Signal Processing
+                        <div class="education-logo">
+                            <img src="https://raw.githubusercontent.com/AbhayAnandUCSD/Portfolio/main/ucsd_logo.png" alt="UCSD Logo">
+                        </div>
+                        <div class="education-content">
+                            <h3>B.S. in Cognitive Science</h3>
+                            <div class="school">University of California, San Diego</div>
+                            <div class="date">August 2022 - August 2025</div>
+                            <div class="details">Machine Learning Specialization with Minor in Computer Science</div>
+                            <div class="coursework">
+                                <strong>Relevant Coursework:</strong><br>
+                                Data Structures and OO Design, Supervised Machine Learning, AI Algorithms, Neural Networks and Deep Learning, Signal Processing
+                            </div>
                         </div>
                     </div>
                 </div>
