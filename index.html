@@ -219,6 +219,50 @@
             border: 1px solid var(--gray-200);
         }
 
+        /* Company Logo Styles */
+        .experience-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: white;
+            padding: 8px;
+            border: 1px solid var(--gray-200);
+            flex-shrink: 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .company-logo:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
+        .experience-title {
+            flex: 1;
+        }
+
+        .experience-title h3 {
+            margin-bottom: 0.25rem;
+        }
+
+        .experience-title p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .company-logo {
+            background: var(--gray-100);
+            border-color: var(--gray-300);
+        }
+
         .experience-item:hover, .project-item:hover {
             transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
@@ -411,6 +455,22 @@
 
             .skills-grid {
                 grid-template-columns: 1fr;
+            }
+
+            /* Mobile experience header adjustments */
+            .experience-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+            }
+
+            .company-logo {
+                width: 60px;
+                height: 60px;
+            }
+
+            .experience-title h3 {
+                font-size: 1.25rem;
             }
         }
 
@@ -853,7 +913,7 @@
 <body>
     <!-- Add modal div at the start of body -->
     <div class="modal" id="imageModal">
-        <img src="Zoom.jpeg" alt="Abhay Anand" class="modal-content">
+        <img src="LinkedIn.jpeg" alt="Abhay Anand" class="modal-content">
     </div>
 
     <header>
@@ -900,7 +960,7 @@
                 <h2>About Me</h2>
                 <div class="about-container">
                     <div class="profile-image-container">
-                        <img src="Zoom.jpeg" alt="Abhay Anand" class="profile-image">
+                        <img src="LinkedIn.jpeg" alt="Abhay Anand" class="profile-image">
                     </div>
                     <div class="about-text">
                         <p>I am an aspiring data scientist who enjoys connecting the dots: be it ideas from different disciplines, people from different teams, or applications from different industries. I have strong technical skills and an academic background in computers, statistics, and machine learning. Currently pursuing my Master's in Data Science at UC San Diego, I combine academic excellence with hands-on experience in developing innovative solutions using cutting-edge technologies.</p>
@@ -915,7 +975,7 @@
                 <div class="education-timeline">
                     <div class="education-item">
                         <div class="education-logo">
-                            <img src="https://raw.githubusercontent.com/AbhayAnandUCSD/Portfolio/main/ucsd_logo.png" alt="UCSD Logo">
+                            <img src="assets/logos/ucsd_logo.png" alt="UCSD Logo">
                         </div>
                         <div class="education-content">
                             <h3>Master's in Data Science</h3>
@@ -927,7 +987,7 @@
                     
                     <div class="education-item">
                         <div class="education-logo">
-                            <img src="https://raw.githubusercontent.com/AbhayAnandUCSD/Portfolio/main/ucsd_logo.png" alt="UCSD Logo">
+                            <img src="assets/logos/ucsd_logo.png" alt="UCSD Logo">
                         </div>
                         <div class="education-content">
                             <h3>B.S. in Cognitive Science</h3>
@@ -948,39 +1008,77 @@
             <div class="container">
                 <h2>Experience</h2>
                 <div class="experience-item">
-                    <h3>Computer Vision Researcher</h3>
-                    <p>mlPC Lab UC San Diego • San Diego • May 2025 - Present</p>
+                    <div class="experience-header">
+                        <img src="assets/logos/tesla-logo.png" alt="Tesla Logo" class="company-logo">
+                        <div class="experience-title">
+                            <h3>Intern, Machine Learning Engineer (Incoming)</h3>
+                            <p>Tesla • Palo Alto, CA • Sept. 2025 - Present</p>
+                        </div>
+                    </div>
                     <ul>
-                        <li>Researching diffusion models, specifically exploring their applications in generative modeling, under the supervision of <a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Professor Zhuowen Tu</a></li>
+                        <li>Designing ML pipeline for Anomaly Detection on energy data with Isolation Forest.</li>
                     </ul>
                 </div>
                 <div class="experience-item">
-                    <h3>Software/Data Engineering Intern</h3>
-                    <p>Ivanti • San Jose • June 2024 - August 2024</p>
+                    <div class="experience-header">
+                        <img src="assets/logos/HDSI-Logo.png" alt="HDSI UC San Diego Logo" class="company-logo">
+                        <div class="experience-title">
+                            <h3>Computer Vision Researcher</h3>
+                            <p>Machine Learning Perception and Computation Lab • San Diego, CA • May 2025 - Present</p>
+                        </div>
+                    </div>
+                    <ul>
+                        <li>Developing a Vision–Language model for counting guided image generation using a YOLOCount and Stable Diffusion backbone, trained on LVIS and COCO (164K+ images) datasets</li>
+                        <li>Designing a multimodal encoder for a layout-image-text input with an LLM backbone, focusing on using layout to aid with precise and position based image generation compared to current SOTA models</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <img src="assets/logos/ivanti_logo.jpeg" alt="Ivanti Logo" class="company-logo">
+                        <div class="experience-title">
+                            <h3>Software/Data Engineering Intern</h3>
+                            <p>Ivanti • San Jose • June 2024 - August 2024</p>
+                        </div>
+                    </div>
                     <ul>
                         <li>Developed GenAI-driven automation tester for Neurons AI (C#, JSON, Excel, SQL)</li>
                         <li>Built an NLP-based Dynamic Expression Generator using Azure GPT-4, RAG, and ReACT</li>
                     </ul>
                 </div>
                 <div class="experience-item">
-                    <h3>Instructional Assistant</h3>
-                    <p>Cognitive and Data Science Dept, UCSD • San Diego • March 2024 - Present</p>
+                    <div class="experience-header">
+                        <img src="assets/logos/ucsd_logo.png" alt="UCSD Logo" class="company-logo">
+                        <div class="experience-title">
+                            <h3>Instructional Assistant</h3>
+                            <p>Cognitive and Data Science Dept, UCSD • San Diego • March 2024 - Present</p>
+                        </div>
+                    </div>
                     <ul>
                         <li>Tutored 900+ students in Python and data science under Prof. Voytek and Prof. Ellis</li>
                         <li>Led discussions, grading, and held office hours</li>
                     </ul>
                 </div>
                 <div class="experience-item">
-                    <h3>VP of Finance</h3>
-                    <p>CSForEach Club, UCSD • San Diego • September 2022 - June 2024</p>
+                    <div class="experience-header">
+                        <img src="assets/logos/ucsd_logo.png" alt="UCSD Logo" class="company-logo">
+                        <div class="experience-title">
+                            <h3>VP of Finance</h3>
+                            <p>CSForEach Club, UCSD • San Diego • September 2022 - June 2024</p>
+                        </div>
+                    </div>
                     <ul>
                         <li>Managed club budget and sponsor relationships</li>
                         <li>Supported K–12 outreach in CS, data science, and AI</li>
                     </ul>
                 </div>
                 <div class="experience-item">
-                    <h3>Software Engineering Intern</h3>
-                    <p>HCLTech • Remote • June 2023 - September 2023</p>
+                    <div class="experience-header">
+                        <img src="assets/logos/hcltech-logo.jpg" alt="HCLTech Logo" class="company-logo">
+                        <div class="experience-title">
+                            <h3>Software Engineering Intern</h3>
+                            <p>HCLTech • Remote • June 2023 - September 2023</p>
+                        </div>
+                    </div>
                     <ul>
                         <li>Worked with product engineering team analyzing security and anomaly datasets</li>
                         <li>Performed EDA and data visualization to extract insights</li>
