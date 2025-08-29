@@ -639,11 +639,12 @@
         .social-button {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
             background-color: var(--white);
             color: var(--secondary-color);
-            border-radius: 8px;
+            border-radius: 50%;
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
@@ -651,7 +652,7 @@
         }
 
         .social-button:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.1);
             box-shadow: var(--shadow-md);
         }
 
@@ -683,7 +684,7 @@
         }
 
         .social-button i {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
         }
 
         /* Update dark mode specific styles */
@@ -785,15 +786,17 @@
             right: 1rem;
             top: 50%;
             transform: translateY(-50%);
+            z-index: 1001;
         }
 
         .nav-toggle span {
             display: block;
             width: 25px;
-            height: 2px;
+            height: 3px;
             background-color: var(--text-color);
-            margin: 5px 0;
+            margin: 6px 0;
             transition: all 0.3s ease;
+            border-radius: 2px;
         }
 
         @media (max-width: 768px) {
@@ -813,9 +816,10 @@
                 right: 0;
                 background: var(--card-bg);
                 flex-direction: column;
-                padding: 1rem;
-                box-shadow: var(--shadow-md);
+                padding: 1.5rem;
+                box-shadow: var(--shadow-lg);
                 border-top: 1px solid var(--gray-200);
+                border-radius: 0 0 12px 12px;
             }
 
             nav ul.active {
@@ -825,17 +829,20 @@
             nav li {
                 width: 100%;
                 text-align: center;
+                margin-bottom: 0.5rem;
             }
 
             nav a {
                 display: block;
-                padding: 0.75rem;
+                padding: 1rem;
                 width: 100%;
+                border-radius: 8px;
+                font-weight: 600;
             }
 
             /* Hamburger menu animation */
             .nav-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
+                transform: rotate(45deg) translate(6px, 6px);
             }
 
             .nav-toggle.active span:nth-child(2) {
@@ -843,7 +850,7 @@
             }
 
             .nav-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(7px, -7px);
+                transform: rotate(-45deg) translate(6px, -6px);
             }
         }
 
@@ -936,15 +943,12 @@
             <div class="social-buttons">
                 <a href="mailto:a7anand@ucsd.edu" class="social-button gmail">
                     <i class="fas fa-envelope"></i>
-                    <span>Email</span>
                 </a>
                 <a href="https://linkedin.com/in/abhay-an" target="_blank" class="social-button linkedin">
                     <i class="fab fa-linkedin"></i>
-                    <span>LinkedIn</span>
                 </a>
                 <a href="https://github.com/abhayananducsd" target="_blank" class="social-button github">
                     <i class="fab fa-github"></i>
-                    <span>GitHub</span>
                 </a>
             </div>
         </div>
