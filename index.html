@@ -93,7 +93,7 @@
         /* Header styles */
         header {
             background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
-            padding: 2.5rem 0;
+            padding: 3.5rem 0;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -651,40 +651,69 @@
             border: 2px solid transparent;
         }
 
-        .social-button:hover {
+        .social-button-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--white);
+            color: var(--secondary-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .social-button:hover,
+        .social-button-text:hover {
             transform: translateY(-2px) scale(1.1);
             box-shadow: var(--shadow-md);
         }
 
-        .social-button.linkedin {
+        .social-button.linkedin,
+        .social-button-text.linkedin {
             background-color: #0077b5;
             color: white;
         }
 
-        .social-button.github {
+        .social-button.github,
+        .social-button-text.github {
             background-color: #333;
             color: white;
         }
 
-        .social-button.gmail {
+        .social-button.gmail,
+        .social-button-text.gmail {
             background-color: #EA4335;
             color: white;
         }
 
-        .social-button.linkedin:hover {
+        .social-button.linkedin:hover,
+        .social-button-text.linkedin:hover {
             background-color: #006396;
         }
 
-        .social-button.github:hover {
+        .social-button.github:hover,
+        .social-button-text.github:hover {
             background-color: #24292e;
         }
 
-        .social-button.gmail:hover {
+        .social-button.gmail:hover,
+        .social-button-text.gmail:hover {
             background-color: #d33426;
         }
 
         .social-button i {
             font-size: 1.5rem;
+        }
+
+        .social-button-text i {
+            font-size: 1.2rem;
+        }
+
+        .mobile-only {
+            display: none;
         }
 
         /* Update dark mode specific styles */
@@ -813,6 +842,18 @@
         }
 
         @media (max-width: 768px) {
+            header {
+                padding: 2.5rem 0;
+            }
+
+            .social-button-text {
+                display: none;
+            }
+
+            .mobile-only {
+                display: inline-flex;
+            }
+
             nav ul {
                 position: fixed;
                 top: 0;
@@ -939,13 +980,26 @@
             <h1>Abhay Anand</h1>
             <p>Data Science & Machine Learning Student</p>
             <div class="social-buttons">
-                <a href="mailto:a7anand@ucsd.edu" class="social-button gmail">
+                <a href="mailto:a7anand@ucsd.edu" class="social-button-text gmail">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </a>
+                <a href="https://linkedin.com/in/abhay-an" target="_blank" class="social-button-text linkedin">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/abhayananducsd" target="_blank" class="social-button-text github">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <!-- Mobile-only social buttons -->
+                <a href="mailto:a7anand@ucsd.edu" class="social-button gmail mobile-only">
                     <i class="fas fa-envelope"></i>
                 </a>
-                <a href="https://linkedin.com/in/abhay-an" target="_blank" class="social-button linkedin">
+                <a href="https://linkedin.com/in/abhay-an" target="_blank" class="social-button linkedin mobile-only">
                     <i class="fab fa-linkedin"></i>
                 </a>
-                <a href="https://github.com/abhayananducsd" target="_blank" class="social-button github">
+                <a href="https://github.com/abhayananducsd" target="_blank" class="social-button github mobile-only">
                     <i class="fab fa-github"></i>
                 </a>
             </div>
