@@ -254,6 +254,13 @@
         white-space: nowrap;
       }
 
+      /* In section view on mobile: keep name + icons in one row, aligned right with nav */
+      .section-view .hero-row {
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
       nav {
         flex-direction: column;
         align-items: flex-end;
