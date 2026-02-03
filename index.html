@@ -236,12 +236,22 @@
 
     @media (max-width: 720px) {
       .top {
-        align-items: flex-end;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        flex: 1;
+        min-width: 0;
       }
 
       .hero-row {
         flex-direction: column;
-        align-items: flex-end;
+        align-items: flex-start;
+      }
+
+      .hero h1 {
+        white-space: nowrap;
       }
 
       nav {
