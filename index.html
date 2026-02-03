@@ -227,7 +227,8 @@
     }
 
     .section-view .hero-row {
-      flex-direction: row-reverse;
+      flex-direction: column-reverse;
+      align-items: flex-start;
     }
 
     .section-view .hero p {
@@ -254,11 +255,10 @@
         white-space: nowrap;
       }
 
-      /* In section view on mobile: keep name + icons in one row, aligned right with nav */
+      /* In section view on mobile: name on top, icons below, aligned right with nav */
       .section-view .hero-row {
-        flex-direction: row-reverse;
-        align-items: center;
-        justify-content: flex-end;
+        flex-direction: column-reverse;
+        align-items: flex-end;
       }
 
       nav {
