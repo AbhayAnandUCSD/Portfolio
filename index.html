@@ -1,1434 +1,450 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Professional portfolio of Abhay Anand - Data Science and Machine Learning specialist with expertise in AI, ML, and software development.">
-    <title>Abhay Anand | Data Science & Machine Learning Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script defer src="/_vercel/insights/script.js"></script>
-    <style>
-        /* Theme variables */
-        :root[data-theme="light"] {
-            --primary-color: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary-color: #1e293b;
-            --text-color: #334155;
-            --light-bg: #f8fafc;
-            --white: #ffffff;
-            --gray-100: #f1f5f9;
-            --gray-200: #e2e8f0;
-            --gray-300: #cbd5e1;
-            --card-bg: var(--white);
-            --header-gradient-start: var(--secondary-color);
-            --header-gradient-end: var(--primary-color);
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-        }
-
-        :root[data-theme="dark"] {
-            --primary-color: #60a5fa;
-            --primary-dark: #3b82f6;
-            --secondary-color: #e2e8f0;
-            --text-color: #f1f5f9;
-            --light-bg: #0f172a;
-            --white: #1e293b;
-            --gray-100: #1e293b;
-            --gray-200: #334155;
-            --gray-300: #94a3b8;
-            --card-bg: #1e293b;
-            --header-gradient-start: #020617;
-            --header-gradient-end: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
-        }
-
-        /* Theme toggle button */
-        .theme-toggle {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--card-bg);
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: var(--shadow-md);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--light-bg);
-        }
-
-        /* Header styles */
-        header {
-            background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
-            padding: 3.5rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header h1 {
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-        }
-
-        header p {
-            color: #ffffff;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="rgba(255,255,255,0.05)"/></svg>');
-            opacity: 0.1;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            position: relative;
-        }
-
-        /* Navigation */
-        nav {
-            background-color: var(--card-bg);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow-sm);
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--primary-color);
-            background-color: var(--gray-100);
-        }
-
-        /* Section styles */
-        section {
-            padding: 5rem 0;
-        }
-
-        section:nth-child(even) {
-            background-color: var(--white);
-        }
-
-        h1, h2, h3 {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.2;
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        h2 {
-            font-size: 2.25rem;
-            font-weight: 600;
-            margin-bottom: 2.5rem;
-            color: var(--secondary-color);
-            position: relative;
-            display: inline-block;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -0.5rem;
-            left: 0;
-            width: 3rem;
-            height: 4px;
-            background-color: var(--primary-color);
-            border-radius: 2px;
-        }
-
-        h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--secondary-color);
-        }
-
-        /* Experience and Projects */
-        .experience-item, .project-item {
-            margin-bottom: 2rem;
-            padding: 2rem;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid var(--gray-200);
-        }
-
-        /* Company Logo Styles */
-        .experience-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .company-logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            object-fit: contain;
-            background: white;
-            padding: 8px;
-            border: 1px solid var(--gray-200);
-            flex-shrink: 0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .company-logo:hover {
-            transform: scale(1.05);
-            box-shadow: var(--shadow-md);
-        }
-
-        .experience-title {
-            flex: 1;
-        }
-
-        .experience-title h3 {
-            margin-bottom: 0.25rem;
-        }
-
-        .experience-title p {
-            margin-bottom: 0;
-            font-size: 0.9rem;
-            color: var(--text-color);
-        }
-
-        [data-theme="dark"] .company-logo {
-            background: var(--gray-100);
-            border-color: var(--gray-300);
-        }
-
-        /* UCSD Logo specific styling for better centering and zoom */
-        .company-logo[src*="ucsd_logo"] {
-            object-fit: cover;
-            object-position: center;
-            transform: scale(1.2);
-        }
-
-        .education-logo img[src*="ucsd_logo"] {
-            object-fit: cover;
-            object-position: center;
-            transform: scale(1.3);
-        }
-
-        .experience-item:hover, .project-item:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .experience-item h3, .project-item h3 {
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .experience-item p, .project-item p {
-            color: var(--text-color);
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-
-        .experience-item ul, .project-item ul {
-            list-style-position: inside;
-            margin-left: 1rem;
-        }
-
-        .experience-item li, .project-item li {
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-
-        /* Skills */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .skill-category h3 {
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .skill-item {
-            background: var(--gray-100);
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            text-align: center;
-            margin-bottom: 0.75rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            justify-content: center;
-        }
-
-        .skill-item:hover {
-            background: var(--primary-color);
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
-
-        .skill-item i {
-            font-size: 1.2rem;
-        }
-
-        [data-theme="dark"] .skill-item {
-            background: var(--gray-200);
-        }
-
-        [data-theme="dark"] .skill-item:hover {
-            background: var(--primary-color);
-            color: #ffffff;
-        }
-
-        /* Contact form */
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--secondary-color);
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--gray-300);
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            background-color: var(--card-bg);
-            color: var(--text-color);
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        button {
-            background-color: var(--primary-color);
-            color: var(--white);
-            padding: 0.875rem 2rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        /* Contact info in header */
-        .contact-info {
-            margin-top: 1.5rem;
-            font-size: 0.95rem;
-        }
-
-        .contact-info a {
-            color: var(--white);
-            text-decoration: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .contact-info a:hover {
-            opacity: 0.9;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--secondary-color);
-            color: var(--white);
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-            }
-
-            .container {
-                padding: 0 1rem;
-            }
-
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            h2 {
-                font-size: 2rem;
-            }
-
-            section {
-                padding: 3rem 0;
-            }
-
-            .experience-item, .project-item {
-                padding: 1.5rem;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            /* Mobile experience header adjustments */
-            .experience-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 0.75rem;
-            }
-
-            .company-logo {
-                width: 60px;
-                height: 60px;
-            }
-
-            .experience-title h3 {
-                font-size: 1.25rem;
-            }
-        }
-
-        /* Education Timeline styles */
-        .education-timeline {
-            position: relative;
-            padding: 2rem 0;
-        }
-
-        .education-timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 100%;
-            background-color: var(--gray-300);
-            top: 0;
-        }
-
-        .timeline-header {
-            text-align: center;
-            margin-bottom: 4rem;
-            color: var(--text-color);
-            font-size: 1.25rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .education-item {
-            position: relative;
-            margin-bottom: 3rem;
-            width: 45%;
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--gray-200);
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .education-logo {
-            width: 80px;
-            height: 80px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid var(--primary-color);
-            background: white;
-            padding: 5px;
-        }
-
-        .education-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .education-content {
-            flex: 1;
-        }
-
-        .education-item:nth-child(odd) {
-            margin-left: auto;
-        }
-
-        .education-item::before {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--card-bg);
-            border: 4px solid var(--primary-color);
-            border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .education-item:nth-child(odd)::before {
-            left: -60px;
-        }
-
-        .education-item:nth-child(even)::before {
-            right: -60px;
-        }
-
-        .education-item h3 {
-            color: var(--text-color);
-            font-size: 1.75rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .education-item .school {
-            color: var(--text-color);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .education-item .date {
-            color: var(--primary-color);
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }
-
-        .education-item .status,
-        .education-item .details {
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .education-item .coursework {
-            color: var(--text-color);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .education-item .coursework strong {
-            color: var(--text-color);
-        }
-
-        /* Mobile styles for education timeline */
-        @media (max-width: 768px) {
-            .education-timeline::before {
-                left: 30px;
-            }
-            
-            .education-item {
-                width: calc(100% - 60px);
-                margin-left: 60px !important;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            
-            .education-item::before {
-                left: -45px !important;
-            }
-
-            .education-logo {
-                margin-bottom: 1rem;
-            }
-        }
-
-        /* Social Media Buttons */
-        .social-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
-
-        .social-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 3rem;
-            height: 3rem;
-            background-color: var(--white);
-            color: var(--secondary-color);
-            border-radius: 50%;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .social-button-text {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background-color: var(--white);
-            color: var(--secondary-color);
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .social-button:hover,
-        .social-button-text:hover {
-            transform: translateY(-2px) scale(1.1);
-            box-shadow: var(--shadow-md);
-        }
-
-        .social-button.linkedin,
-        .social-button-text.linkedin {
-            background-color: #0077b5;
-            color: white;
-        }
-
-        .social-button.github,
-        .social-button-text.github {
-            background-color: #333;
-            color: white;
-        }
-
-        .social-button.gmail,
-        .social-button-text.gmail {
-            background-color: #EA4335;
-            color: white;
-        }
-
-        .social-button.linkedin:hover,
-        .social-button-text.linkedin:hover {
-            background-color: #006396;
-        }
-
-        .social-button.github:hover,
-        .social-button-text.github:hover {
-            background-color: #24292e;
-        }
-
-        .social-button.gmail:hover,
-        .social-button-text.gmail:hover {
-            background-color: #d33426;
-        }
-
-        .social-button i {
-            font-size: 1.5rem;
-        }
-
-        .social-button-text i {
-            font-size: 1.2rem;
-        }
-
-        .mobile-only {
-            display: none;
-        }
-
-        /* Update dark mode specific styles */
-        [data-theme="dark"] .experience-item,
-        [data-theme="dark"] .project-item,
-        [data-theme="dark"] .skill-category,
-        [data-theme="dark"] .education-item {
-            border: 1px solid var(--gray-300);
-            color: var(--text-primary);
-        }
-
-        [data-theme="dark"] .experience-item h3,
-        [data-theme="dark"] .project-item h3,
-        [data-theme="dark"] .skill-category h3,
-        [data-theme="dark"] .education-item h3 {
-            color: var(--primary-color);
-        }
-
-        [data-theme="dark"] .experience-item p,
-        [data-theme="dark"] .project-item p,
-        [data-theme="dark"] .education-item .school {
-            color: var(--text-secondary);
-        }
-
-        [data-theme="dark"] .experience-item li,
-        [data-theme="dark"] .project-item li {
-            color: var(--text-primary);
-        }
-
-        [data-theme="dark"] .skill-item {
-            color: var(--text-primary);
-            background: var(--gray-200);
-        }
-
-        [data-theme="dark"] .skill-item:hover {
-            background: var(--primary-color);
-            color: #ffffff;
-        }
-
-        [data-theme="dark"] h2 {
-            color: var(--text-primary);
-        }
-
-        [data-theme="dark"] label {
-            color: var(--text-secondary);
-        }
-
-        [data-theme="dark"] .education-item .coursework {
-            color: var(--text-secondary);
-        }
-
-        [data-theme="dark"] .timeline-header {
-            color: var(--text-tertiary);
-        }
-
-        [data-theme="dark"] nav a {
-            color: var(--text-primary);
-        }
-
-        [data-theme="dark"] nav a:hover {
-            color: var(--primary-color);
-            background-color: var(--gray-200);
-        }
-
-        /* Add any additional styles below */
-        .project-item h3 a {
-            color: var(--primary-color);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .project-item h3 a:hover {
-            color: var(--primary-dark);
-        }
-
-        .project-item h3 a i {
-            font-size: 0.8em;
-        }
-
-        [data-theme="dark"] .project-item h3 a {
-            color: var(--primary-color);
-        }
-
-        [data-theme="dark"] .project-item h3 a:hover {
-            color: var(--primary-dark);
-        }
-
-        /* Mobile Navigation Styles */
-        .mobile-menu-btn {
-            display: none;
-            flex-direction: column;
-            justify-content: space-around;
-            width: 30px;
-            height: 30px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            z-index: 10;
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .mobile-menu-btn span {
-            width: 100%;
-            height: 3px;
-            background: var(--text-color);
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        /* When active (X animation) */
-        .mobile-menu-btn.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-        .mobile-menu-btn.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .mobile-menu-btn.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 2.5rem 0;
-            }
-
-            .social-button-text {
-                display: none;
-            }
-
-            .mobile-only {
-                display: inline-flex;
-            }
-
-            nav ul {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 250px;
-                height: 100vh;
-                background: var(--card-bg);
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: flex-start;
-                padding: 80px 30px 30px;
-                gap: 20px;
-                transition: right 0.3s ease;
-                box-shadow: var(--shadow-lg);
-                border-left: 1px solid var(--gray-200);
-                z-index: 1000;
-            }
-            
-            nav ul.active {
-                right: 0;
-            }
-            
-            .mobile-menu-btn {
-                display: flex;
-            }
-
-            nav li {
-                width: 100%;
-                text-align: left;
-            }
-
-            nav a {
-                display: block;
-                padding: 0.75rem 0;
-                width: 100%;
-                font-weight: 600;
-            }
-        }
-
-        [data-theme="dark"] .nav-toggle span {
-            background-color: var(--text-color);
-        }
-
-        /* Profile Image Styles */
-        .about-container {
-            display: flex;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .profile-image-container {
-            flex-shrink: 0;
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 4px solid var(--primary-color);
-            box-shadow: var(--shadow-lg);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .profile-image-container:hover {
-            transform: scale(1.05);
-        }
-
-        .profile-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: 0% 0%;
-            transform: scale(1.05);
-        }
-
-        .about-text {
-            flex: 1;
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            max-width: 90%;
-            max-height: 90vh;
-            object-fit: contain;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        @media (max-width: 768px) {
-            .about-container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .profile-image-container {
-                width: 200px;
-                height: 200px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Abhay Anand — Data Science & Machine Learning portfolio." />
+  <title>Abhay Anand — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root[data-theme="light"] {
+      --bg: #f6f1e7;
+      --text: #1f1f1f;
+      --muted: #5b5b5b;
+      --border: #d9d1c6;
+      --link: #1f1f1f;
+      --accent: #c27c4b;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0f1115;
+      --text: #f0ece3;
+      --muted: #b8b2a8;
+      --border: #2a2d34;
+      --link: #f0ece3;
+      --accent: #d19a66;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      letter-spacing: -0.01em;
+    }
+
+    h1, h2, h3 {
+      font-family: "Fraunces", serif;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .hero {
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .hero-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 3vw, 3rem);
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 48ch;
+      margin-bottom: 16px;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.95rem;
+      justify-content: flex-end;
+    }
+
+    .links a {
+      border-bottom-color: var(--accent);
+    }
+
+    .links-compact {
+      display: none;
+      gap: 10px;
+      font-size: 0.95rem;
+    }
+
+    .links-compact a {
+      border-bottom-color: transparent;
+    }
+
+    .links-compact svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+      fill: currentColor;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.9rem;
+      margin-bottom: 40px;
+    }
+
+    section {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    section[hidden] {
+      display: none;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .item {
+      margin-bottom: 18px;
+    }
+
+    .item:last-child {
+      margin-bottom: 0;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    ul {
+      margin-top: 8px;
+      padding-left: 18px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    .intro-text {
+      min-height: 160px;
+      color: var(--muted);
+    }
+
+    .intro-text p {
+      margin-bottom: 1em;
+    }
+
+    .intro-text p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .intro-text .intro-lead {
+      font-weight: 500;
+      color: var(--text);
+      margin-top: 1.25em;
+      margin-bottom: 0.5em;
+    }
+
+    .intro-text ol {
+      margin: 0 0 1em 0;
+      padding-left: 1.5em;
+      list-style: none;
+    }
+
+    .intro-text li {
+      margin-bottom: 0.5em;
+    }
+
+    .projects a {
+      border-bottom-color: var(--accent);
+    }
+
+    .toggle {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+
+    footer {
+      margin-top: 48px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .section-view .links-full {
+      display: none;
+    }
+
+    .section-view .links-compact {
+      display: flex;
+    }
+
+    .section-view .hero p {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      .top {
+        align-items: flex-end;
+      }
+
+      .hero-row {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Add modal div at the start of body -->
-    <div class="modal" id="imageModal">
-        <img src="LinkedinPhoto.jpeg" alt="Abhay Anand" class="modal-content">
+  <main class="wrap">
+    <div class="top">
+      <div class="hero">
+        <div class="hero-row">
+          <div class="links-compact" aria-label="Quick links">
+            <a href="mailto:a7anand@ucsd.edu" aria-label="Email">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3h15A2.5 2.5 0 0 1 22 5.5v13A2.5 2.5 0 0 1 19.5 21h-15A2.5 2.5 0 0 1 2 18.5v-13Zm2.4-.5 7.6 5.7 7.6-5.7H4.4Zm15.6 1.7-7.2 5.4a1 1 0 0 1-1.2 0l-7.2-5.4V18.5c0 .55.45 1 1 1h15c.55 0 1-.45 1-1V6.7Z"/></svg>
+            </a>
+            <a href="https://linkedin.com/in/abhay-an" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 9h4v12H3V9Zm7 0h3.8v1.6h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.8c0-1.38-.03-3.16-1.93-3.16-1.93 0-2.23 1.51-2.23 3.06V21h-4V9Z"/></svg>
+            </a>
+            <a href="https://github.com/abhayananducsd" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.4c.58.1.8-.25.8-.57v-2.1c-3.27.7-3.96-1.4-3.96-1.4-.54-1.38-1.32-1.74-1.32-1.74-1.08-.74.08-.73.08-.73 1.2.08 1.84 1.23 1.84 1.23 1.06 1.82 2.78 1.3 3.46 1 .1-.78.42-1.3.76-1.6-2.6-.3-5.34-1.3-5.34-5.8 0-1.28.46-2.33 1.22-3.15-.12-.3-.53-1.5.12-3.12 0 0 .99-.32 3.25 1.2a11.2 11.2 0 0 1 5.92 0c2.26-1.52 3.24-1.2 3.24-1.2.65 1.62.24 2.82.12 3.12.76.82 1.22 1.87 1.22 3.15 0 4.52-2.74 5.5-5.35 5.79.43.37.82 1.1.82 2.22v3.29c0 .32.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+            </a>
+          </div>
+          <h1><a href="/" id="home-link">Abhay Anand</a></h1>
+        </div>
+        <p>M.S. in Data Science, UC San Diego</p>
+        <div class="links links-full">
+          <a href="mailto:a7anand@ucsd.edu">Email</a>
+          <a href="https://linkedin.com/in/abhay-an" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://github.com/abhayananducsd" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <button class="toggle" id="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+        </div>
+      </div>
     </div>
 
-    <header>
-        <div class="container">
-            <h1>Abhay Anand</h1>
-            <p>Data Science & Machine Learning Student</p>
-            <div class="social-buttons">
-                <a href="mailto:a7anand@ucsd.edu" class="social-button-text gmail">
-                    <i class="fas fa-envelope"></i>
-                    <span>Email</span>
-                </a>
-                <a href="https://linkedin.com/in/abhay-an" target="_blank" class="social-button-text linkedin">
-                    <i class="fab fa-linkedin"></i>
-                    <span>LinkedIn</span>
-                </a>
-                <a href="https://github.com/abhayananducsd" target="_blank" class="social-button-text github">
-                    <i class="fab fa-github"></i>
-                    <span>GitHub</span>
-                </a>
-                <!-- Mobile-only social buttons -->
-                <a href="mailto:a7anand@ucsd.edu" class="social-button gmail mobile-only">
-                    <i class="fas fa-envelope"></i>
-                </a>
-                <a href="https://linkedin.com/in/abhay-an" target="_blank" class="social-button linkedin mobile-only">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="https://github.com/abhayananducsd" target="_blank" class="social-button github mobile-only">
-                    <i class="fab fa-github"></i>
-                </a>
-            </div>
-        </div>
-    </header>
-
     <nav>
-        <div class="container">
-            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle mobile menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
+      <a href="#about" data-target="about">About</a>
+      <a href="#experience" data-target="experience">Experience</a>
+      <a href="#projects" data-target="projects">Projects</a>
     </nav>
 
-    <main>
-        <section id="about">
-            <div class="container">
-                <h2>About Me</h2>
-                <div class="about-container">
-                    <div class="profile-image-container">
-                        <img src="LinkedinPhoto.jpeg" alt="Abhay Anand" class="profile-image">
-                    </div>
-                    <div class="about-text">
-                        <p>I am an aspiring data scientist who enjoys connecting the dots: be it ideas from different disciplines, people from different teams, or applications from different industries. I have strong technical skills and an academic background in computers, statistics, and machine learning. Currently pursuing my Master's in Data Science at UC San Diego, I combine academic excellence with hands-on experience in developing innovative solutions using cutting-edge technologies.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section id="intro">
+      <div class="intro-text">
+        <p>I love good stories, and solving interesting problems.</p>
+        <p>I was born in Edison, moved to Gurgaon for a bit and I’m now based in San Diego.</p>
+        <p class="intro-lead">I’m currently interested in a few things:</p>
+        <ol>
+          <li>Integrating Vision as additional context for language models, so we can eventually generate, understand and edit images better.</li>
+          <li>Using agent workflows to automate a bunch of tedious and repetitive tasks.</li>
+        </ol>
+        <p>Reach out if you want to chat.</p>
+      </div>
+    </section>
 
-        <section id="education">
-            <div class="container">
-                <h2 class="timeline-header">Education</h2>
-                <div class="education-timeline">
-                    <div class="education-item">
-                        <div class="education-logo">
-                            <img src="assets/logos/ucsd_logo.png" alt="UCSD Logo">
-                        </div>
-                        <div class="education-content">
-                            <h3>Master's in Data Science</h3>
-                            <div class="school">University of California, San Diego</div>
-                            <div class="date">August 2025 - June 2027</div>
-                            <div class="status">Incoming</div>
-                        </div>
-                    </div>
-                    
-                    <div class="education-item">
-                        <div class="education-logo">
-                            <img src="assets/logos/ucsd_logo.png" alt="UCSD Logo">
-                        </div>
-                        <div class="education-content">
-                            <h3>B.S. Cognitive Science w Machine Learning Spec & Computer Science</h3>
-                            <div class="school">University of California, San Diego</div>
-                            <div class="date">August 2022 - August 2025</div>
-                            
-                            <div class="coursework">
-                                <strong>Relevant Coursework:</strong><br>
-                                Data Structures and OO Design, Supervised Machine Learning, AI Algorithms, Neural Networks and Deep Learning, Signal Processing
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section id="about" hidden>
+      <p>
+        I am an aspiring data scientist who enjoys connecting the dots: be it ideas from different disciplines,
+        people from different teams, or applications from different industries. I have strong technical skills and
+        an academic background in computers, statistics, and machine learning. Currently pursuing my Master's in
+        Data Science at UC San Diego, I combine academic excellence with hands-on experience in developing
+        innovative solutions using cutting-edge technologies.
+      </p>
+    </section>
 
-        <section id="experience">
-            <div class="container">
-                <h2>Experience</h2>
-                <div class="experience-item">
-                    <div class="experience-header">
-                        <img src="assets/logos/tesla-logo.png" alt="Tesla Logo" class="company-logo">
-                        <div class="experience-title">
-                            <h3>Intern, Machine Learning Engineer</h3>
-                            <p>Tesla • Palo Alto, CA • Sept. 2025 - Present</p>
-                        </div>
-                    </div>
-                    <ul>
-                        <li>Designing an ML pipeline with Isolation Forest for fleet-wide anomaly detection on Megapacks with TensorFlow to detect thermal issues before they happen</li>
-                        <li>Building Airflow DAGs running Spark ETL from S3 with AWS Glue to ingest telemetry data. Using feature engineering (seasonality coefficients, ordinal encodings) for real time anomaly detection.</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <div class="experience-header">
-                        <img src="assets/logos/HDSI-Logo.png" alt="HDSI UC San Diego Logo" class="company-logo">
-                        <div class="experience-title">
-                            <h3>Computer Vision Researcher</h3>
-                            <p>Machine Learning Perception and Computation Lab • San Diego, CA • May 2025 - Present</p>
-                        </div>
-                    </div>
-                    <ul>
-                        <li>Developing a Vision–Language model for counting guided image generation using a YOLOCount and Stable Diffusion backbone, trained on LVIS and COCO (164K+ images) datasets</li>
-                        <li>Designing a multimodal encoder for a layout-image-text input with an LLM backbone, focusing on using layout to aid with precise and position based image generation compared to current SOTA models</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <div class="experience-header">
-                        <img src="assets/logos/ivanti_logo.jpeg" alt="Ivanti Logo" class="company-logo">
-                        <div class="experience-title">
-                            <h3>Software/Data Engineering Intern</h3>
-                            <p>Ivanti • San Jose • June 2024 - August 2024</p>
-                        </div>
-                    </div>
-                    <ul>
-                        <li>Developed GenAI-driven automation tester for Neurons AI (C#, JSON, Excel, SQL)</li>
-                        <li>Built an NLP-based Dynamic Expression Generator using Azure GPT-4, RAG, and ReACT</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <div class="experience-header">
-                        <img src="assets/logos/ucsd_logo.png" alt="UCSD Logo" class="company-logo">
-                        <div class="experience-title">
-                            <h3>Instructional Assistant</h3>
-                            <p>Cognitive and Data Science Dept, UCSD • San Diego • March 2024 - Present</p>
-                        </div>
-                    </div>
-                    <ul>
-                        <li>Tutored 900+ students in Python and data science under Prof. Voytek and Prof. Ellis</li>
-                        <li>Led discussions, grading, and held office hours</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <div class="experience-header">
-                        <img src="assets/logos/csfe-logo.jpeg" alt="CS fe Logo" class="company-logo">
-                        <div class="experience-title">
-                            <h3>VP of Finance</h3>
-                            <p>CSForEach Club, UCSD • San Diego • September 2022 - June 2024</p>
-                        </div>
-                    </div>
-                    <ul>
-                        <li>Managed club budget and sponsor relationships</li>
-                        <li>Supported K–12 outreach in CS, data science, and AI</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <div class="experience-header">
-                        <img src="assets/logos/hcltech-logo.jpg" alt="HCLTech Logo" class="company-logo">
-                        <div class="experience-title">
-                            <h3>Software Engineering Intern</h3>
-                            <p>HCLTech • Remote • June 2023 - September 2023</p>
-                        </div>
-                    </div>
-                    <ul>
-                        <li>Worked with product engineering team analyzing security and anomaly datasets</li>
-                        <li>Performed EDA and data visualization to extract insights</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+    <section id="experience" hidden>
+      <div class="item">
+        <h3>Tesla - Machine Learning Engineer Intern</h3>
+        <div class="meta">Palo Alto, CA • Sept. 2025 - Present</div>
+        <ul>
+          <li>ML pipeline for anomaly detection for Megapacks.</li>
+        </ul>
+      </div>
 
-        <section id="projects">
-            <div class="container">
-                <h2>Projects</h2>
-                <div class="project-item">
-                    <h3>
-                        <a href="https://abhayananducsd.github.io/COGS188_Project/" target="_blank" rel="noopener noreferrer">
-                            AutoBots: RL-Based Autonomous Driving
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </h3>
-                    <p>Reinforcement Learning, CARLA, DonkeySim</p>
-                    <ul>
-                        <li>Trained self-driving agents using Reinforcement Learning (RL) on two platforms: CARLA (urban navigation) and DonkeySim (track-based circuits)</li>
-                        <li>Used LiDAR as the primary sensor for robust, light-invariant spatial perception; processed point cloud into 18D state vectors combining sector-wise distances and waypoint metadata</li>
-                        <li>Implemented Proximal Policy Optimization (PPO) and Actor-Critic methods for continuous action control (steering, throttle, brake), using custom neural networks for actor-critic separation</li>
-                        <li>Designed and iteratively refined reward functions to optimize navigation performance, emphasizing collision avoidance, lane following, waypoint tracking, and speed regulation</li>
-                        <li>Results evaluated on metrics like cumulative reward, episode length, distance traveled, and collision rate</li>
-                        <li>Explored implications for industrial logistics, real-world deployment, and ethical considerations such as safety, bias, transparency, and sim-to-real transfer</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>
-                        <a href="https://github.com/AbhayAnandUCSD/YTsum" target="_blank" rel="noopener noreferrer">
-                            YTsum (Multimodal YouTube Summarizer)
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </h3>
-                    <p>Python, Whisper, OpenCV, CLIP-style embeddings, Streamlit</p>
-                    <ul>
-                        <li>Multimodal summarizer combining Whisper (ASR), keyframe extraction, and vision-text embeddings to generate structured video summaries</li>
-                        <li>Extracts captions + salient frames; ranks visuals, then synthesizes concise sections</li>
-                        <li>CLI + (optional) Streamlit demo for URL input and side-by-side outputs</li>
-                        <li>Modular pipeline for swapping models and evaluation prompts</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>
-                        <a href="https://github.com/AbhayAnandUCSD/energy-telemetry-pipeline" target="_blank" rel="noopener noreferrer">
-                            Energy Telemetry Pipeline
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </h3>
-                    <p>Spark, Airflow, Python, Docker, Parquet</p>
-                    <ul>
-                        <li>Built a Spark + Airflow telemetry lakehouse (Bronze/Silver/Gold) with data-quality metrics and idempotent partitioned writes; produced Gold KPIs and model-ready feature tables</li>
-                        <li>Batch + Structured Streaming ingestion with windowed aggregations for device events</li>
-                        <li>Airflow DAGs for reliable backfills, retries, and lineage; containerized for reproducibility</li>
-                        <li>Exports curated features for downstream ML and BI dashboards</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>
-                        <a href="https://drive.google.com/file/d/1dXUqsT8HuQmQKK1dGLFox6stfrqnkcA5/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-                            Comparative Analysis of Modern Object Detection Algorithms
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </h3>
-                    <p>Computer Vision, Deep Learning</p>
-                    <ul>
-                        <li>Compared RCNN, YOLO-World, and GroundingDINO for object detection on a curated dataset</li>
-                        <li>Evaluated bounding box accuracy using Intersection over Union (IoU), precision, recall, and F1 score</li>
-                        <li>Constructed a Robustness Evaluation Dataset to assess model generalization with complex scenes, small/occluded objects, symbolic text, and abstract prompts</li>
-                        <li>YOLO-World showed strong recall but was highly sensitive to confidence thresholds and prompt phrasing, while GroundingDINO achieved the highest IoU and F1 across conditions, excelling in open-vocabulary tasks</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>
-                        <a href="https://github.com/jeevankarandikar/telekinecar" target="_blank" rel="noopener noreferrer">
-                            sEMG Gesture-Controlled Toy Car
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </h3>
-                    <p>Signal Processing, Machine Learning</p>
-                    <ul>
-                        <li>Developed a wearable system using surface electromyography (sEMG) to control a toy car with hand gestures—no remotes or screen interfaces required</li>
-                        <li>Recorded muscle activity via a Mindrove sEMG sensor and processed signals in real time through a five-stage pipeline: acquisition, filtering, feature extraction, classification, and command mapping</li>
-                        <li>Used a 4-channel 500 Hz signal, applied a 4th-order Butterworth bandpass filter (10–200 Hz), and a notch filter at 60 Hz to clean noise and preserve critical signal features</li>
-                        <li>Extracted time/frequency domain features (e.g., MAV, FFT) and classified gestures using K-Nearest Neighbors (KNN), achieving ~98% accuracy on three gestures (rest, clench, Spiderman)</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>
-                        <a href="https://drive.google.com/file/d/1yot2lxWoW8yR6Nh3vIg4TgBI3okRtZlC/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-                            Comparative ML Model Analysis
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </h3>
-                    <p>Machine Learning</p>
-                    <ul>
-                        <li>Compared ANN, XGBoost, SVM, and Random Forest on multiple datasets</li>
-                        <li>Used SMOTE, encoding, and hyperparameter tuning for evaluation</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>NLP Sentiment Analysis: BERT vs. SVM</h3>
-                    <p>Natural Language Processing</p>
-                    <ul>
-                        <li>Implemented sentiment classifiers in TensorFlow</li>
-                        <li>Authored a 5,000-word paper comparing model performance</li>
-                    </ul>
-                </div>
-                <div class="project-item">
-                    <h3>
-                        <a href="https://github.com/COGS108/Group054-FA24/tree/master" target="_blank" rel="noopener noreferrer">
-                            Loan Default Risk Prediction using Machine Learning
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </h3>
-                    <p>Supervised Classification | Financial Modeling | Fairness in AI</p>
-                    <ul>
-                        <li>Analyzed over 2.2 million LendingClub loan applications (2007–2018) to predict loan default risk using financial indicators like FICO score, debt-to-income (DTI) ratio, and loan grade</li>
-                        <li>Performed extensive EDA and feature engineering to extract impactful predictors; found FICO score, DTI, and loan grade to be the most significant indicators of default risk</li>
-                        <li>Implemented and compared SVM, K-Nearest Neighbors (KNN), and Random Forest models:
-                            <ul>
-                                <li>Random Forest yielded the highest F1-score and recall for default detection</li>
-                                <li>KNN achieved the best precision</li>
-                                <li>SVM had the highest accuracy (80%) but failed to capture positive (default) cases</li>
-                            </ul>
-                        </li>
-                        <li>Addressed dataset imbalance and ethical concerns by carefully filtering non-representative labels and excluding sensitive demographic attributes</li>
-                        <li>Applied fairness-aware methods and advocated for transparent, inclusive financial risk models with privacy-conscious practices</li>
-                        <li>Tools: pandas, scikit-learn, matplotlib, seaborn, GridSearchCV, StandardScaler, FunctionTransformer</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+      <div class="item">
+        <h3>Halıcıo˘glu Data Science Institute — Machine Learning Researcher</h3>
+        <div class="meta">San Diego, CA • May 2025 - Present</div>
+        <ul>
+          <li>vLMs, Diffusion, Perception — <a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Zhuowen Tu</a>.</li>
+          <li>World Models, Agents — <a href="https://zhiting.ucsd.edu/" target="_blank" rel="noopener noreferrer">Zhiting Hu</a>.</li>
+        </ul>
+      </div>
 
-        <section id="skills">
-            <div class="container">
-                <h2>🛠 Technical Skills</h2>
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <h3><i class="fas fa-code"></i> Programming & Languages</h3>
-                        <div class="skill-item"><i class="fab fa-python"></i> Python</div>
-                        <div class="skill-item"><i class="fab fa-java"></i> Java</div>
-                        <div class="skill-item"><i class="fas fa-c"></i> C#</div>
-                        <div class="skill-item"><i class="fas fa-database"></i> SQL</div>
-                        <div class="skill-item"><i class="fab fa-js"></i> JavaScript</div>
-                        <div class="skill-item"><i class="fab fa-html5"></i> HTML/CSS</div>
-                    </div>
-                    <div class="skill-category">
-                        <h3><i class="fas fa-cubes"></i> Libraries & Frameworks</h3>
-                        <div class="skill-item"><i class="fas fa-calculator"></i> NumPy</div>
-                        <div class="skill-item"><i class="fas fa-table"></i> Pandas</div>
-                        <div class="skill-item"><i class="fas fa-brain"></i> scikit-learn</div>
-                        <div class="skill-item"><i class="fas fa-network-wired"></i> TensorFlow</div>
-                        <div class="skill-item"><i class="fas fa-layer-group"></i> Keras</div>
-                        <div class="skill-item"><i class="fas fa-chart-line"></i> Matplotlib</div>
-                        <div class="skill-item"><i class="fas fa-chart-bar"></i> Seaborn</div>
-                        <div class="skill-item"><i class="fas fa-eye"></i> OpenCV</div>
-                        <div class="skill-item"><i class="fas fa-tree"></i> XGBoost</div>
-                        <div class="skill-item"><i class="fas fa-fire"></i> PyTorch</div>
-                        <div class="skill-item"><i class="fas fa-sparkles"></i> Spark</div>
-                        <div class="skill-item"><i class="fas fa-wind"></i> Airflow</div>
-                        <div class="skill-item"><i class="fas fa-microphone"></i> Whisper</div>
-                        <div class="skill-item"><i class="fas fa-link"></i> CLIP</div>
-                    </div>
-                    <div class="skill-category">
-                        <h3><i class="fas fa-tools"></i> Tools & Platforms</h3>
-                        <div class="skill-item"><i class="fab fa-git-alt"></i> Git</div>
-                        <div class="skill-item"><i class="fas fa-code"></i> VS Code</div>
-                        <div class="skill-item"><i class="fab fa-microsoft"></i> Azure</div>
-                        <div class="skill-item"><i class="fas fa-car"></i> CARLA</div>
-                        <div class="skill-item"><i class="fas fa-robot"></i> DonkeySim</div>
-                        <div class="skill-item"><i class="fas fa-chart-pie"></i> Tableau</div>
-                        <div class="skill-item"><i class="fas fa-book"></i> Jupyter</div>
-                        <div class="skill-item"><i class="fas fa-file-excel"></i> MS Office</div>
-                        <div class="skill-item"><i class="fas fa-code"></i> JSON</div>
-                        <div class="skill-item"><i class="fab fa-docker"></i> Docker</div>
-                        <div class="skill-item"><i class="fas fa-stream"></i> Streamlit</div>
-                    </div>
-                    <div class="skill-category">
-                        <h3><i class="fas fa-star"></i> Core Competencies</h3>
-                        <div class="skill-item"><i class="fas fa-brain"></i> Machine Learning</div>
-                        <div class="skill-item"><i class="fas fa-wave-square"></i> Signal & Image Processing</div>
-                        <div class="skill-item"><i class="fas fa-database"></i> Data Engineering</div>
-                        <div class="skill-item"><i class="fas fa-comment-dots"></i> Prompt Engineering</div>
-                        <div class="skill-item"><i class="fas fa-object-group"></i> Object Detection</div>
-                        <div class="skill-item"><i class="fas fa-stream"></i> ETL / ELT Pipelines</div>
-                        <div class="skill-item"><i class="fas fa-video"></i> Multimodal AI</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <div class="item">
+        <h3>Ivanti - Software Engineering Intern</h3>
+        <div class="meta">San Jose, CA • June 2024 - August 2024</div>
+        <ul>
+          <li>LLM Hallucination Reduction</li>
+        </ul>
+      </div>
 
-        <section id="contact">
-            <div class="container">
-                <h2>Contact</h2>
-                <p style="text-align: center; margin-bottom: 2rem; color: var(--text-color);">You can reach me at a7anand-at-ucsd-dot-edu</p>
-            </div>
-        </section>
-    </main>
+      <div class="item">
+        <h3>Cognitive Science Department - Instructional Assistant</h3>
+        <div class="meta">San Diego • March 2024 - Present</div>
+        <ul>
+          <li>COGS 18, Introduction to Python — <a href="https://shannon-ellis.com/" target="_blank" rel="noopener noreferrer">Shannon Ellis</a>.</li>
+          <li>COGS 9, Introduction to Data Science — <a href="https://voyteklab.com/" target="_blank" rel="noopener noreferrer">Bradley Voytek</a>.</li>
+        </ul>
+      </div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Abhay Anand. All rights reserved.</p>
-        </div>
-    </footer>
+      <div class="item">
+        <h3>HCLTech — Software Engineering Bootcamp</h3>
+        <div class="meta">Remote • Jun. 2023 – Sep. 2023</div>
+        <ul>
+          <li>ML Pipeline for anomaly detection from KPI data.</li>
+        </ul>
+      </div>
 
-    <button class="theme-toggle" aria-label="Toggle theme">
-        <i class="fas fa-sun"></i>
-    </button>
+    </section>
 
-    <script>
-        // Theme toggle functionality
-        const themeToggle = document.querySelector('.theme-toggle');
-        const html = document.documentElement;
-        const themeIcon = themeToggle.querySelector('i');
+    <section id="projects" class="projects" hidden>
+      <div class="item">
+        <h3><a href="https://abhayananducsd.github.io/COGS188_Project/" target="_blank" rel="noopener noreferrer">AutoBots: RL-Based Autonomous Driving</a></h3>
+        <div class="meta">Reinforcement Learning, CARLA, DonkeySim</div>
+        <ul>
+          <li>Trained self-driving agents using RL on CARLA and DonkeySim; designed reward functions for navigation performance.</li>
+        </ul>
+      </div>
 
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
+      <div class="item">
+        <h3><a href="https://github.com/AbhayAnandUCSD/energy-telemetry-pipeline" target="_blank" rel="noopener noreferrer">Energy Telemetry Pipeline</a></h3>
+        <div class="meta">Spark, Airflow, Python, Docker, Parquet</div>
+        <ul>
+          <li>Built a Spark + Airflow telemetry lakehouse with data quality metrics and curated features for ML/BI.</li>
+        </ul>
+      </div>
 
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
+      <div class="item">
+        <h3><a href="https://drive.google.com/file/d/1dXUqsT8HuQmQKK1dGLFox6stfrqnkcA5/view?usp=sharing" target="_blank" rel="noopener noreferrer">Comparative Analysis of Modern Object Detection Algorithms</a></h3>
+        <div class="meta">Computer Vision, Deep Learning</div>
+        <ul>
+          <li>Compared RCNN, YOLO-World, and GroundingDINO on a curated dataset with robustness evaluation.</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <h3><a href="https://github.com/jeevankarandikar/telekinecar" target="_blank" rel="noopener noreferrer">sEMG Gesture-Controlled Toy Car</a></h3>
+        <div class="meta">Signal Processing, Machine Learning</div>
+        <ul>
+          <li>Built a wearable sEMG system and classified gestures with KNN at ~98% accuracy.</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <h3><a href="https://drive.google.com/file/d/1yot2lxWoW8yR6Nh3vIg4TgBI3okRtZlC/view?usp=sharing" target="_blank" rel="noopener noreferrer">Comparative ML Model Analysis</a></h3>
+        <div class="meta">Machine Learning</div>
+        <ul>
+          <li>Compared ANN, XGBoost, SVM, and Random Forest with SMOTE, encoding, and tuning.</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <h3><a href="https://github.com/COGS108/Group054-FA24/tree/master" target="_blank" rel="noopener noreferrer">Loan Default Risk Prediction using Machine Learning</a></h3>
+        <div class="meta">Supervised Classification | Financial Modeling | Fairness in AI</div>
+        <ul>
+          <li>Analyzed 2.2M+ LendingClub loans (2007–2018), compared SVM/KNN/RF, and addressed fairness concerns.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>Contact: <a href="mailto:a7anand@ucsd.edu">a7anand@ucsd.edu</a></footer>
+  </main>
+
+  <script>
+    const toggle = document.getElementById("theme-toggle");
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem("theme") || "light";
+    root.setAttribute("data-theme", savedTheme);
+    toggle.textContent = savedTheme === "light" ? "☾" : "☀︎";
+
+    toggle.addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      toggle.textContent = next === "light" ? "☾" : "☀︎";
+    });
+
+    const navLinks = document.querySelectorAll("nav a[data-target]");
+    const sections = document.querySelectorAll("section");
+    const homeLink = document.getElementById("home-link");
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const targetId = link.getAttribute("data-target");
+        sections.forEach((section) => {
+          section.hidden = section.id !== targetId;
         });
+        document.body.classList.toggle("section-view", targetId !== "intro");
+        history.replaceState(null, "", `#${targetId}`);
+      });
+    });
 
-        function updateThemeIcon(theme) {
-            themeIcon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
-        }
+    homeLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      sections.forEach((section) => {
+        section.hidden = section.id !== "intro";
+      });
+      document.body.classList.remove("section-view");
+      history.replaceState(null, "", "/");
+    });
 
-        // Mobile menu functionality
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileLinks = document.querySelector('nav ul');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenuBtn.classList.toggle('active');
-            mobileLinks.classList.toggle('active');
-        });
-
-        // Close menu when clicking a link
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenuBtn.classList.remove('active');
-                mobileLinks.classList.remove('active');
-            });
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileMenuBtn.contains(e.target) && !mobileLinks.contains(e.target)) {
-                mobileMenuBtn.classList.remove('active');
-                mobileLinks.classList.remove('active');
-            }
-        });
-
-        // Image Modal functionality
-        const modal = document.getElementById('imageModal');
-        const profileImageContainer = document.querySelector('.profile-image-container');
-
-        profileImageContainer.addEventListener('click', () => {
-            modal.classList.add('active');
-        });
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
-
-        // Close modal with escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                modal.classList.remove('active');
-            }
-        });
-    </script>
+    const initial = window.location.hash.replace("#", "") || "intro";
+    sections.forEach((section) => {
+      section.hidden = section.id !== initial;
+    });
+    document.body.classList.toggle("section-view", initial !== "intro");
+  </script>
 </body>
-</html> 
+</html>
