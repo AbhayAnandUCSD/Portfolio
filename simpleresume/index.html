@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SimpleResume — Our Motivation. A note from Abhay Anand on hiring, odds, and why we built SimpleResume." />
+  <title>SimpleResume — Our Motivation</title>
+  <meta property="og:title" content="SimpleResume — Our Motivation" />
+  <meta property="og:description" content="A note from Abhay Anand on hiring, odds, and why we built SimpleResume." />
+  <meta property="og:type" content="article" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root[data-theme="light"] {
+      --bg: #f6f1e7;
+      --text: #1f1f1f;
+      --muted: #5b5b5b;
+      --border: #d9d1c6;
+      --link: #1f1f1f;
+      --accent: #c27c4b;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0f1115;
+      --text: #f0ece3;
+      --muted: #b8b2a8;
+      --border: #2a2d34;
+      --link: #f0ece3;
+      --accent: #d19a66;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      letter-spacing: -0.01em;
+    }
+
+    h1, h2, h3 {
+      font-family: "Fraunces", serif;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    a:hover {
+      border-bottom-color: var(--text);
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+
+    .back {
+      font-size: 0.9rem;
+      color: var(--muted);
+      border-bottom: none;
+    }
+
+    .back:hover {
+      color: var(--text);
+      border-bottom: none;
+    }
+
+    .toggle {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+
+    article h1 {
+      font-size: clamp(2rem, 4vw, 2.6rem);
+      margin-bottom: 8px;
+    }
+
+    article .byline {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 40px;
+    }
+
+    article p {
+      margin-bottom: 1.2em;
+    }
+
+    article ol {
+      margin: 0 0 1.4em 0;
+      padding-left: 1.5em;
+    }
+
+    article ol li {
+      margin-bottom: 0.6em;
+      padding-left: 0.25em;
+    }
+
+    .equation {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-family: "Fraunces", serif;
+      font-size: 1.2rem;
+      margin: 1.8em 0 0.6em;
+      color: var(--text);
+    }
+
+    .frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.15;
+    }
+
+    .frac > span:first-child {
+      border-bottom: 1px solid var(--text);
+      padding: 0 10px 3px;
+    }
+
+    .frac > span:last-child {
+      padding: 3px 10px 0;
+    }
+
+    .equation .op {
+      color: var(--muted);
+    }
+
+    .equation-result {
+      text-align: center;
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--muted);
+      margin: 0 0 1.8em;
+    }
+
+    .signoff {
+      margin-top: 2.4em;
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    @media (max-width: 720px) {
+      .wrap {
+        padding: 32px 20px 72px;
+      }
+
+      .top {
+        margin-bottom: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="top">
+      <a href="/" class="back">← Abhay Anand</a>
+      <button class="toggle" id="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+    </div>
+
+    <article>
+      <h1>Our Motivation</h1>
+      <div class="byline">SimpleResume</div>
+
+      <p>In my opinion, hiring is about 70% luck and 30% in the candidate's control.</p>
+
+      <p>Arbitrarily say a role gets 2,000 applicants. A recruiter realistically gets through 50 resumes before they've found enough decent candidates to move forward. That's already a 1/40 chance your resume even gets looked at. From those 50, maybe 10 get a phone screen. From those 10, maybe 5 make it to onsite. From those 5, maybe 1 gets the offer.</p>
+
+      <p>Multiply it out:</p>
+
+      <div class="equation" aria-label="50 over 2000 times 10 over 50 times 5 over 10 times 1 over 5 equals 0.05 percent">
+        <span class="frac"><span>50</span><span>2,000</span></span>
+        <span class="op">×</span>
+        <span class="frac"><span>10</span><span>50</span></span>
+        <span class="op">×</span>
+        <span class="frac"><span>5</span><span>10</span></span>
+        <span class="op">×</span>
+        <span class="frac"><span>1</span><span>5</span></span>
+        <span class="op">=</span>
+        <span>0.05%</span>
+      </div>
+      <div class="equation-result">≈ 1 in 2,000</div>
+
+      <p>So if those are the odds, how do you increase your chances? Theoretically (unless your dad is Jeff Bezos), there are three universally accepted ways to improve your chances of landing an interview:</p>
+
+      <ol>
+        <li>Tune your resume: make it aesthetically clean, and tailor it to the exact role you're applying to.</li>
+        <li>Reach out to the right people: not just recruiters, but the actual engineers and managers who decide what the team needs.</li>
+        <li>Apply more: volume compounds.</li>
+      </ol>
+
+      <p>A better resume can double your odds of converting the 6 seconds a recruiter spends on it into an interview. We experienced this firsthand - it's how we both landed internships at Tesla. Ji is now at Nvidia.</p>
+
+      <p>SimpleResume is our first product. Ji came up with the idea and pitched it to me, and we decided to build it on a random Thursday after work, sitting at Blue Bottle in downtown Palo Alto. We built the tool we wished we had when we were applying to jobs.</p>
+
+      <p>SimpleResume will turn any resume you give us into the 'Jake's Resume' template. We then score your bullets and suggest minor edits to make sure your bullet points deliver the most impact. This ensures you always put your best foot forward when applying.</p>
+
+      <p>We hope this helps anyone trying to improve their resume and ultimately find the job they want.</p>
+
+      <p class="signoff">— Abhay</p>
+    </article>
+  </main>
+
+  <script>
+    const toggle = document.getElementById("theme-toggle");
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem("theme") || "light";
+    root.setAttribute("data-theme", savedTheme);
+    toggle.textContent = savedTheme === "light" ? "☾" : "☀︎";
+
+    toggle.addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      toggle.textContent = next === "light" ? "☾" : "☀︎";
+    });
+  </script>
+</body>
+</html>
