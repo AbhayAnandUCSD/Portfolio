@@ -1,36 +1,56 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Abhay Anand — Data Science & Machine Learning portfolio." />
-  <title>Abhay Anand — Personal Website</title>
-  <meta property="og:title" content="Abhay Anand — Personal Website" />
-  <meta property="og:description" content="Abhay Anand — Data Science & Machine Learning portfolio." />
-  <meta property="og:type" content="website" />
+  <meta name="description" content="Abhay Anand — M.S. Data Science at UC San Diego. Vision–language models and agentic systems." />
+  <title>Abhay Anand</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var theme = stored === 'dark' || stored === 'light'
+          ? stored
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
   <style>
-    :root[data-theme="light"] {
+    :root {
       --bg: #f6f1e7;
+      --surface: #efe7d8;
       --text: #1f1f1f;
       --muted: #5b5b5b;
       --border: #d9d1c6;
-      --link: #1f1f1f;
       --accent: #c27c4b;
+      --photo-shadow: 0 10px 30px -16px rgba(80, 50, 25, 0.45);
     }
 
     :root[data-theme="dark"] {
-      --bg: #0f1115;
-      --text: #f0ece3;
-      --muted: #b8b2a8;
-      --border: #2a2d34;
-      --link: #f0ece3;
-      --accent: #d19a66;
+      --bg: #16130f;
+      --surface: #1f1a14;
+      --text: #ece4d4;
+      --muted: #8f8475;
+      --border: #2e271f;
+      --accent: #d99465;
+      --photo-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.6);
     }
 
-    * {
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      background: var(--bg);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    *, *::before, *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -41,422 +61,470 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      letter-spacing: -0.01em;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      min-height: 100dvh;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    h1, h2, h3 {
-      font-family: "Fraunces", serif;
-      font-weight: 600;
-      line-height: 1.2;
+    a { color: var(--text); text-decoration: none; }
+
+    /* ---- Top bar ---- */
+    .topbar {
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
     }
 
-    a {
-      color: var(--link);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-    }
-
-    a:hover {
-      border-bottom-color: var(--accent);
-    }
-
-    .wrap {
-      max-width: 820px;
+    .topbar-inner {
+      max-width: 1180px;
       margin: 0 auto;
-      padding: 48px 24px 96px;
-    }
-
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 24px;
-      margin-bottom: 48px;
-    }
-
-    .hero {
-      margin-left: 0;
-      text-align: left;
-    }
-
-    .hero-row {
+      padding: 14px 32px;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      gap: 12px;
+      justify-content: flex-end;
+      min-height: 60px;
     }
 
-    .hero h1 {
-      font-size: clamp(2.2rem, 3vw, 3rem);
-      margin-bottom: 8px;
-    }
-
-    .hero p {
+    .theme-toggle {
+      appearance: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       color: var(--muted);
-      max-width: 48ch;
-      margin-bottom: 16px;
+      cursor: pointer;
+      padding: 0;
+      font: inherit;
+      transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
     }
 
-    .links {
+    .theme-toggle svg { display: block; }
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+
+    :root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    :root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+    @media (hover: hover) {
+      .theme-toggle:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+    }
+
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ---- Two-column shell ---- */
+    .shell {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .rail { border-right: 1px solid var(--border); }
+
+    .rail-inner {
+      position: sticky;
+      top: 0;
+      min-height: 100dvh;
+      padding: 40px 48px 48px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .photo {
+      width: 100%;
+      max-width: 248px;
+      aspect-ratio: 4 / 5;
+      border-radius: 20px;
+      object-fit: cover;
+      object-position: center;
+      background: var(--surface);
+      box-shadow: var(--photo-shadow);
+      margin-bottom: 28px;
+    }
+
+    .rail-name {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(2rem, 2.6vw, 2.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .rail-links {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      font-size: 0.95rem;
-      justify-content: flex-start;
-    }
-
-    .links a {
-      border-bottom-color: var(--accent);
-    }
-
-    .links-compact {
-      display: none;
-      gap: 10px;
-      font-size: 0.95rem;
-    }
-
-    .links-compact a {
-      border-bottom-color: transparent;
-    }
-
-    .links-compact svg {
-      width: 14px;
-      height: 14px;
-      display: block;
-      fill: currentColor;
-    }
-
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
+      align-items: center;
+      gap: 4px 2px;
       font-size: 0.9rem;
     }
 
-    section {
-      padding: 32px 0;
+    .rail-links a {
       border-bottom: 1px solid var(--border);
+      padding-bottom: 1px;
+      transition: color 0.15s ease, border-color 0.15s ease;
     }
 
-    section:last-of-type {
-      border-bottom: none;
+    @media (hover: hover) {
+      .rail-links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
     }
 
-    section[hidden] {
-      display: none;
-    }
+    .rail-links a:active { transform: scale(0.98); }
+    .rail-links .sep { color: var(--border); padding: 0 6px; user-select: none; }
 
-    h2 {
-      font-size: 1.4rem;
-      margin-bottom: 16px;
-    }
-
-    .item {
-      margin-bottom: 18px;
-    }
-
-    .item:last-child {
-      margin-bottom: 0;
-    }
-
-    .meta {
+    .rail-foot {
+      margin-top: auto;
+      padding-top: 32px;
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.78rem;
+      font-variant-numeric: tabular-nums;
     }
 
-    ul {
-      margin-top: 8px;
-      padding-left: 18px;
-    }
+    /* ---- Content column ---- */
+    .content { padding: 40px 0 96px 56px; }
 
-    li {
-      margin-bottom: 6px;
-    }
+    section { margin-bottom: 64px; }
+    section:last-child { margin-bottom: 0; }
 
-    .intro-text {
-      min-height: 160px;
+    .eyebrow {
+      display: block;
+      font-family: "Inter", sans-serif;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       color: var(--muted);
+      margin-bottom: 22px;
     }
 
-    .intro-text p {
-      margin-bottom: 1em;
-    }
-
-    .intro-text p:last-of-type {
-      margin-bottom: 0;
-    }
-
-    .intro-text .intro-lead {
-      font-weight: 500;
-      color: var(--text);
-      margin-top: 1.25em;
-      margin-bottom: 0.5em;
-    }
-
-    .intro-text ol {
-      margin: 0 0 1em 0;
-      padding-left: 1.5em;
-      list-style: none;
-    }
-
-    .intro-text li {
-      margin-bottom: 0.5em;
-    }
-
-    .projects a {
-      border-bottom-color: var(--accent);
-    }
-
-    .toggle {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 6px 12px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      line-height: 1;
-    }
-
-    .section-view .links-full {
-      display: none;
-    }
-
-    .section-view .links-compact {
+    .eyebrow-row {
       display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
     }
 
-    .section-view .hero-row {
-      flex-direction: column-reverse;
-      align-items: flex-start;
+    .eyebrow-row .eyebrow { margin-bottom: 0; }
+
+    .eyebrow-link {
+      font-size: 0.8rem;
+      color: var(--muted);
+      white-space: nowrap;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
     }
 
-    .section-view .hero p {
-      display: none;
+    @media (hover: hover) {
+      .eyebrow-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
     }
 
-    @media (max-width: 720px) {
-      .top {
-        align-items: flex-start;
-        flex-wrap: wrap;
-      }
+    /* ---- Excerpt / about ---- */
+    .excerpt {
+      font-size: 1.08rem;
+      line-height: 1.75;
+      color: var(--text);
+      max-width: 60ch;
+    }
 
-      .hero {
-        flex: 1;
-        min-width: 0;
-      }
+    .excerpt p + p { margin-top: 1em; }
 
-      .hero-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    .excerpt a {
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
 
-      .hero h1 {
-        white-space: nowrap;
-      }
+    @media (hover: hover) {
+      .excerpt a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    }
 
-      /* In section view on mobile: name on top, icons below, left-aligned */
-      .section-view .hero-row {
-        flex-direction: column-reverse;
-        align-items: flex-start;
-      }
+    /* ---- Experience (company-led, no dividers) ---- */
+    .exp-item + .exp-item { margin-top: 28px; }
 
-      nav {
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 8px;
+    .exp-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 4px 16px;
+    }
+
+    .exp-company {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 600;
+      font-size: 1.18rem;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .exp-dates {
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .exp-role {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 3px;
+    }
+
+    .exp-bullet {
+      color: var(--text);
+      font-size: 0.94rem;
+      margin-top: 7px;
+      max-width: 68ch;
+    }
+
+    .exp-bullet a {
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    @media (hover: hover) {
+      .exp-bullet a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    }
+
+    .pill {
+      display: inline-block;
+      font-weight: 500;
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 2px 9px;
+      line-height: 1.4;
+    }
+
+    /* ---- Projects (no dividers) ---- */
+    .work-item + .work-item { margin-top: 24px; }
+
+    .work-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 6px 12px;
+      margin-bottom: 4px;
+    }
+
+    .work-title {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 600;
+      font-size: 1.18rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    @media (hover: hover) {
+      .work-title:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    }
+
+    .work-link {
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-bottom: 1px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    @media (hover: hover) {
+      .work-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    }
+
+    .work-desc { font-size: 0.95rem; max-width: 66ch; margin-bottom: 5px; }
+    .work-tags { color: var(--muted); font-size: 0.82rem; }
+
+    /* ---- Mobile ---- */
+    @media (max-width: 768px) {
+      .topbar-inner { padding: 10px 20px; min-height: 52px; }
+      .shell { grid-template-columns: 1fr; padding: 0 20px; }
+      .rail { border-right: none; border-bottom: 1px solid var(--border); }
+      .rail-inner {
+        position: static;
+        min-height: 0;
+        padding: 24px 0 28px;
       }
+      .photo { max-width: 150px; margin-bottom: 20px; }
+      .rail-foot { display: none; }
+      .content { padding: 36px 0 72px; }
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <div class="top">
-      <div class="hero">
-        <div class="hero-row">
-          <div class="links-compact" aria-label="Quick links">
-            <a href="mailto:a7anand@ucsd.edu" aria-label="Email">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3h15A2.5 2.5 0 0 1 22 5.5v13A2.5 2.5 0 0 1 19.5 21h-15A2.5 2.5 0 0 1 2 18.5v-13Zm2.4-.5 7.6 5.7 7.6-5.7H4.4Zm15.6 1.7-7.2 5.4a1 1 0 0 1-1.2 0l-7.2-5.4V18.5c0 .55.45 1 1 1h15c.55 0 1-.45 1-1V6.7Z"/></svg>
-            </a>
-            <a href="https://linkedin.com/in/abhay-an" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 9h4v12H3V9Zm7 0h3.8v1.6h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.8c0-1.38-.03-3.16-1.93-3.16-1.93 0-2.23 1.51-2.23 3.06V21h-4V9Z"/></svg>
-            </a>
-            <a href="https://github.com/abhayananducsd" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.4c.58.1.8-.25.8-.57v-2.1c-3.27.7-3.96-1.4-3.96-1.4-.54-1.38-1.32-1.74-1.32-1.74-1.08-.74.08-.73.08-.73 1.2.08 1.84 1.23 1.84 1.23 1.06 1.82 2.78 1.3 3.46 1 .1-.78.42-1.3.76-1.6-2.6-.3-5.34-1.3-5.34-5.8 0-1.28.46-2.33 1.22-3.15-.12-.3-.53-1.5.12-3.12 0 0 .99-.32 3.25 1.2a11.2 11.2 0 0 1 5.92 0c2.26-1.52 3.24-1.2 3.24-1.2.65 1.62.24 2.82.12 3.12.76.82 1.22 1.87 1.22 3.15 0 4.52-2.74 5.5-5.35 5.79.43.37.82 1.1.82 2.22v3.29c0 .32.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
-            </a>
-            <a href="https://scholar.google.com/citations?hl=en&user=ZvA1Z-EAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
-            </a>
-          </div>
-          <h1><a href="/" id="home-link">Abhay Anand</a></h1>
-        </div>
-        <p>M.S. in Data Science, UC San Diego</p>
-        <div class="links links-full">
-          <a href="mailto:a7anand@ucsd.edu">Email</a>
-          <a href="https://linkedin.com/in/abhay-an" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://github.com/abhayananducsd" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://scholar.google.com/citations?hl=en&user=ZvA1Z-EAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener noreferrer">Scholar</a>
-        </div>
-      </div>
-      <nav>
-        <button class="toggle" id="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
-        <a href="#experience" data-target="experience">Experience</a>
-        <a href="#projects" data-target="projects">Projects</a>
-      </nav>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      </button>
     </div>
+  </header>
 
-    <section id="intro">
-      <div class="intro-text">
-        <p class="intro-lead">I’m currently interested in a few things:</p>
-        <ol>
-          <li>Integrating Vision as additional context for language models, so we can eventually generate, understand and edit images better.</li>
-          <li>Using agent workflows to automate a bunch of tedious and repetitive tasks.</li>
-        </ol>
-        <p>Reach out if you want to chat.</p>
-        <p>Email me at: <a href="mailto:a7anand@ucsd.edu">a7anand@ucsd.edu</a></p>
+  <main class="shell">
+
+    <!-- IDENTITY RAIL -->
+    <aside class="rail">
+      <div class="rail-inner">
+        <img class="photo" src="assets/abhay.jpg" alt="Abhay Anand" />
+        <h1 class="rail-name">Abhay Anand</h1>
+        <nav class="rail-links" aria-label="Contact and profiles">
+          <a href="mailto:a7anand@ucsd.edu">Email</a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="https://github.com/abhayananducsd" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="https://scholar.google.com/citations?hl=en&user=ZvA1Z-EAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener noreferrer">Scholar</a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="https://linkedin.com/in/abhay-an" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </nav>
       </div>
-    </section>
+    </aside>
 
-    <section id="experience" hidden>
-      <div class="item">
-        <h3>Tesla - Machine Learning Engineer Intern</h3>
-        <div class="meta">Palo Alto, CA • Sept. 2025 - Present</div>
-        <ul>
-          <li>ML pipeline for anomaly detection for Megapacks.</li>
-        </ul>
-      </div>
+    <!-- CONTENT -->
+    <div class="content">
 
-      <div class="item">
-        <h3>Halıcıo˘glu Data Science Institute — Machine Learning Researcher</h3>
-        <div class="meta">San Diego, CA • May 2025 - Present</div>
-        <ul>
-          <li>vLMs, Diffusion, Perception — <a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Zhuowen Tu</a>.</li>
-          <li>World Models, Agents — <a href="https://zhiting.ucsd.edu/" target="_blank" rel="noopener noreferrer">Zhiting Hu</a>.</li>
-        </ul>
-      </div>
+      <!-- EXCERPT (draft — easy to rewrite) -->
+      <section id="about" aria-label="About">
+        <div class="excerpt">
+          <p>I’m a master’s student at UC San Diego, where I do research with Professor <a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Zhuowen Tu</a> and Professor <a href="https://zhiting.ucsd.edu/" target="_blank" rel="noopener noreferrer">Zhiting Hu</a>. I’m working as an Applied Scientist Intern at <a href="https://www.typeface.ai/" target="_blank" rel="noopener noreferrer">Typeface</a> this summer, and I worked as a Machine Learning Engineer Intern at <a href="https://www.tesla.com/" target="_blank" rel="noopener noreferrer">Tesla</a>.</p>
+          <p>My main research interests are in spatial intelligence, autoresearch and world models. I'm particularly interested scene reconstruction/understanding and building environments where agents can autonomously navigate complex research questions across the sciences and materials.</p>
+        </div>
+      </section>
 
-      <div class="item">
-        <h3>Ivanti - Software Engineering Intern</h3>
-        <div class="meta">San Jose, CA • June 2024 - August 2024</div>
-        <ul>
-          <li>LLM Hallucination Reduction</li>
-        </ul>
-      </div>
+      <!-- EXPERIENCE -->
+      <section id="experience" aria-labelledby="exp-eyebrow">
+        <span class="eyebrow" id="exp-eyebrow">Experience</span>
 
-      <div class="item">
-        <h3>Cognitive Science Department - Instructional Assistant</h3>
-        <div class="meta">San Diego • March 2024 - Present</div>
-        <ul>
-          <li>COGS 18, Introduction to Python — <a href="https://shannon-ellis.com/" target="_blank" rel="noopener noreferrer">Shannon Ellis</a>.</li>
-          <li>COGS 9, Introduction to Data Science — <a href="https://voyteklab.com/" target="_blank" rel="noopener noreferrer">Bradley Voytek</a>.</li>
-        </ul>
-      </div>
+        <div class="exp-item">
+          <div class="exp-top">
+            <span class="exp-company">Typeface</span>
+            <span class="exp-dates">Jun 2026 – Present</span>
+          </div>
+          <div class="exp-role">Applied Scientist Intern · Palo Alto, CA</div>
+          <p class="exp-bullet">Perception and alignment research for multi-modal content generation.</p>
+        </div>
 
-      <div class="item">
-        <h3>HCLTech — Software Engineering Bootcamp</h3>
-        <div class="meta">Remote • Jun. 2023 – Sep. 2023</div>
-        <ul>
-          <li>ML Pipeline for anomaly detection from KPI data.</li>
-        </ul>
-      </div>
+        <div class="exp-item">
+          <div class="exp-top">
+            <span class="exp-company">Tesla</span>
+            <span class="exp-dates">Sep 2025 – Jan 2026</span>
+          </div>
+          <div class="exp-role">Machine Learning Engineer Intern · Palo Alto, CA</div>
+          <p class="exp-bullet">Anomaly detection on Megapacks.</p>
+        </div>
 
-    </section>
+        <div class="exp-item">
+          <div class="exp-top">
+            <span class="exp-company">Halıcıoğlu Data Science Institute</span>
+            <span class="exp-dates">May 2025 – Present</span>
+          </div>
+          <div class="exp-role">Machine Learning Researcher · San Diego, CA</div>
+          <p class="exp-bullet">Spacial Intelligence & Autoregressive Image Generation with <a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Zhuowen Tu</a>.</p>
+          <p class="exp-bullet">World Models and Autoresearch with <a href="https://zhiting.ucsd.edu/" target="_blank" rel="noopener noreferrer">Zhiting Hu</a>.</p>
 
-    <section id="projects" class="projects" hidden>
-      <div class="item">
-        <h3><a href="https://abhayananducsd.github.io/Autobots/" target="_blank" rel="noopener noreferrer">AutoBots: RL-Based Autonomous Driving</a></h3>
-        <div class="meta">Reinforcement Learning, CARLA, DonkeySim</div>
-        <ul>
-          <li>Trained self-driving agents using RL on CARLA and DonkeySim; designed reward functions for navigation performance.</li>
-        </ul>
-      </div>
+        </div>
 
-      <div class="item">
-        <h3><a href="https://github.com/AbhayAnandUCSD/energy-telemetry-pipeline" target="_blank" rel="noopener noreferrer">Energy Telemetry Pipeline</a></h3>
-        <div class="meta">Spark, Airflow, Python, Docker, Parquet</div>
-        <ul>
-          <li>Built a Spark + Airflow telemetry lakehouse with data quality metrics and curated features for ML/BI.</li>
-        </ul>
-      </div>
+        <div class="exp-item">
+          <div class="exp-top">
+            <span class="exp-company">Ivanti</span>
+            <span class="exp-dates">Jun – Aug 2024</span>
+          </div>
+          <div class="exp-role">Software Engineer Intern · San Jose, CA</div>
+          <p class="exp-bullet">LLM hallucination reduction for SQL Generation.</p>
+        </div>
+      </section>
 
-      <div class="item">
-        <h3><a href="https://drive.google.com/file/d/1dXUqsT8HuQmQKK1dGLFox6stfrqnkcA5/view?usp=sharing" target="_blank" rel="noopener noreferrer">Comparative Analysis of Modern Object Detection Algorithms</a></h3>
-        <div class="meta">Computer Vision, Deep Learning</div>
-        <ul>
-          <li>Compared RCNN, YOLO-World, and GroundingDINO on a curated dataset with robustness evaluation.</li>
-        </ul>
-      </div>
+      <!-- PROJECTS -->
+      <section id="projects" aria-labelledby="proj-eyebrow">
+        <div class="eyebrow-row">
+          <span class="eyebrow" id="proj-eyebrow">Projects</span>
+          <a class="eyebrow-link" href="https://github.com/abhayananducsd" target="_blank" rel="noopener noreferrer">All on GitHub →</a>
+        </div>
 
-      <div class="item">
-        <h3><a href="https://github.com/jeevankarandikar/telekinecar" target="_blank" rel="noopener noreferrer">sEMG Gesture-Controlled Toy Car</a></h3>
-        <div class="meta">Signal Processing, Machine Learning</div>
-        <ul>
-          <li>Built a wearable sEMG system and classified gestures with KNN at ~98% accuracy.</li>
-        </ul>
-      </div>
+        <div class="work-item">
+          <div class="work-head">
+            <a class="work-title" href="https://github.com/abhayananducsd/Paper2Bench" target="_blank" rel="noopener noreferrer">Paper2Bench</a>
+            <a class="work-link" href="https://github.com/abhayananducsd/Paper2Bench" target="_blank" rel="noopener noreferrer">repo ↗</a>
+          </div>
+          <p class="work-desc">Turn academic papers into benchmark tasks for evaluating AI coding agents.</p>
+        </div>
 
-      <div class="item">
-        <h3><a href="https://drive.google.com/file/d/1yot2lxWoW8yR6Nh3vIg4TgBI3okRtZlC/view?usp=sharing" target="_blank" rel="noopener noreferrer">Comparative ML Model Analysis</a></h3>
-        <div class="meta">Machine Learning</div>
-        <ul>
-          <li>Compared ANN, XGBoost, SVM, and Random Forest with SMOTE, encoding, and tuning.</li>
-        </ul>
-      </div>
+        <div class="work-item">
+          <div class="work-head">
+            <a class="work-title" href="https://github.com/abhayananducsd/DSC291-JailBench" target="_blank" rel="noopener noreferrer">JailBench</a>
+            <a class="work-link" href="https://github.com/abhayananducsd/DSC291-JailBench" target="_blank" rel="noopener noreferrer">repo ↗</a>
+          </div>
+          <p class="work-desc">How quantization erodes LLM safety alignment — Llama-2-7B across FP16 / INT8 / INT4.</p>
+        </div>
 
-      <div class="item">
-        <h3><a href="https://github.com/COGS108/Group054-FA24/tree/master" target="_blank" rel="noopener noreferrer">Loan Default Risk Prediction using Machine Learning</a></h3>
-        <div class="meta">Supervised Classification | Financial Modeling | Fairness in AI</div>
-        <ul>
-          <li>Analyzed 2.2M+ LendingClub loans (2007–2018), compared SVM/KNN/RF, and addressed fairness concerns.</li>
-        </ul>
-      </div>
-    </section>
+        <div class="work-item">
+          <div class="work-head">
+            <a class="work-title" href="https://abhayananducsd.github.io/Autobots/" target="_blank" rel="noopener noreferrer">AutoBots</a>
+            <a class="work-link" href="https://abhayananducsd.github.io/Autobots/" target="_blank" rel="noopener noreferrer">demo ↗</a>
+          </div>
+          <p class="work-desc">RL self-driving agents in CARLA &amp; DonkeySim with custom reward design.</p>
+        </div>
+
+        <div class="work-item">
+          <div class="work-head">
+            <a class="work-title" href="https://github.com/AbhayAnandUCSD/energy-telemetry-pipeline" target="_blank" rel="noopener noreferrer">Energy Telemetry Pipeline</a>
+            <a class="work-link" href="https://github.com/AbhayAnandUCSD/energy-telemetry-pipeline" target="_blank" rel="noopener noreferrer">repo ↗</a>
+          </div>
+          <p class="work-desc">Spark + Airflow telemetry lakehouse with data-quality metrics and curated ML/BI features.</p>
+        </div>
+
+        <div class="work-item">
+          <div class="work-head">
+            <a class="work-title" href="https://github.com/jeevankarandikar/telekinecar" target="_blank" rel="noopener noreferrer">sEMG Gesture-Controlled Car</a>
+            <a class="work-link" href="https://github.com/jeevankarandikar/telekinecar" target="_blank" rel="noopener noreferrer">repo ↗</a>
+          </div>
+          <p class="work-desc">Wearable sEMG system classifying hand gestures with KNN at ~98% accuracy to drive a toy car.</p>
+        </div>
+      </section>
+
+    </div>
   </main>
 
   <script>
-    const toggle = document.getElementById("theme-toggle");
-    const root = document.documentElement;
-    const savedTheme = localStorage.getItem("theme") || "light";
-    root.setAttribute("data-theme", savedTheme);
-    toggle.textContent = savedTheme === "light" ? "☾" : "☀︎";
-
-    toggle.addEventListener("click", () => {
-      const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-      root.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-      toggle.textContent = next === "light" ? "☾" : "☀︎";
-    });
-
-    const navLinks = document.querySelectorAll("nav a[data-target]");
-    const sections = document.querySelectorAll("section");
-    const homeLink = document.getElementById("home-link");
-
-    navLinks.forEach((link) => {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        const targetId = link.getAttribute("data-target");
-        sections.forEach((section) => {
-          section.hidden = section.id !== targetId;
-        });
-        document.body.classList.toggle("section-view", targetId !== "intro");
-        history.replaceState(null, "", `#${targetId}`);
+    (function () {
+      var root = document.documentElement;
+      var btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+      var sync = function () {
+        btn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'dark');
+      };
+      sync();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+        sync();
       });
-    });
-
-    homeLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      sections.forEach((section) => {
-        section.hidden = section.id !== "intro";
-      });
-      document.body.classList.remove("section-view");
-      history.replaceState(null, "", "/");
-    });
-
-    const initial = window.location.hash.replace("#", "") || "intro";
-    sections.forEach((section) => {
-      section.hidden = section.id !== initial;
-    });
-    document.body.classList.toggle("section-view", initial !== "intro");
+    })();
   </script>
 </body>
 </html>
