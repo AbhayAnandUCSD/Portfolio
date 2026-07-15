@@ -9,6 +9,10 @@
   ],
   "rewrites": [
     {
+      "source": "/generalintuition/api/:path*",
+      "destination": "https://certgym-api.onrender.com/api/:path*"
+    },
+    {
       "source": "/generalintuition/",
       "destination": "https://abhayananducsd.github.io/GI-takehome/index.html"
     },
