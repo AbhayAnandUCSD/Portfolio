@@ -10,7 +10,7 @@
   "rewrites": [
     {
       "source": "/generalintuition/api/:path*",
-      "destination": "https://certgym-api.onrender.com/api/:path*"
+      "destination": "https://xppmuy4whv.us-east-1.awsapprunner.com/api/:path*"
     },
     {
       "source": "/generalintuition/",
