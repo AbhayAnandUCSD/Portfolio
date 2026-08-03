@@ -352,6 +352,16 @@
     }
 
     .work-desc { font-size: 0.95rem; max-width: 66ch; margin-bottom: 5px; }
+
+    .work-desc a {
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    @media (hover: hover) {
+      .work-desc a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    }
+
     .work-tags { color: var(--muted); font-size: 0.82rem; }
 
     /* ---- Mobile ---- */
@@ -411,7 +421,7 @@
       <section id="about" aria-label="About">
         <div class="excerpt">
           <p>I’m a master’s student at UC San Diego, where I do research with Professor <a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Zhuowen Tu</a> and Professor <a href="https://zhiting.ucsd.edu/" target="_blank" rel="noopener noreferrer">Zhiting Hu</a>. I’m working as an Applied Scientist Intern at <a href="https://www.typeface.ai/" target="_blank" rel="noopener noreferrer">Typeface</a> this summer, and I worked as a Machine Learning Engineer Intern at <a href="https://www.tesla.com/" target="_blank" rel="noopener noreferrer">Tesla</a>.</p>
-          <p>My main research interests are in spatial intelligence, autoresearch and world models. I'm particularly interested scene reconstruction/understanding and building environments where agents can autonomously navigate complex research questions across the sciences and materials.</p>
+          <p>My main research interests are in spatial intelligence, world models, and interpretability. I’m particularly interested in scene reconstruction and understanding, and in building environments where an agent has to learn a latent model of the world's dynamics, then reading that model back out to see what causal structure/understanding it actually picked up.</p>
         </div>
       </section>
 
@@ -425,7 +435,7 @@
             <span class="exp-dates">Jun 2026 – Present</span>
           </div>
           <div class="exp-role">Applied Scientist Intern · Palo Alto, CA</div>
-          <p class="exp-bullet">Perception and alignment research for multi-modal content generation.</p>
+          <p class="exp-bullet">Post-Training.</p>
         </div>
 
         <div class="exp-item">
@@ -434,7 +444,7 @@
             <span class="exp-dates">Sep 2025 – Jan 2026</span>
           </div>
           <div class="exp-role">Machine Learning Engineer Intern · Palo Alto, CA</div>
-          <p class="exp-bullet">Anomaly detection on Megapacks.</p>
+          <p class="exp-bullet">Anomaly detection & ML infrastructure.</p>
         </div>
 
         <div class="exp-item">
@@ -443,8 +453,8 @@
             <span class="exp-dates">May 2025 – Present</span>
           </div>
           <div class="exp-role">Machine Learning Researcher · San Diego, CA</div>
-          <p class="exp-bullet">Spacial Intelligence & Autoregressive Image Generation with <a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Zhuowen Tu</a>.</p>
-          <p class="exp-bullet">World Models and Autoresearch with <a href="https://zhiting.ucsd.edu/" target="_blank" rel="noopener noreferrer">Zhiting Hu</a>.</p>
+          <p class="exp-bullet">Spacial Intelligence & RL based post-training with <a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Zhuowen Tu</a>.</p>
+          <p class="exp-bullet">World Models with <a href="https://zhiting.ucsd.edu/" target="_blank" rel="noopener noreferrer">Zhiting Hu</a>.</p>
 
         </div>
 
@@ -454,7 +464,7 @@
             <span class="exp-dates">Jun – Aug 2024</span>
           </div>
           <div class="exp-role">Software Engineer Intern · San Jose, CA</div>
-          <p class="exp-bullet">LLM hallucination reduction for SQL Generation.</p>
+          <p class="exp-bullet">LLM's for SQL Generation.</p>
         </div>
       </section>
 
@@ -478,7 +488,7 @@
             <a class="work-title" href="https://medium.com/@a7anand/can-two-jailbreak-papers-even-be-compared-ee41761a5112" target="_blank" rel="noopener noreferrer">JailBench</a>
             <a class="work-link" href="https://github.com/abhayananducsd/DSC291-JailBench" target="_blank" rel="noopener noreferrer">code ↗</a>
           </div>
-          <p class="work-desc">How quantization erodes LLM safety alignment — Llama-2-7B across FP16 / INT8 / INT4.</p>
+          <p class="work-desc">How quantization erodes LLM safety alignment.</p>
         </div>
 
         <div class="work-item">
@@ -491,18 +501,10 @@
 
         <div class="work-item">
           <div class="work-head">
-            <a class="work-title" href="https://github.com/AbhayAnandUCSD/energy-telemetry-pipeline" target="_blank" rel="noopener noreferrer">Energy Telemetry Pipeline</a>
-            <a class="work-link" href="https://github.com/AbhayAnandUCSD/energy-telemetry-pipeline" target="_blank" rel="noopener noreferrer">repo ↗</a>
+            <a class="work-title" href="https://trysimpleresume.com" target="_blank" rel="noopener noreferrer">SimpleResume</a>
+            <a class="work-link" href="/simpleresume/">note ↗</a>
           </div>
-          <p class="work-desc">Spark + Airflow telemetry lakehouse with data-quality metrics and curated ML/BI features.</p>
-        </div>
-
-        <div class="work-item">
-          <div class="work-head">
-            <a class="work-title" href="https://github.com/jeevankarandikar/telekinecar" target="_blank" rel="noopener noreferrer">sEMG Gesture-Controlled Car</a>
-            <a class="work-link" href="https://github.com/jeevankarandikar/telekinecar" target="_blank" rel="noopener noreferrer">repo ↗</a>
-          </div>
-          <p class="work-desc">Wearable sEMG system classifying hand gestures with KNN at ~98% accuracy to drive a toy car.</p>
+          <p class="work-desc">Create a résumé that statistically helps you with job applications. (We use <a href="https://www.overleaf.com/latex/templates/jakes-resume/syzfjbzwjncs" target="_blank" rel="noopener noreferrer">Jake’s Template</a>.)</p>
         </div>
       </section>
 
