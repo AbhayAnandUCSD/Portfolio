@@ -3,22 +3,32 @@
   "redirects": [
     {
       "source": "/generalintuition",
-      "destination": "/generalintuition/",
+      "destination": "/bookofworlds/",
+      "permanent": true
+    },
+    {
+      "source": "/generalintuition/:path*",
+      "destination": "/bookofworlds/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/bookofworlds",
+      "destination": "/bookofworlds/",
       "permanent": true
     }
   ],
   "rewrites": [
     {
-      "source": "/generalintuition/api/:path*",
+      "source": "/bookofworlds/api/:path*",
       "destination": "https://xppmuy4whv.us-east-1.awsapprunner.com/api/:path*"
     },
     {
-      "source": "/generalintuition/",
-      "destination": "https://abhayananducsd.github.io/GI-takehome/index.html"
+      "source": "/bookofworlds/",
+      "destination": "https://abhayananducsd.github.io/bookofworlds/index.html"
     },
     {
-      "source": "/generalintuition/:path*",
-      "destination": "https://abhayananducsd.github.io/GI-takehome/:path*"
+      "source": "/bookofworlds/:path*",
+      "destination": "https://abhayananducsd.github.io/bookofworlds/:path*"
     }
   ]
 }
