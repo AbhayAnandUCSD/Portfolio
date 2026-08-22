@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Abhay Anand — graduate student at UC San Diego. Spatial intelligence, world models, interpretability." />
+  <title>Projects — Abhay Anand</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var theme = stored === 'dark' || stored === 'light'
+          ? stored
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+<a class="brand" href="/">Abhay Anand</a>
+      <nav class="nav" aria-label="Sections">
+        <a href="/projects.html" aria-current="page">Projects</a>
+        <a href="/notes.html">Notes</a>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="wide">
+      <section id="projects" aria-label="Projects">
+        <h1 class="page-title">Projects</h1>
+        <div class="work-grid" id="work-grid"></div>
+      </section>
+  </main>
+
+  <script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    btn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'dark');
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      btn.setAttribute('aria-pressed', next === 'dark');
+    });
+  })();
+  </script>
+  <script>
+  (function () {
+    'use strict';
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ---- edit projects here -------------------------------------------
+    var PROJECTS = [
+      {
+        title: 'Robot control in an Unreal Engine World Model',
+        link: 'repo ↗',
+        href: 'https://github.com/abhayananducsd/robotlearning',
+        desc: 'Trying to see how well Grok can act as a general-purpose robotics VLA, given SPEAR, in Unreal Engine.',
+        media: '/media/robot_tile'
+      },
+      {
+        title: 'Infinite Environment Generation',
+        link: 'demo ↗',
+        href: 'https://www.abhayanand.com/bookofworlds/',
+        desc: 'Created a harness to allow for infinite solvable, difficulty controlled game environments. Want to try training the VLM with game state and other hidden metadata.',
+        media: '/media/bow_tile'
+      },
+      {
+        title: 'Reality Mesh',
+        link: 'paper ↗',
+        href: '#',
+        desc: 'Working on post-training an autoregressive mesh based single view scene reconstruction model. Main goals are for better non-permeability and gravity adherence.',
+        media: '/media/grpo_tile'
+      },
+      {
+        title: 'Autonomous Driving',
+        link: 'demo ↗',
+        href: 'https://abhayananducsd.github.io/Autobots/',
+        desc: 'Testing out how an autonomous driving agent would do, given only LiDAR. Built with PPO and other reinforcement learning algorithms to learn steering and throttling/braking.',
+        media: '/media/auto_tile'
+      },
+      {
+        title: 'SimpleResume',
+        link: 'note ↗',
+        href: 'https://trysimpleresume.com',
+        desc: 'Create a résumé that statistically helps you with job applications.',
+        media: '/media/sr_tile'
+      }
+    ];
+    // -------------------------------------------------------------------
+
+    var V = '?v=' + Date.now();
+    var CUE = '<span class="cue"><svg width="7" height="8" viewBox="0 0 7 8" fill="currentColor" aria-hidden="true"><path d="M0 0l7 4-7 4z"/></svg>play</span>';
+
+    document.getElementById('work-grid').innerHTML = PROJECTS.map(function (p) {
+      var inner = '<video muted loop playsinline preload="none" poster="' + p.media + '.webp' + V + '">' +
+        '<source src="' + p.media + '.webm' + V + '" type="video/webm">' +
+        '<source src="' + p.media + '.mp4' + V + '" type="video/mp4"></video>' + CUE;
+      var t = ' target="_blank" rel="noopener noreferrer"';
+      return '<article class="work-card">' +
+        '<a class="thumb" href="' + p.href + '"' + t + '>' + inner + '</a>' +
+        '<div class="work-text"><div class="work-head">' +
+          '<a class="work-title" href="' + p.href + '"' + t + '>' + p.title + '</a>' +
+          '<a class="work-link" href="' + p.href + '"' + t + '>' + p.link + '</a>' +
+        '</div><p class="work-desc">' + p.desc + '</p></div></article>';
+    }).join('');
+
+    Array.prototype.forEach.call(document.querySelectorAll('.work-card'), function (card) {
+      var v = card.querySelector('video');
+      var name = card.querySelector('.work-title').textContent;
+      if (v) v.addEventListener('error', function () {
+        var e = v.error;
+        console.warn('[preview] media error for', name, e ? ('code ' + e.code + ' — ' + e.message) : '');
+      });
+      function on() {
+        card.classList.add('live');
+        if (v && !reduce) {
+          var pr = v.play();
+          if (pr && pr.catch) pr.catch(function (err) { console.warn('[preview] play failed for', name, err.name); });
+        }
+      }
+      function off() { card.classList.remove('live'); if (v) { v.pause(); v.currentTime = 0; } }
+      card.addEventListener('mouseenter', on);
+      card.addEventListener('mouseleave', off);
+      card.addEventListener('focusin', on);
+      card.addEventListener('focusout', off);
+    });
+
+    if ('IntersectionObserver' in window && !reduce && !window.matchMedia('(hover: hover)').matches) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          var v = e.target.querySelector('video');
+          if (!v) return;
+          if (e.isIntersecting) { e.target.classList.add('live'); var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+          else { e.target.classList.remove('live'); v.pause(); }
+        });
+      }, { threshold: 0.6 });
+      Array.prototype.forEach.call(document.querySelectorAll('.work-card'), function (c) { io.observe(c); });
+    }
+  })();
+  </script>
+</body>
+</html>

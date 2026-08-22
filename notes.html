@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Abhay Anand — graduate student at UC San Diego. Spatial intelligence, world models, interpretability." />
-  <title>Abhay Anand</title>
+  <title>Notes — Abhay Anand</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -24,9 +24,10 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-<nav class="nav" aria-label="Sections">
+<a class="brand" href="/">Abhay Anand</a>
+      <nav class="nav" aria-label="Sections">
         <a href="/projects.html">Projects</a>
-        <a href="/notes.html">Notes</a>
+        <a href="/notes.html" aria-current="page">Notes</a>
       </nav>
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">
         <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
@@ -35,38 +36,11 @@
     </div>
   </header>
 
-  <main class="shell">
-    <aside class="rail">
-      <div class="rail-inner">
-        <img class="photo" src="assets/abhay.jpg" alt="Abhay Anand" />
-        <h1 class="rail-name">Abhay Anand</h1>
-        <nav class="rail-links" aria-label="Contact and profiles">
-          <a href="mailto:a7anand@ucsd.edu">Email</a>
-          <span class="sep" aria-hidden="true">·</span>
-          <a href="https://github.com/abhayananducsd" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <span class="sep" aria-hidden="true">·</span>
-          <a href="https://scholar.google.com/citations?hl=en&user=ZvA1Z-EAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" rel="noopener noreferrer">Scholar</a>
-          <span class="sep" aria-hidden="true">·</span>
-          <a href="https://linkedin.com/in/abhay-an" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </nav>
-      </div>
-    </aside>
-
-    <div class="content">
-      <section id="about" aria-label="About">
-        <div class="excerpt">
-          <p>I’m a graduate student at UC San Diego, where I did my bachelors too. I’m advised by Professor <a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Zhuowen Tu</a> and Professor <a href="https://zhiting.ucsd.edu/" target="_blank" rel="noopener noreferrer">Zhiting Hu</a>.</p>
-
-          <p>My main research interests are in spatial intelligence, world models, and interpretability. I’m particularly interested in scene reconstruction, and in building environments where an agent has to learn a latent model of the world's dynamics (often called a ‘world model’).</p>
-
-          <p>I believe understanding the causal structure encoded in these learned world models is crucial for building agents that can reason about interventions, generalize beyond their training environments, and move closer toward more general forms of intelligence.</p>
-
-          <p>I’m working on post-training vision language models at <a href="https://www.typeface.ai/" target="_blank" rel="noopener noreferrer">Typeface</a> this summer.</p>
-
-          <p>I also worked as a machine learning engineer at <a href="https://www.tesla.com/" target="_blank" rel="noopener noreferrer">Tesla</a>, with the energy team.</p>
-        </div>
+  <main class="wide">
+      <section id="notes" aria-label="Notes">
+        <h1 class="page-title">Notes</h1>
+        <div class="note-list" id="note-list"></div>
       </section>
-    </div>
   </main>
 
   <script>
@@ -80,6 +54,20 @@
       try { localStorage.setItem('theme', next); } catch (e) {}
       btn.setAttribute('aria-pressed', next === 'dark');
     });
+  })();
+  </script>
+  <script>
+  (function () {
+    // ---- edit notes here ----------------------------------------------
+    var NOTES = [
+      { title: 'SimpleResume — Our Motivation', date: 'May 2026', href: '/simpleresume/' }
+    ];
+    // -------------------------------------------------------------------
+    document.getElementById('note-list').innerHTML = NOTES.map(function (n) {
+      return '<a class="note-row" href="' + n.href + '">' +
+        '<span class="note-title">' + n.title + '</span>' +
+        '<span class="note-date">' + n.date + '</span></a>';
+    }).join('');
   })();
   </script>
 </body>

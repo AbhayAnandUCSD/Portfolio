@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Static single-page portfolio website for Abhay Anand. No frameworks, no build tools, no dependencies — just a single `index.html` file containing all HTML, CSS, and JavaScript.
+Static personal site for Abhay Anand. No frameworks, no build tools, no dependencies —
+hand-written HTML with one shared stylesheet.
 
 ## Development
 
@@ -12,21 +13,70 @@ Static single-page portfolio website for Abhay Anand. No frameworks, no build to
 # Serve locally (pick one)
 python3 -m http.server 8000
 npx serve
-# Or open index.html directly in a browser
 ```
 
-No build, lint, or test commands exist. Deployed via GitHub Pages from the main branch.
+Open `http://localhost:8000/`. There is no build, lint, or test step.
+Deployed via Vercel from the main branch.
 
-## Architecture
+## Structure
 
-Everything lives in `index.html`:
+```
+index.html      home — the bio, with the identity rail (photo, name, links)
+projects.html   projects grid, full width, no rail
+notes.html      writing index, full width, no rail
+style.css       every style for all three pages
+media/          preview clips: <name>_tile.{mp4,webm,webp}
+assets/         abhay.jpg
+simpleresume/   a standalone note, linked from notes.html
+vercel.json     redirects + rewrites (see below)
+```
 
-- **CSS (lines 14–270):** Embedded `<style>` block using CSS custom properties for theming. Two theme palettes (`light`/`dark`) defined on `:root[data-theme]`. Responsive breakpoint at 720px. Fluid typography via `clamp()`.
-- **HTML (lines 272–410):** Three content sections — `#intro` (visible by default), `#experience` (hidden), `#projects` (hidden). Navigation uses `data-target` attributes to link to sections.
-- **JS (lines 412–456):** Theme toggle persists to `localStorage`. Client-side routing toggles section visibility via the `hidden` attribute and uses `history.replaceState` for hash-based URLs. The `section-view` class on `<body>` triggers a compact header layout when viewing non-intro sections.
+## Editing content
 
-## Key Patterns
+Both lists are plain JS arrays at the bottom of their page, marked with an
+`// ---- edit X here` comment. No templating.
 
-- **Theming:** CSS variables (`--bg`, `--text`, `--muted`, `--border`, `--link`, `--accent`) switch between light/dark via the `data-theme` attribute on `<html>`.
-- **Navigation:** Clicking a nav link hides all sections except the target. Clicking the name/home link returns to `#intro`. Initial section is read from `window.location.hash`.
-- **Fonts:** Google Fonts — Fraunces (serif, headings) and Inter (sans-serif, body).
+- **Projects** — `projects.html`, the `PROJECTS` array. Each entry is
+  `{ title, link, href, desc, media }`, where `media` is a path prefix like
+  `/media/robot_tile` and the page appends `.webp` / `.webm` / `.mp4`.
+  Reorder by moving whole blocks.
+- **Notes** — `notes.html`, the `NOTES` array: `{ title, date, href }`.
+- **Bio** — `index.html`, the `.excerpt` block, plain paragraphs.
+
+## Key patterns
+
+- **Theming.** CSS custom properties (`--bg`, `--surface`, `--text`, `--muted`,
+  `--border`, `--accent`) swap on `:root[data-theme]`. An inline script in every
+  `<head>` reads `localStorage.theme` before first paint, so there is no flash;
+  the toggle persists the choice and it carries across pages.
+- **Layout.** Home uses a two-column grid — a sticky 340px rail beside the
+  content. Projects and Notes drop the rail for a centred 1060px column. The
+  projects grid collapses to one column at 900px; the rail stacks at 768px.
+- **Preview clips.** Each project card holds a muted, looping `<video>` with
+  `preload="none"` and a `.webp` poster, so nothing downloads until hover.
+  Hover (or keyboard focus) plays it and pauses+rewinds on leave; touch devices
+  have no hover, so an IntersectionObserver plays whichever card is centred.
+  `prefers-reduced-motion` suppresses playback and leaves the poster.
+- **Media URLs** carry a `?v=<timestamp>` cache-buster, because the clips get
+  re-encoded in place and browsers otherwise hold stale copies.
+
+## Encoding new preview clips
+
+Tiles are 16:10. Match the existing files exactly:
+
+```bash
+ffmpeg -i in.mp4 -an -vf "scale=720:-2:flags=lanczos" \
+  -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -movflags +faststart out_tile.mp4
+ffmpeg -i in.mp4 -an -vf "scale=720:-2:flags=lanczos" \
+  -c:v libvpx-vp9 -crf 33 -b:v 0 -row-mt 1 -pix_fmt yuv420p out_tile.webm
+ffmpeg -ss 3 -i in.mp4 -frames:v 1 -pix_fmt rgb24 poster.png
+cwebp -q 84 poster.png -o out_tile.webp     # ffmpeg's webp encoder is disabled locally
+```
+
+Keep tiles under ~750KB. Pixel art needs `flags=neighbor` and a lower crf.
+
+## vercel.json
+
+Routes `/bookofworlds` to the Book of Worlds site on GitHub Pages (repo
+`abhayananducsd/bookofworlds`) and proxies `/bookofworlds/api/*` to its backend.
+The old `/generalintuition` paths permanently redirect to `/bookofworlds`.
