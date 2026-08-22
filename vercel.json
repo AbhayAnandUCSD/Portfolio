@@ -20,7 +20,7 @@
   "rewrites": [
     {
       "source": "/bookofworlds/api/:path*",
-      "destination": "https://xppmuy4whv.us-east-1.awsapprunner.com/api/:path*"
+      "destination": "https://bookofworlds-api-439834834889.us-west1.run.app/api/:path*"
     },
     {
       "source": "/bookofworlds/",
