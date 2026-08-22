@@ -96,11 +96,13 @@
     ];
     // -------------------------------------------------------------------
 
-    var V = '?v=' + Date.now();
+    // Bump this when a clip is re-encoded. A timestamp here would defeat the
+    // browser cache and re-download every clip on every page load.
+    var V = '?v=3';
     var CUE = '<span class="cue"><svg width="7" height="8" viewBox="0 0 7 8" fill="currentColor" aria-hidden="true"><path d="M0 0l7 4-7 4z"/></svg>play</span>';
 
     document.getElementById('work-grid').innerHTML = PROJECTS.map(function (p) {
-      var inner = '<video muted loop playsinline preload="none" poster="' + p.media + '.webp' + V + '">' +
+      var inner = '<video muted loop playsinline preload="metadata" poster="' + p.media + '.webp' + V + '">' +
         '<source src="' + p.media + '.webm' + V + '" type="video/webm">' +
         '<source src="' + p.media + '.mp4' + V + '" type="video/mp4"></video>' + CUE;
       return '<a class="work-card" href="' + p.href + '" target="_blank" rel="noopener noreferrer">' +
