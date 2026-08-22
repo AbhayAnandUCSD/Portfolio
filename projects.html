@@ -65,35 +65,30 @@
     var PROJECTS = [
       {
         title: 'Robot control in an Unreal Engine World Model',
-        link: 'repo ↗',
         href: 'https://github.com/abhayananducsd/robotlearning',
         desc: 'Trying to see how well Grok can act as a general-purpose robotics VLA, given SPEAR, in Unreal Engine.',
         media: '/media/robot_tile'
       },
       {
+        title: 'Reality Mesh',
+        href: 'https://mlpc-ucsd.github.io/PixARMesh/',
+        desc: 'Working on post-training an autoregressive mesh based single view scene reconstruction model. Main goals are for better non-permeability and gravity adherence.',
+        media: '/media/grpo_tile'
+      },
+      {
         title: 'Infinite Environment Generation',
-        link: 'demo ↗',
         href: 'https://www.abhayanand.com/bookofworlds/',
         desc: 'Created a harness to allow for infinite solvable, difficulty controlled game environments. Want to try training the VLM with game state and other hidden metadata.',
         media: '/media/bow_tile'
       },
       {
-        title: 'Reality Mesh',
-        link: 'paper ↗',
-        href: '#',
-        desc: 'Working on post-training an autoregressive mesh based single view scene reconstruction model. Main goals are for better non-permeability and gravity adherence.',
-        media: '/media/grpo_tile'
-      },
-      {
         title: 'Autonomous Driving',
-        link: 'demo ↗',
         href: 'https://abhayananducsd.github.io/Autobots/',
         desc: 'Testing out how an autonomous driving agent would do, given only LiDAR. Built with PPO and other reinforcement learning algorithms to learn steering and throttling/braking.',
         media: '/media/auto_tile'
       },
       {
         title: 'SimpleResume',
-        link: 'note ↗',
         href: 'https://trysimpleresume.com',
         desc: 'Create a résumé that statistically helps you with job applications.',
         media: '/media/sr_tile'
@@ -108,13 +103,12 @@
       var inner = '<video muted loop playsinline preload="none" poster="' + p.media + '.webp' + V + '">' +
         '<source src="' + p.media + '.webm' + V + '" type="video/webm">' +
         '<source src="' + p.media + '.mp4' + V + '" type="video/mp4"></video>' + CUE;
-      var t = ' target="_blank" rel="noopener noreferrer"';
-      return '<article class="work-card">' +
-        '<a class="thumb" href="' + p.href + '"' + t + '>' + inner + '</a>' +
-        '<div class="work-text"><div class="work-head">' +
-          '<a class="work-title" href="' + p.href + '"' + t + '>' + p.title + '</a>' +
-          '<a class="work-link" href="' + p.href + '"' + t + '>' + p.link + '</a>' +
-        '</div><p class="work-desc">' + p.desc + '</p></div></article>';
+      return '<a class="work-card" href="' + p.href + '" target="_blank" rel="noopener noreferrer">' +
+        '<span class="thumb">' + inner + '</span>' +
+        '<span class="work-text">' +
+          '<span class="work-title">' + p.title + '</span>' +
+          '<span class="work-desc">' + p.desc + '</span>' +
+        '</span></a>';
     }).join('');
 
     Array.prototype.forEach.call(document.querySelectorAll('.work-card'), function (card) {
