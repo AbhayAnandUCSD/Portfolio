@@ -20,6 +20,8 @@
       } catch (e) {}
     })();
   </script>
+  <!-- Vercel Web Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
   <header class="topbar">
@@ -104,7 +106,7 @@
 
     // Bump this when a clip is re-encoded. A timestamp here would defeat the
     // browser cache and re-download every clip on every page load.
-    var V = '?v=4';
+    var V = '?v=5';
     var CUE = '<span class="cue"><svg width="7" height="8" viewBox="0 0 7 8" fill="currentColor" aria-hidden="true"><path d="M0 0l7 4-7 4z"/></svg>play</span>';
 
     document.getElementById('work-grid').innerHTML = PROJECTS.map(function (p) {
