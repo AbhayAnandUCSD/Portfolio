@@ -135,7 +135,8 @@ html,body{touch-action:pan-x pan-y}
 .lend h3{font:600 1.3rem var(--serif);margin:0 0 8px}
 .lend .row{justify-content:center;margin-top:18px}
 @media (max-width:700px){
-  .learn.show-list{grid-template-columns:1fr}
+  .learn,.learn.show-list{grid-template-columns:minmax(0,1fr)}
+  .lh1{flex-wrap:wrap}.lhead{min-width:0}.lhead select{max-width:100%}
   .learn.show-list .lcardwrap{display:none}
   .lcard{padding:16px 16px 70px}
   .lkeys{display:none}
@@ -238,6 +239,7 @@ html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
   .toolbar.more #btnMore{border-color:var(--accent);color:var(--accent)}
   .searchwrap{flex:1 1 180px;min-width:0}.pill{width:100%;min-width:0}
   .toolbar #btnMore{flex:0 0 auto}
+  .toolbar.more{background:var(--bg);border-bottom:1px solid var(--border)}
   html{overflow:hidden;width:100%;max-width:100%}body{width:100%;max-width:100%;overflow-x:hidden}   /* nothing may widen the layout viewport past the screen */
   #detail{width:auto!important;max-width:100%;box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom)}
   #detail .db{min-width:0;overflow-x:hidden}
