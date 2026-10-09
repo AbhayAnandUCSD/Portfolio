@@ -75,6 +75,21 @@ cwebp -q 84 poster.png -o out_tile.webp     # ffmpeg's webp encoder is disabled 
 
 Keep tiles under ~750KB. Pixel art needs `flags=neighbor` and a lower crf.
 
+## The Research Map note (spacing + source of truth)
+
+`notes/researchmap/index.html` has a second copy at
+`~/GithubFolders/IdeaMap/site/note-researchmap.html`, and sessions working on
+IdeaMap copy that file over this one. A stale copy there silently reverts edits
+made here (it already undid the width fix and the rename twice). Edit **both**,
+or copy this file back into IdeaMap, before committing.
+
+Spacing the note must keep (laptop):
+
+- `.note-body { max-width: none }` — prose spans the full 1060px column so it
+  lines up with the map card. Do not restore the old `34em` cap.
+- `.note-body p` is `1.2rem` / `line-height: 1.75` (`1.06rem` under 768px).
+- Title/h1/Notes entry read "Getting started with Research" (lowercase "started").
+
 ## vercel.json
 
 Routes `/bookofworlds` to the Book of Worlds site on GitHub Pages (repo
