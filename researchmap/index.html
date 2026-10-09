@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>Research Map · Abhay Anand</title>
 <meta name="description" content="An interactive map of oral and spotlight papers from CoRL, RSS, CVPR, NeurIPS, ICML and ICLR, 2023–2026, grouped by direction.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +29,7 @@ html{background:var(--bg);-webkit-text-size-adjust:100%}
 body{margin:0;height:100dvh;overflow:hidden;background:var(--bg);color:var(--text);font:16px/1.6 var(--serif);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;transition:background-color .25s ease,color .25s ease}
 a{color:var(--text);text-decoration:none}
 #graph,#labels{touch-action:none}
-html{touch-action:manipulation}
+html,body{touch-action:pan-x pan-y}
 #graph{position:absolute;left:0;right:0;top:61px;bottom:0}
 #labels{position:absolute;left:0;right:0;top:61px;bottom:0;pointer-events:none;overflow:hidden}
 
@@ -494,7 +494,7 @@ renderer.getCamera().on("updated",()=>{ const v=renderer.getCamera().ratio<0.5; 
 
 // ---- interaction ----
 const tip=$("#tip");
-renderer.on("enterNode",({node})=>{ S.hover=node; const n=byId.get(node); tip.innerHTML=`<b>${esc(n.title)}</b><div class="muted" style="margin-top:3px">${esc(n.tldr)}</div><div class="muted small" style="margin-top:4px">${n.venue} ${n.year} · ${esc(n.primary_topic)}</div>`; tip.style.display="block"; renderer.refresh(); });
+renderer.on("enterNode",({node})=>{ S.hover=node; if(matchMedia("(pointer:coarse)").matches){ renderer.refresh(); return; } const n=byId.get(node); tip.innerHTML=`<b>${esc(n.title)}</b><div class="muted" style="margin-top:3px">${esc(n.tldr)}</div><div class="muted small" style="margin-top:4px">${n.venue} ${n.year} · ${esc(n.primary_topic)}</div>`; tip.style.display="block"; renderer.refresh(); });
 renderer.on("leaveNode",()=>{ S.hover=null; tip.style.display="none"; renderer.refresh(); });
 renderer.getMouseCaptor().on("mousemovebody",e=>{ tip.style.left=Math.min(e.x+14,innerWidth-340)+"px"; tip.style.top=(e.y+14)+"px"; });
 // ---- drag nodes (Obsidian-style): the grabbed node moves, linked papers follow with a springy pull ----
