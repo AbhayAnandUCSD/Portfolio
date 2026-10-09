@@ -232,6 +232,12 @@ html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 @media (max-width:768px){
   .stat{bottom:calc(12px + env(safe-area-inset-bottom))}
   .filters{bottom:calc(30px + env(safe-area-inset-bottom))}
+  /* phones: the secondary controls stay tucked behind one "Options" button */
+  #btnMore{display:inline-block}#btnMore[hidden]{display:inline-block}
+  .toolbar:not(.more) #modeSel,.toolbar:not(.more) #btnLearn,.toolbar:not(.more) #btnEdges,.toolbar:not(.more) #btnReset{display:none}
+  .toolbar.more #btnMore{border-color:var(--accent);color:var(--accent)}
+  .searchwrap{flex:1 1 180px;min-width:0}.pill{width:100%;min-width:0}
+  .toolbar #btnMore{flex:0 0 auto}
   html{overflow:hidden;width:100%;max-width:100%}body{width:100%;max-width:100%;overflow-x:hidden}   /* nothing may widen the layout viewport past the screen */
   #detail{width:auto!important;max-width:100%;box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom)}
   #detail .db{min-width:0;overflow-x:hidden}
@@ -292,6 +298,7 @@ html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
       <div id="tree"></div>
     </div>
   </div>
+  <button class="btn" id="btnMore" type="button" aria-expanded="false" aria-controls="modeSel" hidden>Options</button>
   <select class="btn selpill" id="modeSel" aria-label="What to show for papers outside your filters" title="What to do with papers outside your filters">
     <option value="focus">Focus + neighbours</option><option value="dim">Dim others</option><option value="hide">Hide others</option>
   </select>
@@ -941,6 +948,7 @@ $("#q").onkeydown=e=>{
   else if(e.key==="Escape"){ $("#searchwrap").classList.remove("open"); e.target.blur(); }
 };
 // the dropdown opens when you click/focus the pill and closes on outside click
+$("#btnMore").addEventListener("click",()=>{ const t=document.querySelector(".toolbar"), on=t.classList.toggle("more"); $("#btnMore").setAttribute("aria-expanded",on); });
 $("#pill").addEventListener("click",()=>{ $("#searchwrap").classList.add("open"); $("#q").focus(); });
 $("#q").addEventListener("keydown",e=>{ if(e.key!=="Escape"&&e.key!=="Tab") $("#searchwrap").classList.add("open"); });   // opens on a real click or keystroke, never on load
 document.addEventListener("mousedown",e=>{ if(!e.target.closest("#searchwrap")) $("#searchwrap").classList.remove("open"); });
