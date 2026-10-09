@@ -232,7 +232,9 @@ html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 @media (max-width:768px){
   .stat{bottom:calc(12px + env(safe-area-inset-bottom))}
   .filters{bottom:calc(30px + env(safe-area-inset-bottom))}
-  #detail{padding-bottom:env(safe-area-inset-bottom)}
+  html{overflow:hidden;width:100%;max-width:100%}body{width:100%;max-width:100%;overflow-x:hidden}   /* nothing may widen the layout viewport past the screen */
+  #detail{width:auto!important;max-width:100%;box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom)}
+  #detail .db{min-width:0;overflow-x:hidden}
   .topbar-inner{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
