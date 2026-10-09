@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Research Map · Abhay Anand</title>
 <meta name="description" content="An interactive map of oral and spotlight papers from CoRL, RSS, CVPR, NeurIPS, ICML and ICLR, 2023–2026, grouped by direction.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -216,6 +216,24 @@ a.lnk,.db a{color:var(--text);border-bottom:1px solid var(--border);transition:c
   .spanel{position:fixed;left:12px;right:12px;top:112px;width:auto}
   .filters{left:14px;bottom:30px;max-width:calc(100vw - 28px)}.stat{left:20px}
   .lbl.sup{font-size:1.02rem}.lbl.cl{font-size:.7rem}
+}
+
+/* iPhone: inputs under 16px make Safari zoom the page on focus; coarse pointers get bigger tap targets; respect the home-indicator inset */
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+@media (pointer:coarse){
+  .pill input,input[type=search],.lhead select,.score textarea{font-size:16px!important}
+  .tab{padding-top:12px;padding-bottom:11px}
+  .tab button,.ib,.x,.fchip button{padding:8px 10px}
+  .btn{padding-top:9px;padding-bottom:9px}
+  .chip{padding:7px 12px}
+  .topic{padding-top:8px;padding-bottom:8px}
+  .sim{padding:13px 0}
+}
+@media (max-width:768px){
+  .stat{bottom:calc(12px + env(safe-area-inset-bottom))}
+  .filters{bottom:calc(30px + env(safe-area-inset-bottom))}
+  #detail{padding-bottom:env(safe-area-inset-bottom)}
+  .topbar-inner{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
