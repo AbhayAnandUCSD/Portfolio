@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="An interactive map of 6,240 oral and spotlight papers from CoRL, RSS, CVPR, NeurIPS, ICML and ICLR, 2023–2026." />
+  <title>Research Map · Abhay Anand</title>
+  <meta property="og:title" content="Research Map" />
+  <meta property="og:description" content="An interactive map of 6,240 oral and spotlight papers, 2023–2026." />
+  <meta property="og:image" content="/researchmap/poster-light.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var theme = stored === 'dark' || stored === 'light'
+          ? stored
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    /* note page: same column as the Notes index, prose in the home-page reading style */
+    .note-head { margin-bottom: 26px; }
+    .note-head .page-title { margin-bottom: 6px; }
+    .note-meta { font-family: "Figtree", system-ui, sans-serif; font-size: .82rem; color: var(--muted); }
+    .note-body { max-width: 34em; }
+    .note-body p { font-size: 1.12rem; line-height: 1.78; text-wrap: pretty; }
+    .note-body p + p { margin-top: 1em; }
+    .note-body a { border-bottom: 1px solid var(--border); transition: color .15s ease, border-color .15s ease; }
+    @media (hover: hover) { .note-body a:hover { color: var(--accent); border-bottom-color: var(--accent); } }
+
+    /* the map card: poster first (fast), live map on click, full screen one tap away */
+    .note-close { margin-top: 30px; }
+    .mapcard { position: relative; margin: 34px 0 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface); }
+    .mapfs { position: absolute; top: 12px; right: 12px; z-index: 3; font-family: "Figtree", system-ui, sans-serif; font-size: .8rem; font-weight: 500; color: var(--text);
+      background: color-mix(in srgb, var(--bg) 88%, transparent); border: 1px solid var(--border); border-radius: 999px; padding: 6px 13px; white-space: nowrap;
+      backdrop-filter: blur(6px); transition: color .15s ease, border-color .15s ease; }
+    @media (hover: hover) { .mapfs:hover { color: var(--accent); border-color: var(--accent); } }
+    .mapstage { position: relative; aspect-ratio: 16 / 10; background: var(--bg); }
+    .mapstage img, .mapstage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; object-fit: cover; }
+    .mapstage img.poster-dark { display: none; }
+    :root[data-theme="dark"] .mapstage img.poster-light { display: none; }
+    :root[data-theme="dark"] .mapstage img.poster-dark { display: block; }
+    .mapgo { position: absolute; inset: 0; width: 100%; border: 0; background: transparent; cursor: pointer; display: grid; place-items: end start; padding: 18px; font: inherit; }
+    .mapgo span { font-family: "Figtree", system-ui, sans-serif; font-size: .86rem; font-weight: 500; color: var(--text); background: color-mix(in srgb, var(--bg) 88%, transparent);
+      border: 1px solid var(--border); border-radius: 999px; padding: 8px 16px; backdrop-filter: blur(6px); transition: color .15s ease, border-color .15s ease; }
+    @media (hover: hover) { .mapgo:hover span { color: var(--accent); border-color: var(--accent); } }
+    .mapgo:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+    .mapstage.live { aspect-ratio: auto; height: min(78vh, 760px); min-height: 520px; }
+    @media (max-width: 768px) { .mapstage { aspect-ratio: 4 / 3; } .mapstage.live { height: 74vh; min-height: 460px; } .note-body p { font-size: 1.04rem; } }
+  </style>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">Abhay Anand</a>
+      <nav class="nav" aria-label="Sections">
+        <a href="/projects">Projects</a>
+        <a href="/notes" aria-current="page">Notes</a>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="wide">
+    <article>
+      <div class="note-head">
+        <h1 class="page-title">Research Map</h1>
+        <div class="note-meta">Oct 2026</div>
+      </div>
+
+      <div class="note-body">
+        <p>A lot of people have been asking me about how to ‘get into research’. I’d say, generally the most important thing you could do is figure out what you like. Research should be fun, and ideally you should be really excited to share your research.</p>
+        <p>I’ve made a little tool here to help anyone interested in ML research and is a little confused. I've scraped papers from some of the most popular conferences.</p>
+        <p>I’d suggest filtering by the topics you like at a general level (for examples, computer vision, robotics etc.) and then reading a bunch of abstracts (use learn mode once you've applied your filters). Then once you have a good idea of what the current research directions are you can center into a more specific niche (like meta learning, or latent space steering).</p>
+        <p>Lastly, search for professors at your school who work on these topics and reach out to them (and their graduate students). Keep those brief, and ideally attach a specific area or project you’d want to explore.</p>
+      </div>
+
+      <figure class="mapcard">
+        <a class="mapfs" href="/researchmap/">Open full screen ↗</a>
+        <div class="mapstage" id="mapstage">
+          <img class="poster-light" src="/researchmap/poster-light.webp" alt="Map of 6,240 papers grouped into ten research areas" width="1600" height="1000" loading="lazy" />
+          <img class="poster-dark" src="/researchmap/poster-dark.webp" alt="" width="1600" height="1000" loading="lazy" />
+          <button class="mapgo" id="mapgo" type="button" aria-label="Explore the interactive map"><span>Click to explore</span></button>
+        </div>
+      </figure>
+
+      <div class="note-body note-close">
+        <p>Hope this helps anyone starting their journey.</p>
+      </div>
+    </article>
+  </main>
+
+  <script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    btn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'dark');
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      btn.setAttribute('aria-pressed', next === 'dark');
+    });
+    // the live map (about 10 MB of data) only loads when asked for
+    var stage = document.getElementById('mapstage'), go = document.getElementById('mapgo');
+    go.addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.src = '/researchmap/?embed=1'; f.title = 'Research Map'; f.allow = 'fullscreen';
+      stage.classList.add('live'); stage.innerHTML = ''; stage.appendChild(f);
+    });
+  })();
+  </script>
+</body>
+</html>
