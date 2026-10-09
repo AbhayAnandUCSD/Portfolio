@@ -28,6 +28,8 @@ html{background:var(--bg);-webkit-text-size-adjust:100%}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;height:100dvh;overflow:hidden;background:var(--bg);color:var(--text);font:16px/1.6 var(--serif);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;transition:background-color .25s ease,color .25s ease}
 a{color:var(--text);text-decoration:none}
+#graph,#labels{touch-action:none}
+html{touch-action:manipulation}
 #graph{position:absolute;left:0;right:0;top:61px;bottom:0}
 #labels{position:absolute;left:0;right:0;top:61px;bottom:0;pointer-events:none;overflow:hidden}
 
@@ -688,19 +690,31 @@ function panBy(dx,dy){
   const cam=renderer.getCamera(), d=renderer.getDimensions(), a=renderer.viewportToFramedGraph({x:d.width/2,y:d.height/2}), b=renderer.viewportToFramedGraph({x:d.width/2+dx,y:d.height/2+dy});
   cam.setState({x:cam.x+(b.x-a.x),y:cam.y+(b.y-a.y)});
 }
-$("#graph").addEventListener("wheel",e=>{
-  if(e.ctrlKey||e.metaKey){                                  // pinch (the browser reports it as Ctrl+wheel) or Cmd+scroll: smooth zoom around the cursor
-    e.preventDefault(); e.stopImmediatePropagation();
-    const cam=renderer.getCamera(), r=el_rect(), x=e.clientX-r.left, y=e.clientY-r.top;
-    const a=renderer.viewportToFramedGraph({x,y}), nr=Math.max(0.03,Math.min(4,cam.ratio*Math.exp(e.deltaY*(e.deltaMode===1?0.4:0.012))));
-    cam.setState({ratio:nr}); const b=renderer.viewportToFramedGraph({x,y});   // keep the point under the cursor fixed
-    cam.setState({x:cam.x+(a.x-b.x),y:cam.y+(a.y-b.y)}); return;
+function zoomAround(nr,cx,cy){                              // zoom to ratio nr, keeping the point under the cursor fixed
+  const cam=renderer.getCamera(), r=el_rect(), x=cx-r.left, y=cy-r.top;
+  const a=renderer.viewportToFramedGraph({x,y}); cam.setState({ratio:Math.max(0.03,Math.min(4,nr))});
+  const b=renderer.viewportToFramedGraph({x,y}); cam.setState({x:cam.x+(a.x-b.x),y:cam.y+(a.y-b.y)});
+}
+const inMap=t=>!!(t&&t.closest&&t.closest("#graph,#labels"));      // the canvas AND the heading labels on top of it
+// Listening on the whole document (not just the canvas) so a pinch over a heading, the toolbar or a floating card never falls through to the browser's page zoom.
+document.addEventListener("wheel",e=>{
+  if(e.ctrlKey){                                            // pinch on a trackpad arrives as Ctrl+wheel (Chrome, Firefox, Edge)
+    e.preventDefault();                                     // never zoom the page itself
+    if(inMap(e.target)){ e.stopImmediatePropagation(); zoomAround(renderer.getCamera().ratio*Math.exp(e.deltaY*(e.deltaMode===1?0.4:0.012)),e.clientX,e.clientY); }
+    return;
   }
+  if(!inMap(e.target)) return;                              // scrolling inside the card / dropdown / Learn stays normal
   const k=e.deltaMode===1?16:1, dx=e.deltaX*k, dy=e.deltaY*k;
-  const mouseWheel=e.deltaMode===1||(dx===0&&Number.isInteger(dy)&&Math.abs(dy)>=100&&(Math.abs(dy)%100===0||Math.abs(dy)%120===0));   // a physical mouse wheel steps in 100/120s: keep zooming with it
-  if(mouseWheel) return;
-  e.preventDefault(); e.stopImmediatePropagation(); panBy(dx,dy);   // two-finger scroll on a trackpad: pan in any direction
+  if(e.metaKey){ e.preventDefault(); e.stopImmediatePropagation(); zoomAround(renderer.getCamera().ratio*Math.exp(dy*0.012),e.clientX,e.clientY); return; }   // Cmd+scroll zooms
+  const mouseWheel=e.deltaMode===1||(dx===0&&Number.isInteger(dy)&&Math.abs(dy)>=100&&(Math.abs(dy)%100===0||Math.abs(dy)%120===0));            // a physical mouse wheel steps in 100/120s: it zooms
+  if(mouseWheel) return;                                    // (the built-in zoom handles it)
+  e.preventDefault(); e.stopImmediatePropagation(); panBy(dx,dy);   // two-finger scroll: pan in any direction
 },{capture:true,passive:false});
+// Safari reports trackpad pinch as gesture events (no Ctrl+wheel); same idea
+let gRatio=1;
+document.addEventListener("gesturestart",e=>{ e.preventDefault(); gRatio=renderer.getCamera().ratio; },{passive:false});
+document.addEventListener("gesturechange",e=>{ e.preventDefault(); if(inMap(e.target)&&e.scale) zoomAround(gRatio/e.scale,e.clientX,e.clientY); },{passive:false});
+document.addEventListener("gestureend",e=>e.preventDefault(),{passive:false});
 document.addEventListener("keydown",e=>{
   if(learnOn||e.metaKey||e.ctrlKey||e.altKey) return; const t=(e.target.tagName||"").toLowerCase(); if(t==="input"||t==="textarea"||t==="select"||t==="button") return;
   if(document.querySelector("#detail.open")&&e.target.closest&&e.target.closest("#detail")) return;
