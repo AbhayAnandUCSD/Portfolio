@@ -428,6 +428,7 @@ function dimColor(){ return dark()? "#2e2822":"#dcd7cb"; }
 
 let edgesVisible=false;   // links appear once you zoom in; hover/select always shows a node's own links
 const renderer = new Sigma(g, $("#graph"), {
+  ...(matchMedia("(pointer:coarse)").matches?{defaultDrawNodeHover:()=>{}}:{}),   // touch has no hover: the white title pill sticks and runs off-screen
   renderEdgeLabels:false, labelRenderedSizeThreshold:9999, defaultEdgeType:"line", zIndex:true,
   minCameraRatio:0.03, maxCameraRatio:4, zoomToSizeRatioFunction:r=>Math.pow(r,0.3),
   nodeReducer:(id,a)=>{
@@ -638,10 +639,10 @@ function learnSelect(id,fromList){
     <p class="abs muted" id="lAbs">Loading abstract…</p>
     <div class="meta small">${topics}</div><div class="meta small">${tags}</div><div class="foot small">${foot}</div>
     <div class="score"><div class="eyebrow">Your score</div>
-      <div class="stars" id="lStars" role="radiogroup" aria-label="Score 1 to 5">${[1,2,3,4,5].map(k=>`<button class="star ${r.r===k?"on":""}" data-k="${k}" role="radio" aria-checked="${r.r===k}" title="${STAR_LBL[k]}">${k}</button>`).join("")}<span class="starlbl" id="lLbl">${r.r?STAR_LBL[r.r]:"press 1–5"}</span></div>
-      <textarea id="lNote" maxlength="400" placeholder="A short note for future you…  (Enter = next, Shift+Enter = new line)">${esc(r.n||"")}</textarea>
+      <div class="stars" id="lStars" role="radiogroup" aria-label="Score 1 to 5">${[1,2,3,4,5].map(k=>`<button class="star ${r.r===k?"on":""}" data-k="${k}" role="radio" aria-checked="${r.r===k}" title="${STAR_LBL[k]}">${k}</button>`).join("")}<span class="starlbl" id="lLbl">${r.r?STAR_LBL[r.r]:""}</span></div>
+      <textarea id="lNote" maxlength="400" placeholder="A short note for future you…">${esc(r.n||"")}</textarea>
       <div class="snav"><span class="muted small" id="lSaved"></span><span style="flex:1"></span><button class="btn" id="lPrev" title="Back (←)">←</button><button class="btn" id="lSkip" title="Skip without scoring (→ or S)">Skip</button><button class="btn primary" id="lNext" title="Save and next (Enter)">Next ↵</button></div>
-      <div class="lkeys"><kbd>Enter</kbd> save &amp; next · <kbd>←</kbd> <kbd>→</kbd> back / skip · <kbd>1</kbd>–<kbd>5</kbd> score · <kbd>Esc</kbd> back to map</div>
+      
     </div>`;
   abstracts().then(a=>{ const el=$("#lAbs"); if(!el||lSel!==id||lEnd) return; el.classList.remove("muted"); el.textContent=cleanAbs(a[id]||"(abstract unavailable)"); mathify(el); });
   $("#lCard").parentElement.scrollTop=0; lProgress(); saveHash();
@@ -668,7 +669,7 @@ function setReview(id,patch){
   const sv=$("#lSaved"); if(sv){ sv.textContent="Saved in this browser"; clearTimeout(sv._t); sv._t=setTimeout(()=>{ if(sv) sv.textContent=""; },1400); }
 }
 function setStars(k){ if(!lSel||lEnd) return; const cur=(reviews[lSel]||{}).r||0, v=cur===k?0:k; setReview(lSel,{r:v});
-  document.querySelectorAll("#lStars .star").forEach(b=>{ const on=+b.dataset.k===v; b.classList.toggle("on",on); b.setAttribute("aria-checked",on); }); const l=$("#lLbl"); if(l) l.textContent=v?STAR_LBL[v]:"press 1–5"; }
+  document.querySelectorAll("#lStars .star").forEach(b=>{ const on=+b.dataset.k===v; b.classList.toggle("on",on); b.setAttribute("aria-checked",on); }); const l=$("#lLbl"); if(l) l.textContent=v?STAR_LBL[v]:""; }
 function commitNote(){ const ta=$("#lNote"); if(ta&&lSel&&!lEnd){ clearTimeout(noteT); const cur=(reviews[lSel]||{}).n||""; if(ta.value!==cur) setReview(lSel,{n:ta.value}); } }
 function exportCSV(){ if(!ratedCount()) return; const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([reviewsCSV()],{type:"text/csv"})); a.download="research_map_ratings.csv"; a.click(); }
 $("#lCard").addEventListener("click",e=>{
