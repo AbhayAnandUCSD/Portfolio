@@ -264,12 +264,28 @@ html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 .foot a{color:var(--text)}
 .warn{color:var(--accent)}
 .sim b{font-weight:400;font-size:.95rem;line-height:1.35}
+/* 3D view: the sigma canvas stays mounted underneath (hidden), so switching back is instant */
+#graph3d{position:absolute;left:0;right:0;top:61px;bottom:0;display:none;touch-action:none;cursor:grab}
+#graph3d.drag{cursor:grabbing}#graph3d canvas{display:block}
+.is3d #graph3d{display:block}.is3d #graph{visibility:hidden}
+.embed #graph3d{top:0}
+.is3d .lbl{--l:12px;transform-origin:50% 100%;transform:translate(-50%,-100%) scale(var(--s,1)) translateY(calc(-1 * var(--l)));transition:opacity .25s ease}
+.is3d .lbl::before{content:"";position:absolute;left:50%;top:100%;width:1px;height:calc(var(--l) - 3px);background:currentColor;opacity:.5}
+.is3d .lbl::after{content:"";position:absolute;left:50%;top:calc(100% + var(--l) - 3px);width:5px;height:5px;margin-left:-2px;border-radius:50%;background:currentColor;box-shadow:0 0 0 1.5px var(--bg)}
+.is3d .lbl.cl::after{width:4px;height:4px;margin-left:-1.5px}
+.is3d .lbl.dn{transform-origin:50% 0;transform:translate(-50%,0) scale(var(--s,1)) translateY(var(--l))}   /* hanging below its anchor */
+.is3d .lbl.dn::before{top:auto;bottom:100%}
+.is3d .lbl.dn::after{top:auto;bottom:calc(100% + var(--l) - 3px)}
+.is3d .lbl.off{opacity:0!important;pointer-events:none}
+@media (max-width:768px){#graph3d{top:53px}}
 </style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 </head>
 <body>
 <div id="graph"><div class="stat" id="loading" style="left:24px;top:130px;bottom:auto">Loading 6,240 papers…</div></div>
+<div id="graph3d"></div>
 <div id="labels"></div>
 <div class="tip" id="tip"></div>
 
@@ -304,6 +320,7 @@ html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
   <select class="btn selpill" id="modeSel" aria-label="What to show for papers outside your filters" title="What to do with papers outside your filters">
     <option value="focus">Focus + neighbours</option><option value="dim">Dim others</option><option value="hide">Hide others</option>
   </select>
+  <button class="btn" id="btn3d" type="button" aria-pressed="false" title="Spin the map in 3D, with each paper sized by its citations">3D</button>
   <button class="btn" id="btnLearn" title="Read the filtered papers as a list, rate them and keep notes">Learn</button>
   <button class="btn" id="btnEdges">Links</button>
   <button class="btn" id="btnReset">Reset</button>
@@ -360,7 +377,8 @@ function loadHash(){
   S.mode = p.get("m")||store.get("ideamap.mode")||"focus"; S.niche=+(p.get("n")||0); S.low=p.get("low")==="1"; S.q=p.get("q")||"";
   if(!S.topics.size){ try{ (JSON.parse(store.get("topics")||"[]")).forEach(t=>S.topics.add(t)); }catch(e){} }
   if(p.get("sel")) S.sel = p.get("sel");
-  S.learn = p.get("learn")==="1";   // read now: the first saveHash() would otherwise drop it
+  S.learn = p.get("learn")==="1";
+  S.d3 = p.get("d")==="3";   // read now: the first saveHash() would otherwise drop it
 }
 function saveHash(){
   const p = new URLSearchParams();
@@ -369,6 +387,7 @@ function saveHash(){
   if(S.mode!=="focus") p.set("m",S.mode); if(S.niche) p.set("n",S.niche); if(S.low) p.set("low","1"); if(S.q) p.set("q",S.q);
   if(S.sel) p.set("sel",S.sel);
   if(typeof learnOn!=="undefined"&&learnOn) p.set("learn","1");
+  if(S.d3) p.set("d","3");
   history.replaceState(null,"","#"+p.toString());
   store.set("topics",JSON.stringify([...S.topics])); store.set("ideamap.mode",S.mode);
 }
@@ -426,28 +445,33 @@ function recompute(){
 
 function dimColor(){ return dark()? "#2e2822":"#dcd7cb"; }
 
+// shared by the 2D (sigma) and 3D views
+function reduceNode(id,a){
+  const out={...a};
+  const m = matchSet.has(id), f = focusNeighbors.has(id);
+  const active = S.hover || S.sel;
+  if(!m && !f){
+    if(S.mode==="dim"){ out.color=dimColor(); out.size=a.size*.6; out.zIndex=0; if(!anyFilter()) {out.color=a.color;out.size=a.size;} }
+    else out.hidden=true;
+  } else if(f){ out.color=blend(a.color); out.zIndex=1; }
+  else out.zIndex=2;
+  if(tabIds.has(id)&&id!==active){ out.color=a.color; out.size=a.size*1.5; out.highlighted=true; out.zIndex=3; out.hidden=false; }
+  if(active){
+    const near = id===active || tabIds.has(id) || g.hasEdge(id,active) || g.hasEdge(active,id);
+    if(!near && !out.hidden){ out.color=dimColor(); out.zIndex=0; }
+    if(id===active){ out.highlighted=true; out.size=a.size*1.8; out.zIndex=3; }
+  }
+  return out;
+}
+
+let view3d=null;                          // built on first use (three.js + layout3d.json load lazily)
+const is3d=()=>!!(view3d&&S.d3);
 let edgesVisible=false;   // links appear once you zoom in; hover/select always shows a node's own links
 const renderer = new Sigma(g, $("#graph"), {
   ...(matchMedia("(pointer:coarse)").matches?{defaultDrawNodeHover:()=>{}}:{}),   // touch has no hover: the white title pill sticks and runs off-screen
   renderEdgeLabels:false, labelRenderedSizeThreshold:9999, defaultEdgeType:"line", zIndex:true,
   minCameraRatio:0.03, maxCameraRatio:4, zoomToSizeRatioFunction:r=>Math.pow(r,0.3),
-  nodeReducer:(id,a)=>{
-    const out={...a};
-    const m = matchSet.has(id), f = focusNeighbors.has(id);
-    const active = S.hover || S.sel;
-    if(!m && !f){
-      if(S.mode==="dim"){ out.color=dimColor(); out.size=a.size*.6; out.zIndex=0; if(!anyFilter()) {out.color=a.color;out.size=a.size;} }
-      else out.hidden=true;
-    } else if(f){ out.color=blend(a.color); out.zIndex=1; }
-    else out.zIndex=2;
-    if(tabIds.has(id)&&id!==active){ out.color=a.color; out.size=a.size*1.5; out.highlighted=true; out.zIndex=3; out.hidden=false; }
-    if(active){
-      const near = id===active || tabIds.has(id) || g.hasEdge(id,active) || g.hasEdge(active,id);
-      if(!near && !out.hidden){ out.color=dimColor(); out.zIndex=0; }
-      if(id===active){ out.highlighted=true; out.size=a.size*1.8; out.zIndex=3; }
-    }
-    return out;
-  },
+  nodeReducer:reduceNode,
   edgeReducer:(e,a)=>{
     const out={...a}; const [s,t]=g.extremities(e);
     const active=S.hover||S.sel;
@@ -457,6 +481,7 @@ const renderer = new Sigma(g, $("#graph"), {
     return out;
   }
 });
+{ const r2=renderer.refresh.bind(renderer); renderer.refresh=(...a)=>{ if(is3d()) view3d.refresh(); return r2(...a); }; }   // every restyle reaches the 3D view too
 const anyFilter=()=>S.topics.size||hasOtherFilters();
 function hasOtherFilters(){ return S.regions.size||S.years.size||S.tracks.size||S.venues.size||S.tags.size||S.niche||S.low||S.q; }
 
@@ -469,7 +494,7 @@ const flyTo=(o,ratio)=>{ const fp=renderer.viewportToFramedGraph(renderer.graphT
 // clicking a heading filters to that area/cluster (click again to undo) and flies there
 labelItems.forEach(it=>it.el.addEventListener("click",()=>{
   const key=(it.kind==="sup"?"a":"c")+it.o.id;
-  if(S.regions.has(key)) S.regions.delete(key); else { S.regions.add(key); flyTo(it.o,it.kind==="sup"?0.4:0.14); }
+  if(S.regions.has(key)) S.regions.delete(key); else { S.regions.add(key); if(is3d()) view3d.flyToLabel(it); else flyTo(it.o,it.kind==="sup"?0.4:0.14); }
   recompute();
 }));
 function paintTheme(){
@@ -478,14 +503,16 @@ function paintTheme(){
   document.querySelectorAll("[data-cl]").forEach(e=>e.style.borderColor=clusterColor(clusters[+e.dataset.cl]));
 }
 function placeLabels(){
-  const r=renderer.getCamera().ratio, W=innerWidth, H=innerHeight;
-  const zoomedIn=r<0.55;                    // same switch as before: areas when zoomed out, cluster names when zoomed in
+  if(is3d()) return placeLabels3d();
+  const W=innerWidth, H=innerHeight, d3=false;
+  const zoomedIn=d3?view3d.zoomedIn():renderer.getCamera().ratio<0.55;                    // same switch as before: areas when zoomed out, cluster names when zoomed in
   const filtered=S.topics.size||hasOtherFilters();
   const placed=[];
   for(const it of labelItems){
     const {el,o,kind}=it;
     const show=kind==="sup"?!zoomedIn:zoomedIn;
-    const p=renderer.graphToViewport({x:o.cx,y:o.cy});
+    const p=d3?view3d.toScreen(it):renderer.graphToViewport({x:o.cx,y:o.cy});
+    if(!p||p.behind){ el.style.display="none"; continue; }
     const live=kind==="sup"?liveSup[o.id]:liveCl[o.id], empty=filtered&&live===0;
     if(!show||p.x<-100||p.x>W+100||p.y<-20||p.y>H+20||(empty&&S.mode==="hide")){ el.style.display="none"; continue; }
     el.style.display="block"; el.style.left=p.x+"px"; el.style.opacity=empty?".3":"1";
@@ -501,12 +528,39 @@ function placeLabels(){
     if(!ok) el.style.display="none";
   }
 }
+// 3D: every label sits on a pin whose foot is its anchor, and scales with depth. On a collision the pin grows
+// (the label rises, still attached) instead of the label sliding off its cluster; if no height fits, it fades out.
+// candidate pins, shortest first, alternating above / below the anchor: [length, hangs below?]
+const it3dPins=(lh,sup)=>Array.from({length:sup?5:2},(_,k)=>12+k*lh).flatMap(L=>[[L,false],[L,true]]);
+function placeLabels3d(){
+  const W=innerWidth, H=innerHeight, zoomedIn=view3d.zoomedIn(), filtered=S.topics.size||hasOtherFilters(), placed=[], vis=[];
+  for(const it of labelItems){
+    const {el,o,kind}=it, show=kind==="sup"?!zoomedIn:zoomedIn, p=view3d.toScreen(it);
+    const live=kind==="sup"?liveSup[o.id]:liveCl[o.id], empty=filtered&&live===0;
+    if(!show||!p||p.behind||p.x<-100||p.x>W+100||p.y<-20||p.y>H+40||(empty&&S.mode==="hide")){ el.style.display="none"; continue; }
+    vis.push({it,p,empty});
+  }
+  vis.sort((a,b)=>(b.it.kind==="sup")-(a.it.kind==="sup")||a.p.depth-b.p.depth);
+  for(const {it:{el},p,empty} of vis){
+    el.style.display="block"; el.style.left=p.x+"px"; el.style.top=p.y+"px"; el.style.setProperty("--s",p.s.toFixed(3));
+    el.style.zIndex=String(1000-Math.round(p.depth)); el.style.opacity=String(empty?.3:p.fade);
+    const lh=el.offsetHeight, w=el.offsetWidth*p.s+8, h=lh*p.s;
+    let ok=false;
+    for(const [L,dn] of it3dPins(lh, el.classList.contains("sup"))){
+      const e=p.y+(dn?L:-L)*p.s, box=dn?[p.x-w/2,e,p.x+w/2,e+h]:[p.x-w/2,e-h,p.x+w/2,e], pin=[p.x-3,Math.min(e,p.y),p.x+3,Math.max(e,p.y)];
+      if(placed.some(q=>[box,pin].some(b=>b[0]<q[2]&&b[2]>q[0]&&b[1]<q[3]&&b[3]>q[1]))) continue;
+      el.style.setProperty("--l",L+"px"); el.classList.toggle("dn",dn); placed.push(box,pin); ok=true; break;   // the pin itself is kept clear too
+    }
+    el.classList.toggle("off",!ok);
+  }
+}
 renderer.on("afterRender",placeLabels);
 renderer.getCamera().on("updated",()=>{ const v=renderer.getCamera().ratio<0.5; if(v!==edgesVisible){ edgesVisible=v; renderer.refresh(); } });
 
 // ---- interaction ----
 const tip=$("#tip");
-renderer.on("enterNode",({node})=>{ S.hover=node; if(matchMedia("(pointer:coarse)").matches){ renderer.refresh(); return; } const n=byId.get(node); tip.innerHTML=`<b>${esc(n.title)}</b><div class="muted" style="margin-top:3px">${esc(n.tldr)}</div><div class="muted small" style="margin-top:4px">${n.venue} ${n.year} · ${esc(n.primary_topic)}</div>`; tip.style.display="block"; renderer.refresh(); });
+function showTip(id){ const n=byId.get(id); tip.innerHTML=`<b>${esc(n.title)}</b><div class="muted" style="margin-top:3px">${esc(n.tldr)}</div><div class="muted small" style="margin-top:4px">${n.venue} ${n.year} · ${esc(n.primary_topic)}${n.citations!=null?` · ${n.citations.toLocaleString()} citations`:""}</div>`; tip.style.display="block"; }
+renderer.on("enterNode",({node})=>{ S.hover=node; if(matchMedia("(pointer:coarse)").matches){ renderer.refresh(); return; } showTip(node); renderer.refresh(); });
 renderer.on("leaveNode",()=>{ S.hover=null; tip.style.display="none"; renderer.refresh(); });
 renderer.getMouseCaptor().on("mousemovebody",e=>{ tip.style.left=Math.min(e.x+14,innerWidth-340)+"px"; tip.style.top=(e.y+14)+"px"; });
 // ---- drag nodes (Obsidian-style): the grabbed node moves, linked papers follow with a springy pull ----
@@ -565,6 +619,169 @@ const endDrag=()=>{
 renderer.on("upNode",endDrag); renderer.on("upStage",endDrag); renderer.on("leaveStage",endDrag);
 renderer.on("clickNode",({node,event})=>{ if(justDragged) return; const o=event.original; openDetail(node,true,!!(o&&(o.shiftKey||o.metaKey||o.ctrlKey))); });
 renderer.on("clickStage",()=>{ const pi=tabs.findIndex(t=>!t.pinned); if(pi>=0) closeTab(pi); });   // click empty map: dismiss the preview tab, pinned ones stay
+
+// ---- 3D view: the same papers in a 3D UMAP of the same features, each dot sized by citations.
+// Filters, focus/dim/hide, hover, selection and labels all come from the 2D code above (reduceNode, placeLabels).
+async function make3D(){
+  const [THREE,{OrbitControls},pos3]=await Promise.all([import("three"),import("three/addons/controls/OrbitControls.js"),fetch("layout3d.json").then(r=>r.json())]);
+  const box=$("#graph3d"), n=N.length, idx=new Map(N.map((p,i)=>[p.id,i]));
+  const renderer3=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer3.setPixelRatio(Math.min(devicePixelRatio,2)); box.appendChild(renderer3.domElement);
+  const scene=new THREE.Scene(), camera=new THREE.PerspectiveCamera(45,1,1,3000);
+  const HOME=new THREE.Vector3(0,30,240);
+  camera.position.copy(HOME);
+  const controls=new OrbitControls(camera,renderer3.domElement);
+  controls.enableDamping=true; controls.dampingFactor=.08; controls.minDistance=8; controls.maxDistance=600; controls.zoomSpeed=1.6;
+  controls.autoRotate=!matchMedia("(prefers-reduced-motion: reduce)").matches; controls.autoRotateSpeed=.45;
+
+  // citations -> dot diameter (world units). Sqrt keeps the long tail (median 2) as fine specks
+  // and lets the few heavily cited papers stand out as landmarks.
+  const cite=p=>.35+.1*Math.sqrt(p.citations||0);
+  const P=new Float32Array(n*3), C=new Float32Array(n*3), Z=new Float32Array(n), H=new Float32Array(n);
+  N.forEach((p,i)=>{ const v=pos3[p.id]||[0,0,0]; P.set(v,i*3); });
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute("position",new THREE.BufferAttribute(P,3));
+  const cA=new THREE.BufferAttribute(C,3), zA=new THREE.BufferAttribute(Z,1), hA=new THREE.BufferAttribute(H,1);
+  geo.setAttribute("color",cA); geo.setAttribute("size",zA); geo.setAttribute("hl",hA);
+  const U={uScale:{value:1},uDpr:{value:renderer3.getPixelRatio()},uBg:{value:new THREE.Color()},uRing:{value:new THREE.Color()},uDist:{value:240}};
+  scene.add(new THREE.Points(geo,new THREE.ShaderMaterial({uniforms:U,
+    vertexShader:`attribute float size; attribute float hl; attribute vec3 color;
+      uniform float uScale, uDpr, uDist; varying vec3 vC; varying float vH, vF;
+      void main(){ vec4 mv=modelViewMatrix*vec4(position,1.); gl_Position=projectionMatrix*mv;
+        if(size<=0.){ gl_Position=vec4(2.,2.,2.,1.); gl_PointSize=0.; return; }   // hidden: clip it outright (some GPUs still draw a 1px point at size 0)
+        gl_PointSize = max(size*uScale/-mv.z, 1.6*uDpr);
+        vC=color; vH=hl; vF=smoothstep(uDist-20.,uDist+140.,-mv.z); }   // fade only what's behind the orbit centre`,
+    fragmentShader:`uniform vec3 uBg, uRing; varying vec3 vC; varying float vH, vF;
+      void main(){ float r=length(gl_PointCoord-.5); if(r>.5) discard;
+        vec3 c=mix(vC*(1.+.22*(.5-r)), uBg, vF*.5);
+        if(vH>.5 && r>.36) c=uRing;
+        gl_FragColor=vec4(c,1.);
+        #include <colorspace_fragment>
+      }`})));
+  // links: the hovered/selected paper's own links always; everyone's links (Links on) once you're close in
+  const lgeo=new THREE.BufferGeometry(), lmat=new THREE.LineBasicMaterial({transparent:true});
+  const lines=new THREE.LineSegments(lgeo,lmat); scene.add(lines);
+  const agrps=new THREE.BufferGeometry(), amat=new THREE.LineBasicMaterial({transparent:true,opacity:.2,depthWrite:false});
+  const ambient=new THREE.LineSegments(agrps,amat); scene.add(ambient);
+  const segs=(pairs)=>{ const a=new Float32Array(pairs.length*6); pairs.forEach(([x,y],k)=>{ a.set(P.subarray(x*3,x*3+3),k*6); a.set(P.subarray(y*3,y*3+3),k*6+3); }); return new THREE.BufferAttribute(a,3); };
+
+  // label anchors: centroid of each area / cluster in 3D
+  // label anchors: each group's density peak, i.e. the mean of the papers around the member with the most
+  // same-group papers nearby. A plain centroid can land in the empty space between an area's sub-clumps.
+  const peaks=(key,rad)=>{
+    const groups=new Map(); N.forEach((p,i)=>{ const k=p[key]; (groups.get(k)||groups.set(k,[]).get(k)).push(i); });
+    const m=new Map(), r2=rad*rad, d2=(a,b)=>{ const x=P[a*3]-P[b*3], y=P[a*3+1]-P[b*3+1], z=P[a*3+2]-P[b*3+2]; return x*x+y*y+z*z; };
+    groups.forEach((ix,k)=>{
+      let best=ix[0], bc=-1;
+      for(const a of ix){ let c=0; for(const b of ix) if(d2(a,b)<r2) c++; if(c>bc){ bc=c; best=a; } }
+      const v=new THREE.Vector3(); let c=0; for(const b of ix) if(d2(best,b)<r2){ v.x+=P[b*3]; v.y+=P[b*3+1]; v.z+=P[b*3+2]; c++; }
+      m.set(k,v.divideScalar(c));
+    });
+    return m;
+  };
+  const supC=peaks("super",18), clC=peaks("cluster",7);
+  const anchor=it=>(it.kind==="sup"?supC:clC).get(it.o.id);
+
+  const tmp=new THREE.Color(), v=new THREE.Vector3(), w=new THREE.Vector3();
+  let dirty=true, ambientOn=null;
+  function restyle(){
+    let active=null;
+    N.forEach((p,i)=>{
+      const a=g.getNodeAttributes(p.id), o=reduceNode(p.id,a);
+      tmp.set(o.color); C[i*3]=tmp.r; C[i*3+1]=tmp.g; C[i*3+2]=tmp.b;
+      Z[i]=o.hidden?0:cite(p)*(o.size/a.size); H[i]=o.highlighted?1:0;
+    });
+    cA.needsUpdate=zA.needsUpdate=hA.needsUpdate=true;
+    U.uBg.value.set(dark()?"#191613":"#f4f2ed");
+    U.uRing.value.set(dark()?"#e5a85c":"#8c4a2f");
+    const act=S.hover||S.sel;
+    if(act&&idx.has(act)){ const i=idx.get(act); lgeo.setAttribute("position",segs(nbrs.get(act).filter(([o])=>Z[idx.get(o)]>0).map(([o])=>[i,idx.get(o)]))); lmat.color.set(dark()?"#e5a85c":"#8c4a2f"); lines.visible=true; }
+    else lines.visible=false;
+    ambientOn=null; dirty=true;
+  }
+  function syncAmbient(){
+    const on=S.edges&&!(S.hover||S.sel)&&camera.position.distanceTo(controls.target)<110;
+    if(on===ambientOn) return; ambientOn=on; ambient.visible=on;
+    if(on){ agrps.setAttribute("position",segs(data.edges.map(([a,b])=>[idx.get(a),idx.get(b)]).filter(([x,y])=>Z[x]>0&&Z[y]>0))); amat.color.set(dark()?"#5a4e40":"#b9b2a2"); }
+  }
+  function resize(){
+    const W=box.clientWidth, Hh=box.clientHeight; if(!W||!Hh) return;
+    renderer3.setSize(W,Hh); camera.aspect=W/Hh; camera.updateProjectionMatrix();
+    U.uScale.value=Hh*renderer3.getPixelRatio()/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))); dirty=true;
+  }
+  addEventListener("resize",resize);
+
+  // screen-space pick: the front-most visible dot whose disc covers the point
+  function pick(mx,my){
+    const W=box.clientWidth, Hh=box.clientHeight, k=U.uScale.value/renderer3.getPixelRatio(); let best=null, bz=Infinity;
+    for(let i=0;i<n;i++){
+      if(!Z[i]) continue;
+      v.fromArray(P,i*3); w.copy(v).applyMatrix4(camera.matrixWorldInverse); if(w.z>=0) continue;
+      v.project(camera); const sx=(v.x+1)/2*W, sy=(1-v.y)/2*Hh, r=Math.max(5,Z[i]*k/-w.z/2), dx=sx-mx, dy=sy-my;
+      if(dx*dx+dy*dy<=r*r&&-w.z<bz){ bz=-w.z; best=N[i].id; }
+    }
+    return best;
+  }
+  // camera moves: ease target + distance
+  let anim=null;
+  function fly(target,dist,ms=600){
+    const t0=performance.now(), fromT=controls.target.clone(), fromP=camera.position.clone();
+    const dir=fromP.clone().sub(fromT).normalize(), toP=target.clone().add(dir.multiplyScalar(dist));
+    anim=now=>{ const t=Math.min(1,(now-t0)/ms), e=1-Math.pow(1-t,3);
+      controls.target.lerpVectors(fromT,target,e); camera.position.lerpVectors(fromP,toP,e); if(t>=1) anim=null; };
+  }
+  const stopSpin=()=>{ controls.autoRotate=false; };
+
+  let mouse=null, down=null;
+  const off=e=>{ const r=box.getBoundingClientRect(); return [e.clientX-r.left,e.clientY-r.top]; };
+  box.addEventListener("pointermove",e=>{ if(e.pointerType==="mouse") mouse=off(e); tip.style.left=Math.min(e.clientX+14,innerWidth-340)+"px"; tip.style.top=(e.clientY+14)+"px"; });
+  box.addEventListener("pointerleave",()=>{ mouse=null; if(S.hover){ S.hover=null; tip.style.display="none"; restyle(); placeLabels(); } });
+  box.addEventListener("pointerdown",e=>{ down=[e.clientX,e.clientY]; box.classList.add("drag"); stopSpin(); anim=null; });
+  box.addEventListener("pointerup",e=>{
+    box.classList.remove("drag"); if(!down) return;
+    const moved=Math.hypot(e.clientX-down[0],e.clientY-down[1])>5; down=null; if(moved) return;
+    const [x,y]=off(e), id=pick(x,y);
+    if(id) openDetail(id,true,e.shiftKey||e.metaKey||e.ctrlKey);
+    else { const pi=tabs.findIndex(t=>!t.pinned); if(pi>=0) closeTab(pi); }   // empty space: dismiss the preview tab, pinned ones stay
+  });
+  controls.addEventListener("change",()=>{ dirty=true; });
+  controls.addEventListener("start",stopSpin);
+
+  let frame=0;
+  function loop(now){
+    if(anim) anim(now);
+    controls.update(); U.uDist.value=camera.position.distanceTo(controls.target);
+    if(mouse&&(++frame&1)){
+      const id=pick(mouse[0],mouse[1]);
+      if(id!==S.hover){ S.hover=id; box.style.cursor=id?"pointer":""; if(id) showTip(id); else tip.style.display="none"; restyle(); }
+    }
+    syncAmbient();
+    renderer3.render(scene,camera);
+    placeLabels();
+  }
+  return {
+    show(on){ box.style.display=""; if(on){ resize(); restyle(); renderer3.setAnimationLoop(loop); } else renderer3.setAnimationLoop(null); },
+    refresh:restyle,
+    // label positions in #labels' coordinates (same box as the canvas)
+    toScreen(it){ const a=anchor(it); if(!a) return null; w.copy(a).applyMatrix4(camera.matrixWorldInverse); v.copy(a).project(camera);
+      const k=camera.position.distanceTo(controls.target)/Math.max(1,-w.z);   // >1 in front of the orbit centre, <1 behind
+      return {x:(v.x+1)/2*box.clientWidth, y:(1-v.y)/2*box.clientHeight, behind:w.z>=0, depth:-w.z, s:Math.max(it.kind==="sup"?.75:.88,Math.min(it.kind==="sup"?1.3:1.18,k)), fade:Math.max(.5,Math.min(1,k*1.1))}; },
+    zoomedIn:()=>camera.position.distanceTo(controls.target)<140,   // area names far out, cluster names close in
+    flyToLabel(it){ stopSpin(); const a=anchor(it); if(a) fly(a,it.kind==="sup"?110:55); },   // like 2D: clicking an area lands you among its clusters
+    flyToNode(id){ stopSpin(); const i=idx.get(id); if(i==null) return; fly(new THREE.Vector3().fromArray(P,i*3),Math.min(camera.position.distanceTo(controls.target),70),500); },
+    reset(){ anim=null; const t0=performance.now(), fT=controls.target.clone(), fP=camera.position.clone(), O=new THREE.Vector3();
+      anim=now=>{ const t=Math.min(1,(now-t0)/600), e=1-Math.pow(1-t,3); controls.target.lerpVectors(fT,O,e); camera.position.lerpVectors(fP,HOME,e); if(t>=1) anim=null; }; },
+  };
+}
+async function set3D(on){
+  S.d3=on; $("#btn3d").classList.toggle("on",on); $("#btn3d").setAttribute("aria-pressed",on);
+  if(on&&!view3d){ $("#btn3d").textContent="Loading…"; try{ view3d=await make3D(); } catch(e){ console.error(e); S.d3=false; } $("#btn3d").textContent="3D"; if(!S.d3){ $("#btn3d").classList.remove("on"); saveHash(); return; } }
+  document.documentElement.classList.toggle("is3d",S.d3);
+  S.hover=null; tip.style.display="none";
+  if(view3d) view3d.show(S.d3);
+  if(!S.d3){ document.querySelectorAll(".lbl").forEach(l=>{ l.classList.remove("off","dn"); l.style.zIndex=""; l.style.removeProperty("--s"); }); renderer.refresh(); }
+  placeLabels(); saveHash();
+}
 
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 // abstracts carry LaTeX ($...$) and a few stray macros; clean the prose, let KaTeX draw the math
@@ -746,7 +963,7 @@ document.addEventListener("gesturestart",e=>{ e.preventDefault(); gRatio=rendere
 document.addEventListener("gesturechange",e=>{ e.preventDefault(); if(inMap(e.target)&&e.scale) zoomAround(gRatio/e.scale,e.clientX,e.clientY); },{passive:false});
 document.addEventListener("gestureend",e=>e.preventDefault(),{passive:false});
 document.addEventListener("keydown",e=>{
-  if(learnOn||e.metaKey||e.ctrlKey||e.altKey) return; const t=(e.target.tagName||"").toLowerCase(); if(t==="input"||t==="textarea"||t==="select"||t==="button") return;
+  if(learnOn||is3d()||e.metaKey||e.ctrlKey||e.altKey) return; const t=(e.target.tagName||"").toLowerCase(); if(t==="input"||t==="textarea"||t==="select"||t==="button") return;
   if(document.querySelector("#detail.open")&&e.target.closest&&e.target.closest("#detail")) return;
   const st=e.shiftKey?260:90, m={ArrowLeft:[-st,0],ArrowRight:[st,0],ArrowUp:[0,-st],ArrowDown:[0,st]}[e.key]; if(!m) return;
   e.preventDefault(); panBy(m[0],m[1]);
@@ -801,7 +1018,8 @@ function renderDetail(fly){
   abstracts().then(a=>{ const el=$("#absText"); if(!el||S.sel!==id) return; el.classList.remove("muted"); el.textContent=cleanAbs(a[id]||"(abstract unavailable)"); mathify(el); });
   $("#detail").classList.add("open");
   const at=$("#dTabs").querySelector(".tab.on"); if(at&&at.scrollIntoView) at.scrollIntoView({block:"nearest",inline:"nearest"});
-  if(fly){ const d=renderer.getNodeDisplayData(id); renderer.getCamera().animate({x:d.x,y:d.y,ratio:Math.min(renderer.getCamera().ratio,0.25)},{duration:500}); }
+  if(fly&&is3d()) view3d.flyToNode(id);
+  else if(fly){ const d=renderer.getNodeDisplayData(id); renderer.getCamera().animate({x:d.x,y:d.y,ratio:Math.min(renderer.getCamera().ratio,0.25)},{duration:500}); }
   renderer.refresh(); saveHash();
 }
 $("#dTabs").addEventListener("click",e=>{
@@ -957,13 +1175,15 @@ $("#q").addEventListener("keydown",e=>{ if(e.key!=="Escape"&&e.key!=="Tab") $("#
 document.addEventListener("mousedown",e=>{ if(!e.target.closest("#searchwrap")) $("#searchwrap").classList.remove("open"); });
 $("#modeSel").value=S.mode; $("#modeSel").onchange=e=>{ S.mode=e.target.value; recompute(); };
 $("#btnEdges").onclick=e=>{ S.edges=!S.edges; e.target.classList.toggle("on",S.edges); renderer.refresh(); }; $("#btnEdges").classList.add("on");
-$("#btnReset").onclick=()=>{ S.topics.clear();S.years.clear();S.tracks.clear();S.venues.clear();S.tags.clear();S.regions.clear();S.niche=0;S.low=false;S.q="";$("#q").value="";buildTree(); recompute(); renderer.getCamera().animatedReset(); };
+$("#btnReset").onclick=()=>{ S.topics.clear();S.years.clear();S.tracks.clear();S.venues.clear();S.tags.clear();S.regions.clear();S.niche=0;S.low=false;S.q="";$("#q").value="";buildTree(); recompute(); if(is3d()) view3d.reset(); else renderer.getCamera().animatedReset(); };
+$("#btn3d").onclick=()=>set3D(!S.d3);
 $("#btnTheme").onclick=()=>{ const d=document.documentElement, nx=dark()?"light":"dark"; d.setAttribute("data-theme",nx); store.set("theme",nx); $("#btnTheme").setAttribute("aria-pressed",nx==="dark"); paintTheme(); renderer.refresh(); };
 
 paintTheme(); buildTree(); renderFilters(); recompute(); if(document.activeElement===$("#q")) $("#q").blur();
 if(S.sel && byId.has(S.sel)) openDetail(S.sel,false);
 if(S.learn) setLearn(true);
-window.__ideamap={S,renderer,N,recompute,openDetail,setLearn,reviewsCSV,get reviews(){return reviews;}};
+if(S.d3) set3D(true);
+window.__ideamap={S,renderer,get view3d(){return view3d;},N,recompute,openDetail,setLearn,reviewsCSV,get reviews(){return reviews;}};
 })();
 </script>
 </body>
