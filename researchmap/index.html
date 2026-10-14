@@ -377,8 +377,8 @@ function loadHash(){
   S.mode = p.get("m")||store.get("ideamap.mode")||"focus"; S.niche=+(p.get("n")||0); S.low=p.get("low")==="1"; S.q=p.get("q")||"";
   if(!S.topics.size){ try{ (JSON.parse(store.get("topics")||"[]")).forEach(t=>S.topics.add(t)); }catch(e){} }
   if(p.get("sel")) S.sel = p.get("sel");
-  S.learn = p.get("learn")==="1";
-  S.d3 = p.get("d")==="3";   // read now: the first saveHash() would otherwise drop it
+  S.learn = p.get("learn")==="1";   // read now: the first saveHash() would otherwise drop it
+  S.d3 = p.get("d")!=="2" && !!window.WebGL2RenderingContext;   // 3D is the default; #d=2 (or no WebGL2) keeps the flat map
 }
 function saveHash(){
   const p = new URLSearchParams();
@@ -387,7 +387,7 @@ function saveHash(){
   if(S.mode!=="focus") p.set("m",S.mode); if(S.niche) p.set("n",S.niche); if(S.low) p.set("low","1"); if(S.q) p.set("q",S.q);
   if(S.sel) p.set("sel",S.sel);
   if(typeof learnOn!=="undefined"&&learnOn) p.set("learn","1");
-  if(S.d3) p.set("d","3");
+  if(!S.d3) p.set("d","2");
   history.replaceState(null,"","#"+p.toString());
   store.set("topics",JSON.stringify([...S.topics])); store.set("ideamap.mode",S.mode);
 }
@@ -631,7 +631,7 @@ async function make3D(){
   const HOME=new THREE.Vector3(0,30,240);
   camera.position.copy(HOME);
   const controls=new OrbitControls(camera,renderer3.domElement);
-  controls.enableDamping=true; controls.dampingFactor=.08; controls.minDistance=8; controls.maxDistance=600; controls.zoomSpeed=1.6;
+  controls.enableDamping=true; controls.dampingFactor=.08; controls.minDistance=8; controls.maxDistance=600;
   controls.autoRotate=!matchMedia("(prefers-reduced-motion: reduce)").matches; controls.autoRotateSpeed=.45;
 
   // citations -> dot diameter (world units). Sqrt keeps the long tail (median 2) as fine specks
@@ -762,6 +762,12 @@ async function make3D(){
   return {
     show(on){ box.style.display=""; if(on){ resize(); restyle(); renderer3.setAnimationLoop(loop); } else renderer3.setAnimationLoop(null); },
     refresh:restyle,
+    zoomBy(f){ stopSpin(); anim=null; const d=camera.position.clone().sub(controls.target), L=d.length(), nl=Math.max(controls.minDistance,Math.min(controls.maxDistance,L*f));
+      camera.position.copy(controls.target).add(d.multiplyScalar(nl/L)); },
+    panBy(dx,dy){ stopSpin(); anim=null;                // screen pixels -> world units at the orbit centre
+      const k=2*camera.position.distanceTo(controls.target)*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/box.clientHeight;
+      const right=new THREE.Vector3().setFromMatrixColumn(camera.matrix,0), up=new THREE.Vector3().setFromMatrixColumn(camera.matrix,1);
+      const off=right.multiplyScalar(dx*k).add(up.multiplyScalar(-dy*k)); camera.position.add(off); controls.target.add(off); },
     // label positions in #labels' coordinates (same box as the canvas)
     toScreen(it){ const a=anchor(it); if(!a) return null; w.copy(a).applyMatrix4(camera.matrixWorldInverse); v.copy(a).project(camera);
       const k=camera.position.distanceTo(controls.target)/Math.max(1,-w.z);   // >1 in front of the orbit centre, <1 behind
@@ -775,7 +781,13 @@ async function make3D(){
 }
 async function set3D(on){
   S.d3=on; $("#btn3d").classList.toggle("on",on); $("#btn3d").setAttribute("aria-pressed",on);
-  if(on&&!view3d){ $("#btn3d").textContent="Loading…"; try{ view3d=await make3D(); } catch(e){ console.error(e); S.d3=false; } $("#btn3d").textContent="3D"; if(!S.d3){ $("#btn3d").classList.remove("on"); saveHash(); return; } }
+  if(on&&!view3d){
+    // hide the flat map + its labels while three.js loads, so the first thing you see is the 3D view
+    document.documentElement.classList.add("is3d"); $("#labels").style.visibility="hidden"; $("#btn3d").textContent="Loading…";
+    try{ view3d=await make3D(); } catch(e){ console.error(e); S.d3=false; }
+    $("#btn3d").textContent="3D"; $("#labels").style.visibility="";
+    if(!S.d3){ document.documentElement.classList.remove("is3d"); $("#btn3d").classList.remove("on"); $("#btn3d").setAttribute("aria-pressed",false); renderer.refresh(); saveHash(); return; }
+  }
   document.documentElement.classList.toggle("is3d",S.d3);
   S.hover=null; tip.style.display="none";
   if(view3d) view3d.show(S.d3);
@@ -942,25 +954,31 @@ function zoomAround(nr,cx,cy){                              // zoom to ratio nr,
   const a=renderer.viewportToFramedGraph({x,y}); cam.setState({ratio:Math.max(0.03,Math.min(4,nr))});
   const b=renderer.viewportToFramedGraph({x,y}); cam.setState({x:cam.x+(a.x-b.x),y:cam.y+(a.y-b.y)});
 }
-const inMap=t=>!!(t&&t.closest&&t.closest("#graph,#labels"));      // the canvas AND the heading labels on top of it
+const inMap=t=>!!(t&&t.closest&&t.closest("#graph,#graph3d,#labels"));      // the canvas AND the heading labels on top of it
+// 3D gets the same gestures as 2D: pinch / Cmd+scroll / a mouse wheel zoom, two-finger scroll pans. All handled here, so OrbitControls never sees the wheel.
+const zoom3=f=>view3d.zoomBy(f), pan3=(dx,dy)=>view3d.panBy(dx,dy);
 // Listening on the whole document (not just the canvas) so a pinch over a heading, the toolbar or a floating card never falls through to the browser's page zoom.
 document.addEventListener("wheel",e=>{
   if(e.ctrlKey){                                            // pinch on a trackpad arrives as Ctrl+wheel (Chrome, Firefox, Edge)
     e.preventDefault();                                     // never zoom the page itself
-    if(inMap(e.target)){ e.stopImmediatePropagation(); zoomAround(renderer.getCamera().ratio*Math.exp(e.deltaY*(e.deltaMode===1?0.4:0.012)),e.clientX,e.clientY); }
+    if(inMap(e.target)&&is3d()){ e.stopImmediatePropagation(); zoom3(Math.exp(e.deltaY*(e.deltaMode===1?0.4:0.012))); }
+    else if(inMap(e.target)){ e.stopImmediatePropagation(); zoomAround(renderer.getCamera().ratio*Math.exp(e.deltaY*(e.deltaMode===1?0.4:0.012)),e.clientX,e.clientY); }
     return;
   }
   if(!inMap(e.target)) return;                              // scrolling inside the card / dropdown / Learn stays normal
   const k=e.deltaMode===1?16:1, dx=e.deltaX*k, dy=e.deltaY*k;
+  if(e.metaKey&&is3d()){ e.preventDefault(); e.stopImmediatePropagation(); zoom3(Math.exp(dy*0.012)); return; }
   if(e.metaKey){ e.preventDefault(); e.stopImmediatePropagation(); zoomAround(renderer.getCamera().ratio*Math.exp(dy*0.012),e.clientX,e.clientY); return; }   // Cmd+scroll zooms
   const mouseWheel=e.deltaMode===1||(dx===0&&Number.isInteger(dy)&&Math.abs(dy)>=100&&(Math.abs(dy)%100===0||Math.abs(dy)%120===0));            // a physical mouse wheel steps in 100/120s: it zooms
+  if(is3d()){ e.preventDefault(); e.stopImmediatePropagation(); if(mouseWheel) zoom3(Math.exp(dy*0.0016)); else pan3(dx,dy); return; }
   if(mouseWheel) return;                                    // (the built-in zoom handles it)
   e.preventDefault(); e.stopImmediatePropagation(); panBy(dx,dy);   // two-finger scroll: pan in any direction
 },{capture:true,passive:false});
 // Safari reports trackpad pinch as gesture events (no Ctrl+wheel); same idea
-let gRatio=1;
-document.addEventListener("gesturestart",e=>{ e.preventDefault(); gRatio=renderer.getCamera().ratio; },{passive:false});
-document.addEventListener("gesturechange",e=>{ e.preventDefault(); if(inMap(e.target)&&e.scale) zoomAround(gRatio/e.scale,e.clientX,e.clientY); },{passive:false});
+let gRatio=1, gPrev=1;
+document.addEventListener("gesturestart",e=>{ e.preventDefault(); gRatio=renderer.getCamera().ratio; gPrev=1; },{passive:false});
+document.addEventListener("gesturechange",e=>{ e.preventDefault(); if(!inMap(e.target)||!e.scale) return;
+  if(is3d()){ zoom3(gPrev/e.scale); gPrev=e.scale; } else zoomAround(gRatio/e.scale,e.clientX,e.clientY); },{passive:false});
 document.addEventListener("gestureend",e=>e.preventDefault(),{passive:false});
 document.addEventListener("keydown",e=>{
   if(learnOn||is3d()||e.metaKey||e.ctrlKey||e.altKey) return; const t=(e.target.tagName||"").toLowerCase(); if(t==="input"||t==="textarea"||t==="select"||t==="button") return;
