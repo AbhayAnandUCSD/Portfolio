@@ -90,6 +90,18 @@ Spacing the note must keep (laptop):
 - `.note-body p` is `1.2rem` / `line-height: 1.75` (`1.06rem` under 768px).
 - Title/h1/Notes entry read "Getting started with Research" (lowercase "started").
 
+The map itself has the same problem: `~/GithubFolders/IdeaMap/pipeline/08_deploy.sh`
+copies `IdeaMap/web/{index.html,graph.json,abstracts.json,layout3d.json,...}` over
+`researchmap/`. Keep `researchmap/index.html` and `IdeaMap/web/index.html` identical.
+
+## Research Map 3D view
+
+3D is the default view (`#d=2` gives the flat map). It lives in `researchmap/index.html`
+next to the sigma 2D code and shares its node reducer, filters, panel, Learn and labels.
+three.js and `layout3d.json` (`{id: [x,y,z]}`, from IdeaMap `pipeline/09_layout3d.py`, a
+3D UMAP of the same features) load only when 3D first opens. Dots are sized by
+`0.35 + 0.1*sqrt(citations)`. Labels sit on pins anchored at each group's density peak.
+
 ## vercel.json
 
 Routes `/bookofworlds` to the Book of Worlds site on GitHub Pages (repo
