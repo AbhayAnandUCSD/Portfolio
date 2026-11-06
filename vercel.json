@@ -3,6 +3,11 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/wmchess",
+      "destination": "/notes/chess",
+      "permanent": false
+    },
+    {
       "source": "/generalintuition",
       "destination": "/bookofworlds/",
       "permanent": true
