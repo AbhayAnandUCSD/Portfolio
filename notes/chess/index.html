@@ -29,11 +29,8 @@
     .note-meta { font-family: "Figtree", system-ui, sans-serif; font-size: .82rem; color: var(--muted);
       display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
     .note-meta a { color: var(--text); border-bottom: 1px solid var(--border); transition: color .15s ease, border-color .15s ease; }
-    .note-meta button { appearance: none; border: 0; background: none; padding: 0; font: inherit; color: var(--muted); cursor: pointer;
-      border-bottom: 1px solid transparent; transition: color .15s ease, border-color .15s ease; }
     .note-meta .sep { color: var(--border); user-select: none; }
-    .note-meta .print { margin-left: auto; display: flex; gap: 14px; }
-    @media (hover: hover) { .note-meta a:hover, .note-meta button:hover { color: var(--accent); border-bottom-color: var(--accent); } }
+    @media (hover: hover) { .note-meta a:hover { color: var(--accent); border-bottom-color: var(--accent); } }
 
     .note-body { max-width: none; }
     .note-body p, .note-body li { font-size: 1.2rem; line-height: 1.75; text-wrap: pretty; }
@@ -76,7 +73,6 @@
       .research-questions li { font-size: 1rem !important; }
       .note-body h2 { font-size: 1.3rem; }
       .note-body h3 { font-size: 1.12rem; }
-      .note-meta .print { display: none; }
     }
     @media (max-width: 575px) {
       .note-body figure img.wide { display: none; }
@@ -85,11 +81,11 @@
       .tablewrap th, .tablewrap td { padding: .45em .3em; }
     }
 
-    /* print: the original report layout, Print brief swaps in the short versions */
+    /* print (Cmd+P): the original report layout */
     @page { size: letter; margin: .45in .54in; }
     @media print {
       :root, :root[data-theme="dark"] { --bg: #fff; --surface: #fff; --text: #222c33; --muted: #4a5660; --border: #d8dfe2; --accent: #205a76; }
-      .topbar, .note-meta .print { display: none !important; }
+      .topbar { display: none !important; }
       .wide { max-width: none; padding: 0; }
       body { font-size: 10pt; line-height: 1.26; }
       .page-title { font-size: 21pt; margin: 0 0 4pt; }
@@ -133,7 +129,6 @@
         <h1 class="page-title">Probing chess based World Models</h1>
         <div class="note-meta">
           <span>Nov 2026</span><span class="sep">·</span><a href="https://github.com/AbhayAnandUCSD/world_chess">Code</a>
-          <span class="print"><button type="button" onclick="printReport(false)">Print full report</button><button type="button" onclick="printReport(true)">Print brief</button></span>
         </div>
       </div>
       <div class="note-body">
@@ -193,8 +188,6 @@
       btn.setAttribute('aria-pressed', next === 'dark');
     });
   })();
-  function printReport(brief) { document.body.classList.toggle('brief', brief); window.print(); }
-  window.addEventListener('afterprint', function () { document.body.classList.remove('brief'); });
   </script>
 </body>
 </html>
