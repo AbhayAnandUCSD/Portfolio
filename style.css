@@ -280,7 +280,7 @@
     /* ============================================================
        PUBLICATIONS — rows open into a card with the abstract
        ============================================================ */
-    .pub-venue, .pub-links, .pub-note { font-family: "Figtree", system-ui, -apple-system, sans-serif; }
+    .pub-venue, .pub-links { font-family: "Figtree", system-ui, -apple-system, sans-serif; }
 
     .pub-list { display: flex; flex-direction: column; }
     .pub {
@@ -310,7 +310,6 @@
     .pub-links { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; font-size: .8rem; }
     .pub-links a { color: var(--muted); border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: color .15s ease, border-color .15s ease; }
     .pub-links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
-    .pub-note { font-size: .78rem; color: var(--muted); margin-top: 18px; }
 
     .pub.open { background: var(--surface); border-color: var(--border); }
     .pub.open::before, .pub.open + .pub::before { opacity: 0; }
