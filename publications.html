@@ -107,7 +107,9 @@
     var list = document.getElementById('pub-list');
     list.innerHTML = PUBS.map(function (p) {
       return '<article class="pub" tabindex="0">' +
-        '<div class="pub-title">' + p.title + '</div>' +
+        '<div class="pub-title">' + (p.links.arXiv
+          ? '<a href="' + p.links.arXiv + '" target="_blank" rel="noopener noreferrer">' + p.title + '</a>'
+          : p.title) + '</div>' +
         '<div class="pub-authors">' + authors(p) + '</div>' +
         '<div class="pub-venue"><b>' + p.venue + '</b>' + (p.status ? ', ' + p.status : '') + '</div>' +
         '<div class="pub-more"><div><p class="pub-abstract">' + p.abstract + '</p>' + links(p.links) + '</div></div>' +
@@ -117,12 +119,14 @@
     Array.prototype.forEach.call(list.children, function (el) {
       if (hover) {
         el.addEventListener('mouseenter', function () { el.classList.add('open'); });
-        el.addEventListener('mouseleave', function () { if (document.activeElement !== el) el.classList.remove('open'); });
+        el.addEventListener('mouseleave', function () { if (!el.contains(document.activeElement)) el.classList.remove('open'); });
       } else {
         el.addEventListener('click', function (e) { if (e.target.closest('a')) return; el.classList.toggle('open'); });
       }
-      el.addEventListener('focus', function () { el.classList.add('open'); });
-      el.addEventListener('blur', function () { if (!el.matches(':hover')) el.classList.remove('open'); });
+      el.addEventListener('focusin', function () { el.classList.add('open'); });
+      el.addEventListener('focusout', function (e) {
+        if (!el.contains(e.relatedTarget) && !el.matches(':hover')) el.classList.remove('open');
+      });
     });
   })();
   </script>

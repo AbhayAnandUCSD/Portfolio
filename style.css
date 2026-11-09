@@ -299,6 +299,8 @@
     }
     .pub-venue { font-size: .8rem; color: var(--muted); margin-top: 5px; letter-spacing: .02em; }
     .pub-venue b { color: var(--accent); font-weight: 600; }
+    .pub-title a { color: inherit; border-bottom: 1px solid transparent; transition: border-color .15s ease; }
+    .pub-title a:hover { border-bottom-color: currentColor; }
     .pub-authors { font-size: .92rem; color: var(--muted); margin-top: 3px; }
     .pub-authors .me { color: var(--text); font-weight: 600; }
     .pub-more {
