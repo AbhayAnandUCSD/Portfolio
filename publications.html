@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Publications by Abhay Anand — world models, vision foundation models, interpretability." />
+  <title>Publications — Abhay Anand</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var theme = stored === 'dark' || stored === 'light'
+          ? stored
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+  <!-- Vercel Web Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">Abhay Anand</a>
+      <nav class="nav" aria-label="Sections">
+        <a href="/publications" aria-current="page">Publications</a>
+        <a href="/projects">Projects</a>
+        <a href="/notes">Notes</a>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="wide">
+    <section id="publications" aria-label="Publications">
+      <h1 class="page-title">Publications</h1>
+      <div class="pub-list" id="pub-list"></div>
+      <p class="pub-note">* equal contribution</p>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    btn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'dark');
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      btn.setAttribute('aria-pressed', next === 'dark');
+    });
+  })();
+  </script>
+  <script>
+  (function () {
+    // ---- edit publications here -------------------------------------------
+    // venue: shown in accent; status: muted text after it (e.g. "under review").
+    // Put "A. Anand" in authors to bold it; add "*" for equal contribution.
+    // links: { label: url } — leave empty when there is no preprint.
+    var PUBS = [
+      { title: 'LUNA: Latent U-Net Activation Steering',
+        authors: ['A. Anand', 'Y. Vishe', 'S. Yu', 'Y. J. Shen', 'Y. Xia', 'X. Jiang', 'T. Yu', 'J. Wu'],
+        venue: 'WWW 2027', status: 'under review',
+        links: {},
+        // No public abstract yet; this line is from the resume. Swap in the real one.
+        abstract: 'We improve LLM activation steering with reinforcement learning, training a U-Net adapter that injects guidance drawn from successful reasoning trajectories.' },
+      { title: 'CyCLeGen: Cycle-Consistent Layout Prediction and Image Generation in Vision Foundation Models',
+        authors: ['X. Shan', 'H. Shen', 'Y. Mao', 'X. Zhang', 'A. Anand', 'B. Li', 'H. Xu', 'Z. Tu'],
+        venue: 'NeurIPS 2026',
+        links: { arXiv: 'https://arxiv.org/abs/2603.14957' },
+        abstract: 'We present CyCLeGen, a unified vision-language foundation model capable of both image understanding and image generation within a single autoregressive framework. Unlike existing vision models that depend on separate modules for perception and synthesis, CyCLeGen adopts a fully integrated architecture that enforces cycle-consistent learning through image→layout→image and layout→image→layout generation loops. This unified formulation introduces two key advantages: introspection, enabling the model to reason about its own generations, and data efficiency, allowing self-improvement via synthetic supervision under a reinforcement learning objective guided by cycle consistency. Extensive experiments show that CyCLeGen achieves significant gains across diverse image understanding and generation benchmarks, highlighting the potential of unified vision-language foundation models.' },
+      { title: 'World Models Under Asynchronous Sensor Observations',
+        authors: ['A. Anand*', 'A. Anand*', 'Y. Vishe*'], me: 1,
+        venue: 'CoRL 2026',
+        links: { arXiv: 'https://arxiv.org/abs/2609.07299' },
+        abstract: 'Learned world models typically assume that observations arrive synchronously, an abstraction inherited from simulators that return a complete state vector at each environment step. Physical sensing instead operates at heterogeneous rates, leaving most observation channels stale at any given instant. Interpolating stale channels introduces measurements that were never observed, while downsampling to the slowest sensor discards valid measurements. A natural alternative is to zero-order-hold the most recent reading and provide the known sampling schedule to the model through two features, staleness and time-to-refresh. We test this prediction using transformer world models across three regimes of increasing causal coupling: open-loop rollouts in continuous-control locomotion, closed-loop model-predictive planning in which each learned model serves as the planner dynamics, and a linear latched-actuator system in which refresh events apply a zero-order-held command to the plant. Our findings show that the effectiveness of time-to-refresh depends on the causal role of the sampling schedule, specifically when refresh events affect the system rather than merely report its state. These results establish when sampling schedules provide useful information for predictive world models operating under asynchronous physical observations.' },
+      { title: 'PrimeScientist: Strategic Allocation of Research Effort in Autonomous Research',
+        authors: ['X. Yu', 'F. Bai', 'K. Sun', 'H. Miao', 'A. Anand', 'Z. Luo', 'K. Zhou', 'Z. Wang'],
+        venue: 'ICLR 2027', status: 'under review',
+        links: { arXiv: 'https://arxiv.org/abs/2609.17846' },
+        abstract: 'Autonomous research agents aim to automate scientific workflows, from proposing ideas to conducting experiments and analyzing results. Yet current AI and research agents can propose more directions than available resources allow them to pursue. Moreover, each attempt could consume substantial resources, requiring agents to reconsider how to invest in subsequent research. Thus, deciding how to invest research effort strategically should be a defining capability of autonomous research agents. Accordingly, we introduce PrimeScientist, which jointly determines research direction and resource investment across successive research attempts. Specifically, we formulate this challenge of strategic research effort allocation as a sequential decision problem where remaining resources should explicitly guide the research policy. We first introduce an executable plan tree that preserves competing plans and their outcomes across attempts. Building on this representation, we propose an adaptive MCTS-based allocation policy that balances exploration and exploitation using experimental feedback and remaining resources. Comprehensive evaluations across AI research, systems and code optimization, and machine learning engineering show that strategic allocation improves research quality and sample efficiency together. Across 12 AI research tasks, PrimeScientist improves average reward by 10.3% with 50.6% fewer research attempts than AutoResearch under the same resource budget. We believe making research effort allocation an explicit optimization target establishes effective resource use as a core research capability for autonomous agents to drive scientific breakthroughs at scale.' }
+    ];
+    // -----------------------------------------------------------------------
+
+    // "me" is the index of your name in authors when it is ambiguous (two A. Anands);
+    // otherwise the first author starting with "A. Anand" is bolded.
+    function authors(p) {
+      var mine = p.me != null ? p.me : p.authors.findIndex(function (n) { return n.indexOf('A. Anand') === 0; });
+      return p.authors.map(function (n, i) { return i === mine ? '<span class="me">' + n + '</span>' : n; }).join(', ');
+    }
+    function links(l) {
+      var keys = Object.keys(l);
+      if (!keys.length) return '';
+      return '<div class="pub-links">' + keys.map(function (k) {
+        return '<a href="' + l[k] + '" target="_blank" rel="noopener noreferrer">' + k + '</a>';
+      }).join('') + '</div>';
+    }
+
+    var hover = window.matchMedia('(hover: hover)').matches;
+    var list = document.getElementById('pub-list');
+    list.innerHTML = PUBS.map(function (p) {
+      return '<article class="pub" tabindex="0">' +
+        '<div class="pub-title">' + p.title + '</div>' +
+        '<div class="pub-authors">' + authors(p) + '</div>' +
+        '<div class="pub-venue"><b>' + p.venue + '</b>' + (p.status ? ', ' + p.status : '') + '</div>' +
+        '<div class="pub-more"><div><p class="pub-abstract">' + p.abstract + '</p>' + links(p.links) + '</div></div>' +
+        '</article>';
+    }).join('');
+
+    Array.prototype.forEach.call(list.children, function (el) {
+      if (hover) {
+        el.addEventListener('mouseenter', function () { el.classList.add('open'); });
+        el.addEventListener('mouseleave', function () { if (document.activeElement !== el) el.classList.remove('open'); });
+      } else {
+        el.addEventListener('click', function (e) { if (e.target.closest('a')) return; el.classList.toggle('open'); });
+      }
+      el.addEventListener('focus', function () { el.classList.add('open'); });
+      el.addEventListener('blur', function () { if (!el.matches(':hover')) el.classList.remove('open'); });
+    });
+  })();
+  </script>
+</body>
+</html>
