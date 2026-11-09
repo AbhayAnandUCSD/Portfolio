@@ -1,22 +1,22 @@
 :root {
-      /* Linen */
-      --bg: #f4f2ed;
-      --surface: #eae7e0;
-      --text: #1e1e1c;
-      --muted: #64615a;
-      --border: #d6d2c8;
-      --accent: #8c4a2f;
-      --photo-shadow: 0 14px 34px -18px rgba(60, 40, 20, 0.35);
+      /* Graphite */
+      --bg: #f5f5f4;
+      --surface: #ebebea;
+      --text: #18181b;
+      --muted: #5f6066;
+      --border: #d8d8d6;
+      --accent: #3f4652;
+      --photo-shadow: 0 14px 34px -18px rgba(20, 22, 28, 0.30);
     }
 
     :root[data-theme="dark"] {
-      /* Night Reading */
-      --bg: #191613;
-      --surface: #221e1a;
-      --text: #eae2d4;
-      --muted: #a39888;
-      --border: #3a322a;
-      --accent: #e5a85c;
+      /* Graphite night */
+      --bg: #121214;
+      --surface: #1b1b1e;
+      --text: #e6e6e8;
+      --muted: #9c9ca3;
+      --border: #2e2e33;
+      --accent: #c6ccd4;
       --photo-shadow: 0 14px 34px -18px rgba(0, 0, 0, 0.8);
     }
 
@@ -209,7 +209,7 @@
       filter: saturate(.92);
     }
 
-    /* warm veil until it plays, so every still sits in the page palette */
+    /* accent veil until it plays, so every still sits in the page palette */
     .thumb::before {
       content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background: var(--accent); opacity: .10; mix-blend-mode: multiply;
@@ -250,7 +250,7 @@
     /* hover: card lifts, tile warms to accent, clip plays */
     .work-card.live .thumb {
       border-color: var(--accent);
-      box-shadow: 0 18px 36px -24px rgba(80, 50, 25, .55);
+      box-shadow: 0 18px 36px -24px rgba(20, 22, 28, .45);
       transform: translateY(-3px);
     }
     :root[data-theme="dark"] .work-card.live .thumb { box-shadow: 0 18px 36px -22px rgba(0,0,0,.75); }
