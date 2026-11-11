@@ -71,6 +71,11 @@
       adobe: { name: 'Adobe Research', src: '/assets/logos/adobe.svg', color: true }
     };
     var PUBS = [
+      { title: 'MMRes-JEPA: A Joint-Embedding Predictive Architecture for Grounded Multimodal Reasoning',
+        authors: ['J. Wu', 'A. Anand', 'Y. Vishe', 'S. Yu', 'H. Xu', 'Y. J. Lee', 'L. Yao', 'T. Yu'],
+        venue: 'CVPR 2027', status: 'under review', orgs: ['adobe'],
+        links: {},
+        abstract: 'Joint-embedding predictive architectures have shown how representation prediction can complement generative training in language and multimodal models. We extend this approach to learning the intermediate representations through which textual reasoning and visual evidence use evolve together during multimodal chain-of-thought. This requires predictive targets that capture both the progression of each modality and the correspondence connecting a textual claim to its visual evidence. We introduce MMRes-JEPA, a predictive training framework that represents textual progress, visual evidence use, and cross-modal binding as coupled latent states. Token-aligned joint statistics expose these components to a shared state-transition model, enabling prediction of their coordinated evolution across reasoning steps. Completed rationales provide hindsight supervision for anticipating future states from partial reasoning traces. A complementary contrast preserves the per-modality summaries while disrupting their pairing, making the predictive task explicitly sensitive to text–evidence correspondence. Optimized alongside standard rationale supervision, MMRes-JEPA adds structured predictive learning to existing vision–language models without additional state annotations or changes to autoregressive inference.' },
       { title: 'LUNA: Latent U-Net Activation Steering',
         authors: ['A. Anand*', 'Y. Vishe*', 'S. Yu', 'Y. J. Shen', 'Y. Xia', 'X. Jiang', 'T. Yu', 'J. Wu'],
         venue: 'WWW 2027', status: 'under review', orgs: ['adobe'],
