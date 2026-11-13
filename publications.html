@@ -142,7 +142,11 @@
       } else {
         el.addEventListener('click', function (e) { if (e.target.closest('a')) return; el.classList.toggle('open'); });
       }
-      el.addEventListener('focusin', function () { el.classList.add('open'); });
+      // On touch, a tap focuses the card before the click toggles it, so only
+      // keyboard focus (:focus-visible) may open it, or the tap cancels itself.
+      el.addEventListener('focusin', function (e) {
+        if (hover || e.target.matches(':focus-visible')) el.classList.add('open');
+      });
       el.addEventListener('focusout', function (e) {
         if (!el.contains(e.relatedTarget) && !el.matches(':hover')) el.classList.remove('open');
       });
